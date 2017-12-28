@@ -19,7 +19,7 @@ target 'testFrame' do
     pod 'SnapKit',    '~> 4.0'
     pod 'wax'
     pod 'SSZipArchive'
-    
+    pod 'WeexSDK'
 #	pod 'CocoaLumberjack', '3.0.0'
 #	pod 'Toast', '3.0'
 #腾讯bug上报

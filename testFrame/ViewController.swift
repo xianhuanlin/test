@@ -33,11 +33,18 @@ class ViewController: UIViewController {
 
     //let text:Observable<String> = Observable.s
     override func viewDidLoad() {
+        super.viewDidLoad()
         
+        self.doAsyncAfter(second: 3) {
+            let vc = wxViewController()
+            self.addChildViewController(vc)
+            self.view.addSubview(vc.view)
+            //self.present(vc, animated: true, completion: nil)
+        }
         ObjcBridge().zipFile()
         
         //let textIsOk = textField.rx.text.orEmpty
-        super.viewDidLoad()
+
         self.view.backgroundColor = UIColor.gray
         button.backgroundColor = UIColor.red
 

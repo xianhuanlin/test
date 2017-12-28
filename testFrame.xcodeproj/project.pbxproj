@@ -14,6 +14,10 @@
 		9EA1B6DD1F565DCA00764528 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EA1B6DB1F565DCA00764528 /* LaunchScreen.storyboard */; };
 		9EA1B6E71F565F7400764528 /* ObjcBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA1B6E61F565F7400764528 /* ObjcBridge.m */; };
 		9EA3E1261FB54EB400DC2B6F /* testModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E1251FB54EB400DC2B6F /* testModel.swift */; };
+		9EC78B7F1FF228970034A70F /* wxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC78B7E1FF228970034A70F /* wxViewController.m */; };
+		9EC78B821FF228BC0034A70F /* ImageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC78B811FF228BC0034A70F /* ImageHandler.m */; };
+		9EC78B841FF33E690034A70F /* test.we in Resources */ = {isa = PBXBuildFile; fileRef = 9EC78B831FF33E690034A70F /* test.we */; };
+		9EC78B861FF349AE0034A70F /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC78B851FF349AE0034A70F /* extensions.swift */; };
 		A9390DC795FB2B5C63851F7B /* Pods_testFrame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C936BF260C60FE999C83C93D /* Pods_testFrame.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +44,12 @@
 		9EBFC7CF1F6FD016004585A1 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = "../../../Library/Developer/Xcode/DerivedData/testFrame-bwrgbadiathozsdjmbuxwnqmzydx/Build/Products/Debug-iphonesimulator/SDWebImage/SDWebImage.framework"; sourceTree = "<group>"; };
 		9EBFC7D01F6FD016004585A1 /* SSKeychain.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SSKeychain.framework; path = "../../../Library/Developer/Xcode/DerivedData/testFrame-bwrgbadiathozsdjmbuxwnqmzydx/Build/Products/Debug-iphonesimulator/SSKeychain/SSKeychain.framework"; sourceTree = "<group>"; };
 		9EBFC7D11F6FD016004585A1 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../Library/Developer/Xcode/DerivedData/testFrame-bwrgbadiathozsdjmbuxwnqmzydx/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
+		9EC78B7D1FF228970034A70F /* wxViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wxViewController.h; sourceTree = "<group>"; };
+		9EC78B7E1FF228970034A70F /* wxViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wxViewController.m; sourceTree = "<group>"; };
+		9EC78B801FF228BC0034A70F /* ImageHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageHandler.h; sourceTree = "<group>"; };
+		9EC78B811FF228BC0034A70F /* ImageHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageHandler.m; sourceTree = "<group>"; };
+		9EC78B831FF33E690034A70F /* test.we */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.we; sourceTree = "<group>"; };
+		9EC78B851FF349AE0034A70F /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		A6AA96E3368B596881C38493 /* Pods-testFrame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testFrame.release.xcconfig"; path = "Pods/Target Support Files/Pods-testFrame/Pods-testFrame.release.xcconfig"; sourceTree = "<group>"; };
 		C936BF260C60FE999C83C93D /* Pods_testFrame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_testFrame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -105,6 +115,12 @@
 				9EA1B6E61F565F7400764528 /* ObjcBridge.m */,
 				9EA1B6E41F565F7400764528 /* testFrame-Bridging-Header.h */,
 				9EA3E1251FB54EB400DC2B6F /* testModel.swift */,
+				9EC78B7D1FF228970034A70F /* wxViewController.h */,
+				9EC78B7E1FF228970034A70F /* wxViewController.m */,
+				9EC78B801FF228BC0034A70F /* ImageHandler.h */,
+				9EC78B811FF228BC0034A70F /* ImageHandler.m */,
+				9EC78B831FF33E690034A70F /* test.we */,
+				9EC78B851FF349AE0034A70F /* extensions.swift */,
 			);
 			path = testFrame;
 			sourceTree = "<group>";
@@ -183,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EA1B6DD1F565DCA00764528 /* LaunchScreen.storyboard in Resources */,
+				9EC78B841FF33E690034A70F /* test.we in Resources */,
 				9EA1B6DA1F565DCA00764528 /* Assets.xcassets in Resources */,
 				9EA1B6D81F565DCA00764528 /* Main.storyboard in Resources */,
 			);
@@ -213,6 +230,7 @@
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/WeexSDK/WeexSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/wax/wax.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -232,6 +250,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WeexSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/wax.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,7 +301,10 @@
 				9EA3E1261FB54EB400DC2B6F /* testModel.swift in Sources */,
 				9EA1B6D51F565DCA00764528 /* ViewController.swift in Sources */,
 				9EA1B6D31F565DCA00764528 /* AppDelegate.swift in Sources */,
+				9EC78B861FF349AE0034A70F /* extensions.swift in Sources */,
 				9EA1B6E71F565F7400764528 /* ObjcBridge.m in Sources */,
+				9EC78B821FF228BC0034A70F /* ImageHandler.m in Sources */,
+				9EC78B7F1FF228970034A70F /* wxViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +431,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = JW5XRP3DDL;
 				INFOPLIST_FILE = testFrame/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = assit126;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -426,6 +449,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = JW5XRP3DDL;
 				INFOPLIST_FILE = testFrame/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = assit126;
 				PRODUCT_NAME = "$(TARGET_NAME)";

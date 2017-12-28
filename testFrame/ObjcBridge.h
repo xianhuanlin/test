@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "wxViewController.h"
 
 //#import "AFNetworking.h"
 
 @interface ObjcBridge : UIView
 - (void)zipFile;
 
+
++ (void)weexInit;
 @end

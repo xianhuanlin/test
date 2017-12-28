@@ -8,6 +8,8 @@
 
 #import "ObjcBridge.h"
 #import "SSZipArchive.h"
+#import <WeexSDK/WeexSDK.h>
+#import "ImageHandler.h"
 @implementation ObjcBridge{
     NSString* _fileRootPath;
 }
@@ -49,5 +51,20 @@
     }
     double time2 = CFAbsoluteTimeGetCurrent() - time1;
     NSLog(@"%f", time2);
+}
+
++ (void)weexInit{
+    [WXAppConfiguration setAppGroup:@"AliApp"];
+    [WXAppConfiguration setAppName:@"WeexDemo"];
+    [WXAppConfiguration setAppVersion:@"1.0.0"];
+
+    [WXSDKEngine initSDKEnvironment];
+    
+    //to do
+//    [WXSDKEngine registerComponent:@"MyView" withClass:[MyViewComponent class]];
+//    [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];
+//    [WXSDKEngine registerHandler:[WXNavigationDefaultImpl new] withProtocol:@protocol(WXNavigationProtocol)];
+    [WXSDKEngine registerHandler:[ImageHandler new] withProtocol:@protocol(WXImgLoaderProtocol)];
+    [WXLog setLogLevel: WXLogLevelError];
 }
 @end
