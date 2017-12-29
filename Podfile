@@ -17,7 +17,7 @@ target 'testFrame' do
     pod 'RxSwift',    '~> 4.0'
     pod 'RxCocoa',    '~> 4.0'
     pod 'SnapKit',    '~> 4.0'
-    pod 'wax'
+#    pod 'wax'
     pod 'SSZipArchive'
     pod 'WeexSDK'
 #	pod 'CocoaLumberjack', '3.0.0'
