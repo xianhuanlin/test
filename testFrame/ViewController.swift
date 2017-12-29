@@ -87,9 +87,7 @@ class ViewController: UIViewController {
         textField2.layer.borderColor = UIColor.black.cgColor
         textField2.layer.cornerRadius = 4
         textField2.layer.borderWidth = 0.5
-        //b.bind(to:button.rx.title(for: .normal))
-        //textEvent.bind(to: button.rx.title(for: .normal))
-        
+
         //textEvent.onNext("onnext")
 //        c.asObservable().bind(to: button.rx.title(for: .normal))
 //        c.value = "test2"
