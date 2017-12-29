@@ -25,13 +25,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(onleftBarButtonItemClick)];
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [ObjcBridge weexInit];
     });
     self.view.backgroundColor = [UIColor whiteColor];
-    _url = @"http://10.66.48.126:12580/examples/build/vue/index.js";
+    //_url = @"http://10.66.48.126:12580/examples/build/vue/index.js";
     [self render];
+    
+
+    //self.navigationItem.le
+}
+
+- (void)onleftBarButtonItemClick{
+    [self dismissViewControllerAnimated:YES  completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -40,13 +48,16 @@
 }
 
 - (void)render{
-    
     CGFloat width = self.view.frame.size.width;
-    //[_instance destroyInstance];
     _instance = [[WXSDKInstance alloc] init];
     _instance.viewController = self;
-    CGRect rect = CGRectMake(0, 64 ,self.view.bounds.size.width, self.view.bounds.size.height/2);
-    _instance.frame = self.view.frame;
+    CGFloat top = 0;
+    if (self.navigationController){
+        top = 64;
+    }
+        
+    CGRect rect = CGRectMake(0, top ,self.view.bounds.size.width, self.view.bounds.size.height - top);
+    _instance.frame = rect;
 
     __weak typeof(self) weakSelf = self;
     _instance.onCreate = ^(UIView *view) {
@@ -54,9 +65,6 @@
 //            weakSelf.weexView = view;
         [self.view addSubview:view];
         view.backgroundColor = [UIColor grayColor];
-        int a = 0;
-        //NSLog(view);
-        //UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, weakSelf.weexView);
     };
     _instance.onFailed = ^(NSError *error) {
         if (error){
