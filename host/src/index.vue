@@ -1,22 +1,87 @@
 <template>
+        <scroller class="home">
+            <!--<div class="nav">-->
 
-        <div class="wrapper" @click="update">
-            <image :src="logoUrl" class="logo"></image>
-            <text class="title">Hello {{target}}</text>
-            <text class="desc">Now, let's use vue to build your weex app.</text>
+            <!--</div>-->
 
-        </div>
+            <!--<div class="wrapper" @click="update">-->
+                <!--<div>-->
+                    <!--<image :src="logoUrl" class="logo"></image>-->
+                <!--</div>-->
+
+                <!--<text class="title">Hello {{target}}</text>-->
+                <!--<text class="desc">Now, let's use vue to build your weex app.</text>-->
+
+            <!--</div>-->
+            <!--<div class="edit">-->
+                <!--<textarea></textarea>-->
+            <!--</div>-->
+            <div class="nav1">
+                <div class="image1"></div>
+            </div>
+            <image class="img1" src="/res/00.png" resize="cover"></image>
+            <image class="img1" src="/res/01-02.jpg" resize="cover"></image>
+            <image class="img1" src="/res/03.png" resize="cover"></image>
+
+        </scroller>
+
 
 </template>
 
 <style>
-  .wrapper { align-items: center; margin-top: 120px; background-color: antiquewhite}
+  .wrapper {align-items: center; margin-top: 120px; background-color: antiquewhite}
   .title { padding-top:40px; padding-bottom: 40px; font-size: 48px; }
-  .logo { width: 360px; height: 156px; }
+  /*.logo { width: 360px; height: 156px; }*/
+
   .desc { padding-top: 20px; color:#888; font-size: 24px;}
-  /*.home.js{*/
-      /*background-color: aqua;*/
-  /*}*/
+  .home{
+      background-color: white;
+      /*background-image: url(/res/00.png);*/
+  }
+  .nav1{
+      /*position:fixed;*/
+      /*margin-left: 30px;*/
+      /*margin-top: 100px;*/
+      height: 100px;
+      /*width: 40px;*/
+      background-color: transparent;
+      /*flex: 0;*/
+      position: absolute;
+
+      display: none;
+
+  }
+  .image1{
+      position:absolute;
+      margin-left: 30px;
+      margin-top: 30px;
+      height: 40px;
+      width: 40px;
+      background-color: red;
+      /*flex: 0;*/
+  }
+
+    .nav{
+        flex:1;
+        background-color: rebeccapurple;
+        /*height: 100px;*/
+        /*width: 1080px;*/
+    }
+    .edit{
+        height: 300px;
+        background-color: white;
+        flex: 1;
+    }
+    .img1{
+        height:750px;
+        width:750px;
+    }
+  .img{
+      flex: 1;
+      height: 300px;
+  }
+
+
 </style>
 
 <script>
@@ -24,14 +89,17 @@
 
   export default {
     data: {
-      logoUrl: '../res/00.png',
-      target: 'xuemei'
+        logoUrl: '../res/00.png',
+        logoUrl2: '../res/00.png',
+      target: 'xuemei 2'
     },
     methods: {
       update: function (e) {
             var ret = util.test(11,23)
             console.log('target:', this.target)
             this.target = ret.toString()
+          window.document.body.style.backgroundColor = "red"
+            this$.$getConfig().evn.width
 
       }
     }

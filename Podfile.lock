@@ -32,7 +32,6 @@ PODS:
   - SSKeychain (1.2.3)
   - SSZipArchive (2.1.1)
   - SwiftyJSON (3.1.4)
-  - wax (1.2.1)
   - WeexSDK (0.17.0)
 
 DEPENDENCIES:
@@ -52,7 +51,6 @@ DEPENDENCIES:
   - SSKeychain (= 1.2.3)
   - SSZipArchive
   - SwiftyJSON
-  - wax
   - WeexSDK
 
 SPEC CHECKSUMS:
@@ -72,9 +70,8 @@ SPEC CHECKSUMS:
   SSKeychain: 3f42991739c6c60a9cf1bbd4dff6c0d3694bcf3d
   SSZipArchive: 14401ade5f8e82aba1ff03e9f88e9de60937ae60
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
-  wax: 85f4b93dbbfa123ee592c458a0ce289d561e4704
   WeexSDK: ad8443f4290ef7cb241bbd4c03b02d9dfc9fdca2
 
-PODFILE CHECKSUM: e03186a1f3ac9c7039e216457e6bb47ab9a0a084
+PODFILE CHECKSUM: ea105c0ad1c595eb6cdfe79be1bda10825ed130e
 
 COCOAPODS: 1.3.1

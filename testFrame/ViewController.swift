@@ -96,6 +96,7 @@ class ViewController: UIViewController {
         
         //textField.text = "1122"
         textField.text = "12580"
+        textField2.text = "http://192.168.0.105:8081/dist/test1.js"
         let lenthValid = textField.rx.text.orEmpty.asDriver().map{
            //return $0.count > 5
             return $0.count > 1
