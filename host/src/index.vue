@@ -26,12 +26,15 @@
             <!--<float-button>-->
 
             <!--</float-button>-->
-            <wxc-overlay :show="show"
-                         duration="300"
-                         :hasAnimation="hasAnimation"
-                         :timingFunction="timingFunction"
-                         @wxcOverlayBodyClicked="wxcOverlayBodyClicked"
-                         opacity="0.6"></wxc-overlay>
+            <div class="nav2">
+
+            </div>
+            <!--<float-button :show="show"-->
+                         <!--duration="300"-->
+                         <!--:hasAnimation="hasAnimation"-->
+                         <!--:timingFunction="timingFunction"-->
+                         <!--@wxcOverlayBodyClicked="wxcOverlayBodyClicked"-->
+                         <!--opacity="0.6"></float-button>-->
         </scroller>
 
 
@@ -60,6 +63,15 @@
 
       display: none;
 
+  }
+  .nav2{
+
+      margin-left: 30px;
+      margin-top: 30px;
+      width: 40px;
+      height: 40px;
+      background-color: red;
+      position: fixed;
   }
   .image1{
       position:absolute;
@@ -99,9 +111,10 @@
     import util from './util.js'
 //    import {WxcOverlay} from './includes'
 //    import { WxcOverlay } from 'weex-ui/packages/wxc-overlay';
-    import WxcOverlay from 'weex-ui/packages/wxc-overlay';
+//    import WxcOverlay from 'weex-ui/packages/wxc-overlay';
+    import {FloatButton} from './includes'
     export default {
-        components: { WxcOverlay },
+        components: { FloatButton },
     data: {
         logoUrl: '../res/00.png',
         logoUrl2: '../res/00.png',
@@ -110,9 +123,9 @@
     },
     methods: {
       update: function (e) {
-//            var ret = util.test(11,23)
+            var ret = util.test(11,23)
 //            console.log('target:', this.target)
-//            this.target = ret.toString()
+            this.target = ret.toString()
 //          window.document.body.style.backgroundColor = "red"
 //            this$.$getConfig().evn.width
           this.show = true
