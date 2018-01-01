@@ -8,5 +8,14 @@ util.test = function (a,b) {
     return a + b
 }
 
+import floatButton from './float-button'
+
 export default util
+
+// export {
+//     util,
+//     floatButton,
+//
+//
+// };
 

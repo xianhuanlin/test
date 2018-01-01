@@ -43,6 +43,8 @@
 
      import WxcButton from 'weex-ui/packages/wxc-button';
      import WxcPopup from 'weex-ui/packages/wxc-popup';
+     import WxcOverlay from 'weex-ui/packages/wxc-overlay';
+
     module.exports = {
         components: { WxcButton, WxcPopup },
 //        data: () => ({

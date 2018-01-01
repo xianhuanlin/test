@@ -1,18 +1,19 @@
 <template>
         <scroller class="home">
+            <!--<link-->
             <!--<div class="nav">-->
 
             <!--</div>-->
 
-            <!--<div class="wrapper" @click="update">-->
-                <!--<div>-->
-                    <!--<image :src="logoUrl" class="logo"></image>-->
-                <!--</div>-->
+            <div class="wrapper" @click="update">
+                <div>
+                    <image :src="logoUrl" class="logo"></image>
+                </div>
 
-                <!--<text class="title">Hello {{target}}</text>-->
-                <!--<text class="desc">Now, let's use vue to build your weex app.</text>-->
+                <text class="title">Hello {{target}}</text>
+                <text class="desc">Now, let's use vue to build your weex app.</text>
 
-            <!--</div>-->
+            </div>
             <!--<div class="edit">-->
                 <!--<textarea></textarea>-->
             <!--</div>-->
@@ -22,7 +23,15 @@
             <image class="img1" src="/res/00.png" resize="cover"></image>
             <image class="img1" src="/res/01-02.jpg" resize="cover"></image>
             <image class="img1" src="/res/03.png" resize="cover"></image>
+            <!--<float-button>-->
 
+            <!--</float-button>-->
+            <wxc-overlay :show="show"
+                         duration="300"
+                         :hasAnimation="hasAnimation"
+                         :timingFunction="timingFunction"
+                         @wxcOverlayBodyClicked="wxcOverlayBodyClicked"
+                         opacity="0.6"></wxc-overlay>
         </scroller>
 
 
@@ -36,6 +45,7 @@
   .desc { padding-top: 20px; color:#888; font-size: 24px;}
   .home{
       background-color: white;
+      position: absolute;
       /*background-image: url(/res/00.png);*/
   }
   .nav1{
@@ -85,21 +95,27 @@
 </style>
 
 <script>
-    import util from './util.js'
 
-  export default {
+    import util from './util.js'
+//    import {WxcOverlay} from './includes'
+//    import { WxcOverlay } from 'weex-ui/packages/wxc-overlay';
+    import WxcOverlay from 'weex-ui/packages/wxc-overlay';
+    export default {
+        components: { WxcOverlay },
     data: {
         logoUrl: '../res/00.png',
         logoUrl2: '../res/00.png',
-      target: 'xuemei 2'
+      target: 'xuemei 2',
+        show:false,
     },
     methods: {
       update: function (e) {
-            var ret = util.test(11,23)
-            console.log('target:', this.target)
-            this.target = ret.toString()
-          window.document.body.style.backgroundColor = "red"
-            this$.$getConfig().evn.width
+//            var ret = util.test(11,23)
+//            console.log('target:', this.target)
+//            this.target = ret.toString()
+//          window.document.body.style.backgroundColor = "red"
+//            this$.$getConfig().evn.width
+          this.show = true
 
       }
     }
