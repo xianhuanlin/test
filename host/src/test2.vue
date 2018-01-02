@@ -1,9 +1,9 @@
 <template>
     <scroller class="home">
+        <card class="card1"></card>
         <card></card>
         <card></card>
-        <card></card>
-        <card></card>
+        <card title="media"></card>
         <text>{{name}}</text>
     </scroller>
 
@@ -17,6 +17,10 @@
     background-color: darkseagreen;
 
 }
+
+    .card1{
+        background-color: blue;
+    }
 </style>
 
 <script>

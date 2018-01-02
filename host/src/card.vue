@@ -14,7 +14,8 @@
     .card-dev2{
         height: 297px;
         width: 453px;
-        background-color: red;
+
+        /*background-color: red;*/
         /*flex: 1;*/
     }
 
@@ -57,14 +58,21 @@
 <script>
     export default {
         components: {},
-        data () {
-            return {
-                name: "card",
-                title: "card info",
-                info: "2014-11-20过期",
-                backsrc: "../res/card.png",
-            }
+        props: {
+            title: {
+                type: String,
+                default: 'card info'
+            },
+            info: {
+                type: String,
+                default: '2014-11-20过期'
+            },
+            backsrc: {
+                type: String,
+                default: '../res/card.png'
+            },
         },
+
         methods: {
             update: function (e) {
                 this.title =  "click" + this.title
