@@ -39,7 +39,8 @@
 }
 
 - (void)onleftBarButtonItemClick{
-    [self dismissViewControllerAnimated:YES  completion:nil];
+    //[self dismissViewControllerAnimated:YES  completion:nil];
+    [self.navigationController popViewControllerAnimated:true];
 }
 
 - (void)didReceiveMemoryWarning {

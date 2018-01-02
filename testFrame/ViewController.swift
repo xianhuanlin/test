@@ -26,6 +26,7 @@ class ViewController: UIViewController {
     let textField = UITextField()
     let textField2 = UITextField()
     let button = UIButton()
+    let button2 = UIButton()
     let disposeBag = DisposeBag()
     let viewChange = UIView()
     let textEvent = PublishSubject<String>()
@@ -34,7 +35,7 @@ class ViewController: UIViewController {
     //let text:Observable<String> = Observable.s
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = "首页"
 //        self.doAsyncAfter(second: 3) {
 //            let vc = wxViewController()
 //            self.addChildViewController(vc)
@@ -48,14 +49,17 @@ class ViewController: UIViewController {
         self.view.backgroundColor = UIColor.gray
         button.backgroundColor = UIColor.red
         button.setTitleColor(UIColor.gray, for: .disabled)
+        button2.backgroundColor = UIColor.red
+        button2.setTitleColor(UIColor.gray, for: .disabled)
         
         self.view.addSubview(button)
         self.view.addSubview(textField)
         self.view.addSubview(textField2)
-
+        self.view.addSubview(button2)
         self.view.addSubview(viewChange)
-        button.setTitle("打开", for: .normal)
-
+        button.setTitle("打开1", for: .normal)
+        button2.setTitle("打开2", for: .normal)
+        
         textField.snp.makeConstraints { (maker) in
             maker.centerX.equalTo(self.view)
             maker.width.equalTo(self.view.snp.width).offset(-30)
@@ -75,7 +79,12 @@ class ViewController: UIViewController {
             maker.height.equalTo(100)
             
         }
-        
+        button2.snp.makeConstraints { (maker) in
+            maker.top.equalTo(button.snp.bottom).offset(10)
+            maker.width.equalTo(100)
+            maker.height.equalTo(100)
+            maker.centerX.equalTo(button)
+        }
         textField.placeholder = "输入端口号"
         textField2.placeholder = "输入链接"
         textField.backgroundColor = UIColor.white
@@ -95,37 +104,24 @@ class ViewController: UIViewController {
         //c.asObservable().bind(to: textField.rx.text.orEmpty)
         
         //textField.text = "1122"
-        textField.text = "12580"
+        textField.text = "http://10.66.48.126:8081/dist/test1.js/"
         textField2.text = "http://192.168.0.105:8081/dist/test1.js"
         let lenthValid = textField.rx.text.orEmpty.asDriver().map{
            //return $0.count > 5
             return $0.count > 1
         }
         
-//        textField.rx.text.orEmpty.asDriver().map{
-//
-//            print("log"+$0)
-//        }
-//        lenthValid.drive(button.rx.title(for: .normal)).disposed(by: disposeBag)
-//
         button.rx.tap.subscribe { _ in
-            
-            if (self.textField2.text != nil && self.textField2.text!.count > 0){
-                self.navToUrl(self.textField2.text!)
-            }else{
-                self.navToPort(self.textField.text!)
-            }
+            self.navToUrl(self.textField.text!)
         }
-        let btnSub = button.rx.tap.throttle(1, scheduler: MainScheduler.instance).subscribe {_ in
-            //self.button.setTitle("test", for: .normal)
-            print("test")
+        button2.rx.tap.subscribe { _ in
+            self.navToUrl(self.textField2.text!)
         }
+//        let valid = Observable.combineLatest(textField.rx.text.orEmpty, textField2.rx.text.orEmpty).map {
+//            return $0.count > 0 || $1.count > 0
+//            }.bind(to: button.rx.isEnabled)
+        
 
-        let valid = Observable.combineLatest(textField.rx.text.orEmpty, textField2.rx.text.orEmpty).map {
-            return $0.count > 0 || $1.count > 0
-            }.bind(to: button.rx.isEnabled)
-        
-        
         //lenthValid
         print(c.value)
         //textField.rx.text.orEmpty.bind(to: button.rx.title(for: .normal)).addDisposableTo(disposeBag)
@@ -151,8 +147,10 @@ class ViewController: UIViewController {
         let vc = wxViewController();
         vc.url = url
         
-        let nav = UINavigationController.init(rootViewController: vc)
-        self.present(nav, animated: true, completion: nil)
+//        let nav = UINavigationController.init(rootViewController: vc)
+//        self.present(nav, animated: true, completion: nil)
+        
+        self.navigationController?.pushViewController(vc, animated: true)
         
     }
 }

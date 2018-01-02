@@ -15,6 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        let vc = ViewController()
+        let nav = UINavigationController.init(rootViewController: vc)
+        
+        window?.rootViewController = nav
         //ObjcBridge.weexInit()
         // Override point for customization after application launch.
         return true
