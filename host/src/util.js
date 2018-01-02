@@ -8,7 +8,7 @@ util.test = function (a,b) {
     return a + b
 }
 
-import floatButton from './float-button'
+// import floatButton from './float-button'
 
 export default util
 

@@ -23,12 +23,12 @@
             <image class="img1" src="/res/00.png" resize="cover"></image>
             <image class="img1" src="/res/01-02.jpg" resize="cover"></image>
             <image class="img1" src="/res/03.png" resize="cover"></image>
-            <!--<float-button>-->
+            <float-button>
 
-            <!--</float-button>-->
-            <div class="nav2">
+            </float-button>
+            <!--<div class="nav2">-->
 
-            </div>
+            <!--</div>-->
             <!--<float-button :show="show"-->
                          <!--duration="300"-->
                          <!--:hasAnimation="hasAnimation"-->
