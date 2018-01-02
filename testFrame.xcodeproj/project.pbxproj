@@ -18,6 +18,7 @@
 		9EC78B821FF228BC0034A70F /* ImageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC78B811FF228BC0034A70F /* ImageHandler.m */; };
 		9EC78B841FF33E690034A70F /* test.we in Resources */ = {isa = PBXBuildFile; fileRef = 9EC78B831FF33E690034A70F /* test.we */; };
 		9EC78B861FF349AE0034A70F /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC78B851FF349AE0034A70F /* extensions.swift */; };
+		9ED924221FFB334F00215C7E /* test1.js in Resources */ = {isa = PBXBuildFile; fileRef = 9ED924211FFB334F00215C7E /* test1.js */; };
 		A9390DC795FB2B5C63851F7B /* Pods_testFrame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C936BF260C60FE999C83C93D /* Pods_testFrame.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		9EC78B811FF228BC0034A70F /* ImageHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageHandler.m; sourceTree = "<group>"; };
 		9EC78B831FF33E690034A70F /* test.we */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.we; sourceTree = "<group>"; };
 		9EC78B851FF349AE0034A70F /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
+		9ED924211FFB334F00215C7E /* test1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = test1.js; sourceTree = "<group>"; };
 		A6AA96E3368B596881C38493 /* Pods-testFrame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testFrame.release.xcconfig"; path = "Pods/Target Support Files/Pods-testFrame/Pods-testFrame.release.xcconfig"; sourceTree = "<group>"; };
 		C936BF260C60FE999C83C93D /* Pods_testFrame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_testFrame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -105,6 +107,7 @@
 		9EA1B6D11F565DCA00764528 /* testFrame */ = {
 			isa = PBXGroup;
 			children = (
+				9ED924211FFB334F00215C7E /* test1.js */,
 				9EA1B6D21F565DCA00764528 /* AppDelegate.swift */,
 				9EA1B6D41F565DCA00764528 /* ViewController.swift */,
 				9EA1B6D61F565DCA00764528 /* Main.storyboard */,
@@ -202,6 +205,7 @@
 				9EC78B841FF33E690034A70F /* test.we in Resources */,
 				9EA1B6DA1F565DCA00764528 /* Assets.xcassets in Resources */,
 				9EA1B6D81F565DCA00764528 /* Main.storyboard in Resources */,
+				9ED924221FFB334F00215C7E /* test1.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

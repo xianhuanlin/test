@@ -32,10 +32,14 @@
     });
     self.view.backgroundColor = [UIColor whiteColor];
     //_url = @"http://10.66.48.126:12580/examples/build/vue/index.js";
-    [self render];
     
-
+    
+    [self render];
     //self.navigationItem.le
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    //[self render];
 }
 
 - (void)onleftBarButtonItemClick{
@@ -87,11 +91,14 @@
         return;
     }
 
+    NSString*localFile = [[NSBundle mainBundle]pathForResource:@"test1.js" ofType:@""];
+    NSURL*url = [NSURL fileURLWithPath:localFile];
     
-//    NSURL*url2 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"test.we" ofType:@""] isDirectory:NO];
-//    [_instance renderWithURL:url2];//[NSURL URLWithString:url2]];
-    
-    [_instance renderWithURL:[NSURL URLWithString:_url]];
+   // if (url == nil)
+    {
+        url = [NSURL URLWithString:_url];
+    }
+    [_instance renderWithURL:url];
 
 }
 /*
