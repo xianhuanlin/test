@@ -19,6 +19,7 @@
 		9EC78B841FF33E690034A70F /* test.we in Resources */ = {isa = PBXBuildFile; fileRef = 9EC78B831FF33E690034A70F /* test.we */; };
 		9EC78B861FF349AE0034A70F /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC78B851FF349AE0034A70F /* extensions.swift */; };
 		9ED924221FFB334F00215C7E /* test1.js in Resources */ = {isa = PBXBuildFile; fileRef = 9ED924211FFB334F00215C7E /* test1.js */; };
+		9ED924251FFC89FA00215C7E /* navhandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ED924241FFC89FA00215C7E /* navhandler.m */; };
 		A9390DC795FB2B5C63851F7B /* Pods_testFrame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C936BF260C60FE999C83C93D /* Pods_testFrame.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,8 @@
 		9EC78B831FF33E690034A70F /* test.we */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.we; sourceTree = "<group>"; };
 		9EC78B851FF349AE0034A70F /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		9ED924211FFB334F00215C7E /* test1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = test1.js; sourceTree = "<group>"; };
+		9ED924231FFC89FA00215C7E /* navhandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = navhandler.h; sourceTree = "<group>"; };
+		9ED924241FFC89FA00215C7E /* navhandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = navhandler.m; sourceTree = "<group>"; };
 		A6AA96E3368B596881C38493 /* Pods-testFrame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testFrame.release.xcconfig"; path = "Pods/Target Support Files/Pods-testFrame/Pods-testFrame.release.xcconfig"; sourceTree = "<group>"; };
 		C936BF260C60FE999C83C93D /* Pods_testFrame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_testFrame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -124,6 +127,8 @@
 				9EC78B811FF228BC0034A70F /* ImageHandler.m */,
 				9EC78B831FF33E690034A70F /* test.we */,
 				9EC78B851FF349AE0034A70F /* extensions.swift */,
+				9ED924231FFC89FA00215C7E /* navhandler.h */,
+				9ED924241FFC89FA00215C7E /* navhandler.m */,
 			);
 			path = testFrame;
 			sourceTree = "<group>";
@@ -302,6 +307,7 @@
 			files = (
 				9EA3E1261FB54EB400DC2B6F /* testModel.swift in Sources */,
 				9EA1B6D51F565DCA00764528 /* ViewController.swift in Sources */,
+				9ED924251FFC89FA00215C7E /* navhandler.m in Sources */,
 				9EA1B6D31F565DCA00764528 /* AppDelegate.swift in Sources */,
 				9EC78B861FF349AE0034A70F /* extensions.swift in Sources */,
 				9EA1B6E71F565F7400764528 /* ObjcBridge.m in Sources */,

@@ -1,5 +1,5 @@
 <template>
-    <list class="list" @loadmore="fetch" loadmoreoffset="10">
+    <list class="list" @loadmore="fetch" loadmoreoffset="10" @viewappear="viewApear">
         <cell class="cell" v-for="num in lists">
             <card :title="num">
                 <!--<text class="text">{{num}}</text>-->
@@ -11,6 +11,7 @@
 <script>
     import {Card} from './includes'
     const modal = weex.requireModule('modal')
+    const navigator = weex.requireModule('navigator')
     const LOADMORE_COUNT = 4
 
     export default {
@@ -30,6 +31,16 @@
                         this.lists.push(i + 1)
                     }
                 }, 800)
+            },
+
+            viewApear:function (e) {
+                navigator.setNavBarTitle({title:"list"},function () {
+
+                })
+                navigator.setNavBarHidden({hidden:true },function () {
+                    
+                })
+                modal.toast({ message: 'view appear', duration: 0.5 })
             }
         }
     }
