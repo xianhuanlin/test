@@ -10,6 +10,9 @@
 #import "SSZipArchive.h"
 #import <WeexSDK/WeexSDK.h>
 #import "ImageHandler.h"
+#import "navhandler.h"
+#import "protocol.h"
+
 @implementation ObjcBridge{
     NSString* _fileRootPath;
 }
@@ -61,10 +64,9 @@
     [WXSDKEngine initSDKEnvironment];
     
     //to do
-//    [WXSDKEngine registerComponent:@"MyView" withClass:[MyViewComponent class]];
-//    [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];
-//    [WXSDKEngine registerHandler:[WXNavigationDefaultImpl new] withProtocol:@protocol(WXNavigationProtocol)];
     [WXSDKEngine registerHandler:[ImageHandler new] withProtocol:@protocol(WXImgLoaderProtocol)];
+    [WXSDKEngine registerHandler:[navhandler new] withProtocol:@protocol(WXNavigationProtocol)];
+    [WXSDKEngine registerModule:@"event2" withClass:NSClassFromString(@"navNative")];
     [WXLog setLogLevel: WXLogLevelError];
 }
 @end

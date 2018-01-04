@@ -12,6 +12,7 @@
     import {Card} from './includes'
     const modal = weex.requireModule('modal')
     const navigator = weex.requireModule('navigator')
+    import util from './util.js'
     const LOADMORE_COUNT = 4
 
     export default {
@@ -34,13 +35,14 @@
             },
 
             viewApear:function (e) {
+                modal.toast({ message: util.verSign })
                 navigator.setNavBarTitle({title:"list"},function () {
 
                 })
                 navigator.setNavBarHidden({hidden:true },function () {
-                    
+
                 })
-                modal.toast({ message: 'view appear', duration: 0.5 })
+                // modal.toast({ message: 'view appear', duration: 0.5 })
             }
         }
     }

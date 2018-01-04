@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <WeexSDK/WeexSDK.h>
 
-@interface navhandler : NSObject
+@interface navhandler : NSObject <WXNavigationProtocol>
 
 @end

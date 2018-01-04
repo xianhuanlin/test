@@ -35,11 +35,10 @@
     
     
     [self render];
-    //self.navigationItem.le
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    //[self render];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[WXSDKManager bridgeMgr] fireEvent:_instance.instanceId ref:WX_SDK_ROOT_REF type:@"viewload" params:nil domChanges:nil];
+    });
 }
 
 - (void)onleftBarButtonItemClick{
@@ -100,6 +99,67 @@
     }
     [_instance renderWithURL:url];
 
+}
+
+
+- (void)_updateInstanceState:(WXState)state
+{
+    if (_instance && _instance.state != state) {
+        _instance.state = state;
+        
+        if (state == WeexInstanceAppear) {
+            [[WXSDKManager bridgeMgr] fireEvent:_instance.instanceId ref:WX_SDK_ROOT_REF type:@"viewappear" params:nil domChanges:nil];
+        } else if (state == WeexInstanceDisappear) {
+            [[WXSDKManager bridgeMgr] fireEvent:_instance.instanceId ref:WX_SDK_ROOT_REF type:@"viewdisappear" params:nil domChanges:nil];
+        }
+    }
+}
+
+- (void)_appStateDidChange:(NSNotification *)notify
+{
+    if ([notify.name isEqualToString:@"UIApplicationDidBecomeActiveNotification"]) {
+        [self _updateInstanceState:WeexInstanceForeground];
+    } else if([notify.name isEqualToString:@"UIApplicationDidEnterBackgroundNotification"]) {
+        [self _updateInstanceState:WeexInstanceBackground]; ;
+    }
+}
+
+- (void)_addObservers
+{
+    for (NSString *name in @[UIApplicationDidBecomeActiveNotification,
+                             UIApplicationDidEnterBackgroundNotification]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(_appStateDidChange:)
+                                                     name:name
+                                                   object:nil];
+    }
+}
+
+- (void)_removeObservers
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self _updateInstanceState:WeexInstanceAppear];
+    
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self _updateInstanceState:WeexInstanceDisappear];
+}
+
+
+
+- (void)dealloc
+{
+    [_instance destroyInstance];
+    [self _removeObservers];
 }
 /*
 #pragma mark - Navigation

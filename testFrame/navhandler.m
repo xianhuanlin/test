@@ -15,7 +15,7 @@
 #import "WXConvert.h"
 #import "navhandler.h"
 #import "ImageHandler.h"
-
+#import "wxViewController.h"
 
 @interface wtsBarButton :UIButton
 
@@ -68,8 +68,9 @@
     if (obj && [obj isEqualToString:@"false"]) {
         animated = NO;
     }
-    
-    WXBaseViewController *vc = [[WXBaseViewController alloc]initWithSourceURL:[NSURL URLWithString:param[@"url"]]];
+    wxViewController*vc = [wxViewController new];
+    vc.url = param[@"url"];
+    //WXBaseViewController *vc = [[WXBaseViewController alloc]initWithSourceURL:[NSURL URLWithString:param[@"url"]]];
     vc.hidesBottomBarWhenPushed = YES;
     [container.navigationController pushViewController:vc animated:animated];
     [self callback:block code:MSG_SUCCESS data:nil];

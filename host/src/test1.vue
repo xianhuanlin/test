@@ -18,7 +18,7 @@
             </wxc-button>
         </wxc-popup>
         <div class="div2">
-
+`
         </div>
     </div>
 </template>

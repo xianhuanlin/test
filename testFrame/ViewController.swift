@@ -104,8 +104,8 @@ class ViewController: UIViewController {
         //c.asObservable().bind(to: textField.rx.text.orEmpty)
         
         //textField.text = "1122"
-        textField.text = "http://10.66.48.126:8081/dist/test1.js"
-        textField2.text = "http://192.168.0.105:8081/dist/test1.js"
+        textField.text = "http://10.66.48.126:8081/dist/navtest.js"
+        textField2.text = "http://192.168.0.105:8081/dist/navtest.js"
         let lenthValid = textField.rx.text.orEmpty.asDriver().map{
            //return $0.count > 5
             return $0.count > 1
