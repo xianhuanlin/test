@@ -24,7 +24,7 @@
         },
         methods: {
             fetch (event) {
-                modal.toast({ message: '重新加载完毕', duration: 0.5 })
+                modal.toast({ message: '重新加载完毕', duration: 0.1 })
 
                 setTimeout(() => {
                     const length = this.lists.length
@@ -35,13 +35,13 @@
             },
 
             viewApear:function (e) {
-                modal.toast({ message: util.verSign })
+                //modal.toast({ message: util.verSign })
                 navigator.setNavBarTitle({title:"list"},function () {
 
                 })
-                navigator.setNavBarHidden({hidden:true },function () {
-
-                })
+                // navigator.setNavBarHidden({hidden:true },function () {
+                //
+                // })
                 // modal.toast({ message: 'view appear', duration: 0.5 })
             }
         }
