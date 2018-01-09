@@ -36,7 +36,7 @@
     var navigator = weex.requireModule('navigator')
     var modal = weex.requireModule('modal')
     const animation = weex.requireModule('animation')
-   // var nav = weex.requireModule('event2222')
+    var nav = weex.requireModule('event2')
     const clipboard = weex.requireModule('clipboard')
     import util from './util.js'
     var isok = false
@@ -51,8 +51,13 @@
                 backsrc: "../res/card.png",
             }
         },
+        mounted(){
+            this.title = "mounted"
+        },
         methods: {
             update: function (e) {
+                this.title = nav.getversion2().type
+                return;
                 // clipboard.getString(ret => {
                 //     //this.message = 'text from clipboard:' + ret.data
                 //     this.title = ret.data;
@@ -62,7 +67,7 @@
                 // weex.a = "hello 1"
                 // modal.toast({ message: weex.a })
                 // try{
-                //     this.title = nav.getversion()
+                //     this.title = nav.getversion2()
                 //
                 // }catch(e) {
                 //

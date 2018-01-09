@@ -13,6 +13,7 @@
 
 @synthesize weexInstance;
 WX_EXPORT_METHOD_SYNC(@selector(getversion))
+WX_EXPORT_METHOD_SYNC(@selector(getversion2))
 WX_EXPORT_METHOD(@selector(openProtocol:))
 #pragma mark Weex Application Interface
 
@@ -28,6 +29,10 @@ WX_EXPORT_METHOD(@selector(openProtocol:))
 - (NSString*)getversion{
     return @"hello world!";
 }
+- (NSDictionary*)getversion2{
+    return @{@"username":@"2123",@"type":@"wosun"};
+}
+
 - (void)openProtocol:(NSString*)url{
     
 }
