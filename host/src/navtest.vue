@@ -29,7 +29,6 @@
         align-items: center;
     }
 
-
 </style>
 
 <script>
@@ -56,29 +55,7 @@
         },
         methods: {
             update: function (e) {
-                this.title = nav.getversion2().type
-                return;
-                // clipboard.getString(ret => {
-                //     //this.message = 'text from clipboard:' + ret.data
-                //     this.title = ret.data;
-                // })
-                // return;
-                //this.title = "clicked";
-                // weex.a = "hello 1"
-                // modal.toast({ message: weex.a })
-                // try{
-                //     this.title = nav.getversion2()
-                //
-                // }catch(e) {
-                //
-                // }
-                // modal.toast({ message:nav.toString()})
-                // return
-                // util.verSign = "1.2.1"
 
-                // navigator.setNavBarTitle({title:"list"},function () {
-                //
-                // })
                 navigator.push({
                     url: 'http://10.66.48.126:8081/dist/listtest.js',
                     animated: "true"

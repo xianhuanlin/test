@@ -118,7 +118,7 @@
                 })
             },
             move: function (e) {
-                var testEl = e.currentTarget; //this.$refs.vvd;
+                var testEl = this.$refs.vvd;
                 this.rotate2(testEl);
             }
         }
