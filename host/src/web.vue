@@ -74,20 +74,29 @@
 
             },
             pageStart:function (e) {
-                wtsEvent.toast("pageStart")
-                e.back = "1"
-                wtsEvent.toast(e.url)
+                // wtsEvent.toast("pageStart")
+                // e.back = "1"
+                // wtsEvent.toast(e.url)
             },
             viewApear:function (e) {
-                return
                 wtsEvent.toast("viewAppear")
+                wtsEvent.fetch("get","item/ws/get",{item_uid:"11_8354"},function (object) {
+                    if (object == null){
+                        wtsEvent.toast("错误一大堆")
+                    }
+
+                    wtsEvent.toast("fetch ok")
+                    var item = object.data.item
+                     wtsEvent.toast(item.item_long_name)
+                    console.log(object)
+                })
                 var temp = this;
 
-                setTimeout(function () {
-                    wtsEvent.toast("ok")
-                    // temp.style4.height = "375px"
-                    wtsEvent.toast("ok2")
-                },3000)
+                // setTimeout(function () {
+                //     wtsEvent.toast("ok")
+                //     // temp.style4.height = "375px"
+                //     wtsEvent.toast("ok2")
+                // },3000)
             },
             click2:function (e) {
                  // this.rotate2(this.$refs.ss)
