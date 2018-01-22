@@ -1,8 +1,8 @@
 <template>
     <scroller class="root">
         <div v-if="" class="mainCell">
-            <image class="mainImage" :src="imageSet[0]"></image>
-            <text v-if="salePoint.length>0" class="salePoint">{{price}}</text>
+            <image class="mainImage" :src="imageSet[0].image_url"></image>
+            <text v-if="salePoint.length>0" class="salePoint">{{salePoint}}</text>
             <text class="title">{{title}}</text>
 
             <div class="divPrice">
@@ -11,18 +11,18 @@
                 <text class="marketPrice">3</text>
             </div>
             <div  class="divDeliver">
-                <div class="divDeliverCell">
+                <div class="divDeliverCell" v-for="num in deliverInfo">
                     <image src="asset://icon-detailpage-OK" class="deliverIcon"></image>
-                    <text class="deliver">123</text>
+                    <text class="deliver">{{num}}</text>
                 </div>
-                <div class="divDeliverCell">
-                    <image src="asset://icon-detailpage-OK" class="deliverIcon"></image>
-                    <text class="deliver">123</text>
-                </div>
-                <div class="divDeliverCell">
-                    <image src="asset://icon-detailpage-OK" class="deliverIcon"></image>
-                    <text class="deliver">123</text>
-                </div>
+                <!--<div class="divDeliverCell">-->
+                    <!--<image src="asset://icon-detailpage-OK" class="deliverIcon"></image>-->
+                    <!--<text class="deliver">item</text>-->
+                <!--</div>-->
+                <!--<div class="divDeliverCell">-->
+                    <!--<image src="asset://icon-detailpage-OK" class="deliverIcon"></image>-->
+                    <!--<text class="deliver">item</text>-->
+                <!--</div>-->
             </div>
 
         </div>
@@ -32,10 +32,10 @@
 
 <style scoped>
     .deliver{
-        width: auto;
-        height: 30px;
-        font-size: 30px;
-        background-color: red;
+        /*width: auto;*/
+        /*height: 30px;*/
+        font-size: 26px;
+        /*background-color: red;*/
     }
     .divDeliverCell{
         flex-direction: row;
@@ -126,8 +126,8 @@
         components: {},
         data() {
             return {
-                imageSet:['http://image.watsons.com.cn//upload/7a34638a.jpg?x-oss-process=image/indexcrop,y_400,i_1/format,webp/interlace,1/quality,Q_70',],
-                deliverInfo:['七天包换','七天包换'],
+                imageSet:[{image_url:''}],
+                deliverInfo:['七天包换','七天包换','正品保证'],
 
 
                 title: "card info",
@@ -146,21 +146,24 @@
             wtsEvent.showLoading('1');
             wtsEvent.fetch("get","item/ws/get",{item_uid:"11_8354"},function (rsp) {
                 wtsEvent.showLoading('0')
-
+                wtsEvent.toast("fetch ok");
                 if (rsp == null) {
                     wtsEvent.toast("系统错误");
+                    wtsEvent.toast("fetch return");
                     return
                 }
                 if (rsp.code == 10000){
-                    this.loadingOk = true;
+                    ws.loadingOk = true;
+                    wtsEvent.toast("fetch 10000");
                 }else{
                     wtsEvent.toast('系统错误!');
                     return;
                 }
 
-                wtsEvent.toast("fetch ok");
                 var item = rsp.data.item;
-                // this.title = item.item_long_name;
+                ws.title = item.item_long_name;
+                ws.salePoint = item.item_short_name;
+                ws.imageSet = item.item_sku_image_list
                 wtsEvent.toast(item.item_long_name);
                 console.log(rsp);
             })
