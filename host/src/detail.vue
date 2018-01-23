@@ -221,38 +221,50 @@
             }
         },
         mounted () {
-            var ws = this;
-            wtsEvent.showLoading('1');
-            wtsEvent.fetch("get","item/ws/get",{item_uid:"11_8354"},function (rsp) {
-                wtsEvent.showLoading('0')
-                wtsEvent.toast("fetch ok");
-                if (rsp == null) {
-                    wtsEvent.toast("系统错误");
-                    wtsEvent.toast("fetch return");
-                    return
-                }
-                if (rsp.code == 10000){
-                    ws.loadingOk = true;
-                    wtsEvent.toast("fetch 10000");
-                }else{
-                    wtsEvent.toast('系统错误!');
-                    return;
-                }
+            this.reloadPage()
 
-                var item = rsp.data.item;
-                ws.title = item.item_long_name;
-                ws.salePoint = item.item_short_name;
-                ws.imageSet = item.item_sku_image_list
-                wtsEvent.toast(item.item_long_name);
-                console.log(rsp);
-                var params = util.parseUrl(weex.config.bundleUrl)
-                // ws.marketPrice = '9999'
-                ws.sunbianInfo = '我是一个笋编说'
-                ws.brandData= {image:item.item_brand.logo,info:item.item_long_name + item.item_long_name,id:item.item_brand.id,name:item.item_brand.brand_name,}
-
-            })
         },
         methods: {
+            reloadPage:function () {
+                var ws = this;
+                wtsEvent.showLoading('1');
+                wtsEvent.fetch("get","item/ws/get",{item_uid:"11_8354"},function (rsp) {
+                    wtsEvent.showLoading('0')
+                    wtsEvent.toast("fetch ok");
+                    if (rsp == null) {
+                        wtsEvent.toast("系统错误");
+                        wtsEvent.toast("fetch return");
+                        return
+                    }
+                    if (rsp.code == 10000) {
+                        ws.loadingOk = true;
+                        wtsEvent.toast("fetch 10000");
+                    } else {
+                        wtsEvent.toast('系统错误!');
+                        return;
+                    }
+
+                    var item = rsp.data.item;
+                    ws.title = item.item_long_name;
+                    ws.salePoint = item.item_short_name;
+                    ws.imageSet = item.item_sku_image_list
+                    wtsEvent.toast(item.item_long_name);
+                    console.log(rsp);
+                    var params = util.parseUrl(weex.config.bundleUrl)
+                    // ws.marketPrice = '9999'
+                    ws.sunbianInfo = '我是一个笋编说'
+                    ws.brandData = {
+                        image: item.item_brand.logo,
+                        info: item.item_long_name + item.item_long_name,
+                        id: item.item_brand.id,
+                        name: item.item_brand.brand_name,
+                    }
+                    setTimeout(function () {
+                        wtsEvent.addTopupButton(100)
+                        wtsEvent.addReloadHeader()
+                    }, 100)
+                })
+            },
             update: function (e) {
                 this.title = "click" + this.title
 
