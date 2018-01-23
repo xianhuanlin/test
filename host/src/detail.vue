@@ -35,15 +35,11 @@
         </div>
         <div class="brandCell">
             <text class="brandtitle">品牌</text>
-            <image class="brandimage" :src="brandData.image"></image>
+            <image class="brandimage" :src="brandData.image" @click="brandClick"></image>
             <text class="brandname">{{brandData.name}}</text>
             <text class="brandinfo">{{brandData.info}}</text>
-
         </div>
-        <!--<div>-->
-            <web2 class="webView" :src="detailUrl"></web2>
-        <!--</div>-->
-
+        <web2 class="webView" :src="detailUrl"></web2>
     </scroller>
 </template>
 
@@ -135,7 +131,7 @@
     .webView{
         /*margin-top: 1000px;*/
         width: 750px;
-        height: 1750px;
+        height: 4750px;
         margin-top: 20px;
         /*position: relative;*/
     }
@@ -202,7 +198,7 @@
 <script>
     const wtsEvent = weex.requireModule('WTSEvent')
     const animation = weex.requireModule('animation')
-
+    import util from './util.js'
     export default {
         components: {},
         data() {
@@ -249,8 +245,8 @@
                 ws.imageSet = item.item_sku_image_list
                 wtsEvent.toast(item.item_long_name);
                 console.log(rsp);
-
-                ws.marketPrice = weex.config.bundleUrl
+                var params = util.parseUrl(weex.config.bundleUrl)
+                // ws.marketPrice = '9999'
                 ws.sunbianInfo = '我是一个笋编说'
                 ws.brandData= {image:item.item_brand.logo,info:item.item_long_name + item.item_long_name,id:item.item_brand.id,name:item.item_brand.brand_name,}
 
@@ -263,6 +259,10 @@
             },
             mainImageClick:function (e) {
                 wtsEvent.showFullImage([this.imageSet[0].image_url],0)
+            },
+            brandClick:function (e) {
+                var params = {"itemUId":'11_8354'};
+                wtsEvent.openNativePage('WTSItemDetailViewController',params)
             }
         }
     }
