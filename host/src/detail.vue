@@ -12,9 +12,9 @@
             </div>
 
             <div  class="divDeliver">
-                <div class="divDeliverCell" v-for="num in deliverInfo">
+                <div class="divDeliverCell" v-for="item in deliverInfo">
                     <image src="asset://icon-detailpage-OK" class="deliverIcon"></image>
-                    <text class="deliver">{{num}}</text>
+                    <text class="deliver">{{item.label_name}}</text>
                 </div>
             </div>
         </div>
@@ -40,10 +40,19 @@
             <text class="brandinfo">{{brandData.info}}</text>
         </div>
         <web2 ref="web1" class="webView2" :style='styleWeb' :src="detailUrl" @onPageHeightChange="webHeightChange"></web2>
+        <!--<div class="errordiv" ></div>-->
     </scroller>
 </template>
 
 <style scoped>
+    .errordiv{
+        width: 750px;
+        height: 750px;
+
+        position: fixed;
+        background-color: red;
+    ;
+    }
     .sunbianCell{
         padding: 30px;
         background-color: white;
@@ -101,10 +110,9 @@
 
     }
     .deliver{
-        /*width: auto;*/
-        /*height: 30px;*/
         font-size: 26px;
-        /*background-color: red;*/
+        color: #919191;
+
     }
     .divDeliverCell{
         flex-direction: row;
@@ -112,6 +120,7 @@
     .deliverIcon {
         width: 36px;
         height: 36px;
+        margin-right: 6px;
     }
 
     .divDeliver{
@@ -127,6 +136,7 @@
     .root{
         flex-direction: column;
         background-color: #f4f4f4;
+        position: absolute;
     }
 
     .mainCell{
@@ -158,21 +168,14 @@
         align-items: flex-end;
         padding-left: 30px;
         padding-right: 30px;
-        /*justify-content: space-between;*/
     }
     .price{
         font-size: 26px;
         color: #4A4A4A;
-        /*margin-top: 10px;*/
-        /*padding-left: 30px;*/
-        /*padding-right: 30px;*/
     }
     .price2{
         font-weight: bold;
         font-size: 40px;
-        /*margin-top: 10px;*/
-        /*padding-left: 30px;*/
-        /*padding-right: 30px;*/
         color: #4A4A4A;
         margin-left: 5px;
     }
@@ -197,7 +200,7 @@
         data() {
             return {
                 imageSet:[{image_url:''}],
-                deliverInfo:['七天包换','七天包换','正品保证'],
+                deliverInfo:[],
 
                 title: "card info",
                 salePoint:"好卖",
@@ -221,10 +224,11 @@
         methods: {
             reloadPage:function () {
                 var ws = this;
+                var params = util.parseUrl(weex.config.bundleUrl)
                 wtsEvent.showLoading('1');
-                wtsEvent.fetch("get","item/ws/get",{item_uid:"11_8354"},function (rsp) {
+                wtsEvent.fetch("get","item/ws/get",{item_uid:params.uid},function (rsp) {
                     wtsEvent.showLoading('0')
-                    wtsEvent.toast("fetch ok");
+                    // wtsEvent.toast("fetch ok");
                     if (rsp == null) {
                         wtsEvent.toast("系统错误");
                         wtsEvent.toast("fetch return");
@@ -232,7 +236,7 @@
                     }
                     if (rsp.code == 10000) {
                         ws.loadingOk = true;
-                        wtsEvent.toast("fetch 10000");
+                        // wtsEvent.toast("fetch 10000");
                     } else {
                         wtsEvent.toast('系统错误!');
                         return;
@@ -242,12 +246,13 @@
                     ws.title = item.item_long_name;
                     ws.salePoint = item.item_short_name;
                     ws.imageSet = item.item_sku_image_list
-                    wtsEvent.toast(item.item_long_name);
+                    // wtsEvent.toast(util.deviceHeight().toString());
                     console.log(rsp);
-                    var params = util.parseUrl(weex.config.bundleUrl)
+                    ws.price =  parseFloat(item.min_price)/100 + ''
                     // ws.marketPrice = '9999'
                     ws.sunbianInfo = '我是一个笋编说'
                     ws.detailUrl = item.item_menu_list[0].item_desc_url;
+                    ws.deliverInfo = item.item_label_list;
                     ws.brandData = {
                         image: item.item_brand.logo,
                         info: item.item_long_name + item.item_long_name,
@@ -270,26 +275,22 @@
                         clearInterval(id)
                     }, 10000)
 
+                    const { title,price} = ws
+                    ws.price = '1120'
+                    wtsEvent.toast(title)
+                    wtsEvent.toast(price)
                 })
-            },
-            update: function (e) {
-                this.title = "click" + this.title
-
             },
             mainImageClick:function (e) {
                 wtsEvent.showFullImage([this.imageSet[0].image_url],0)
             },
             brandClick:function (e) {
-                //this.styleWeb.height = '3000px'
-                //wtsEvent.toast("fetch ok");
                 var params = {"itemUId":'11_8354'};
                 wtsEvent.openNativePage('WTSItemDetailViewController',params)
             },
             updateHeight:function (e) {
                 var ws = this;
                 this.$refs.web1.getContainHeight2(function (height) {
-                    // var realHeight = parseFloat(height)*2*375/414
-                    // var newHeight = parseInt(realHeight) + 'px';
                     var newHeight = height + 'px';
                     if (newHeight != ws.styleWeb.height){
                         ws.styleWeb.height = newHeight
