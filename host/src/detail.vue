@@ -39,7 +39,7 @@
             <text class="brandname">{{brandData.name}}</text>
             <text class="brandinfo">{{brandData.info}}</text>
         </div>
-        <web2 class="webView" :src="detailUrl"></web2>
+        <web2 ref="web1" class="webView2" :style='styleWeb' :src="detailUrl" @onPageHeightChange="webHeightChange"></web2>
     </scroller>
 </template>
 
@@ -66,7 +66,7 @@
         height: 288px;
     }
     .brandtitle{
-        font-size: 26px;
+        font-size: 30px;
         color: #4a4a4a;
     }
     .brandimage{
@@ -127,13 +127,6 @@
     .root{
         flex-direction: column;
         background-color: #f4f4f4;
-    }
-    .webView{
-        /*margin-top: 1000px;*/
-        width: 750px;
-        height: 4750px;
-        margin-top: 20px;
-        /*position: relative;*/
     }
 
     .mainCell{
@@ -217,6 +210,7 @@
                 ruleImage:'',
                 activityList:[],
                 brandData:{image:'',info:'',},
+                styleWeb:{width:'750px',height:'1350px','margin-top':'20px'}
 
             }
         },
@@ -253,16 +247,29 @@
                     var params = util.parseUrl(weex.config.bundleUrl)
                     // ws.marketPrice = '9999'
                     ws.sunbianInfo = '我是一个笋编说'
+                    ws.detailUrl = item.item_menu_list[0].item_desc_url;
                     ws.brandData = {
                         image: item.item_brand.logo,
                         info: item.item_long_name + item.item_long_name,
                         id: item.item_brand.id,
                         name: item.item_brand.brand_name,
                     }
+                    //异步加载头部
                     setTimeout(function () {
                         wtsEvent.addTopupButton(100)
                         wtsEvent.addReloadHeader()
                     }, 100)
+
+                    //更新web的高度
+                    var id = setInterval(function () {
+                        ws.updateHeight()
+                    },500)
+
+                    //10秒后停止interval
+                    setTimeout(function () {
+                        clearInterval(id)
+                    }, 10000)
+
                 })
             },
             update: function (e) {
@@ -273,9 +280,24 @@
                 wtsEvent.showFullImage([this.imageSet[0].image_url],0)
             },
             brandClick:function (e) {
+                //this.styleWeb.height = '3000px'
+                //wtsEvent.toast("fetch ok");
                 var params = {"itemUId":'11_8354'};
                 wtsEvent.openNativePage('WTSItemDetailViewController',params)
-            }
+            },
+            updateHeight:function (e) {
+                var ws = this;
+                this.$refs.web1.getContainHeight2(function (height) {
+                    // var realHeight = parseFloat(height)*2*375/414
+                    // var newHeight = parseInt(realHeight) + 'px';
+                    var newHeight = height + 'px';
+                    if (newHeight != ws.styleWeb.height){
+                        ws.styleWeb.height = newHeight
+                    }
+
+                })
+
+            },
         }
     }
 </script>
