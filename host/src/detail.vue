@@ -1,57 +1,73 @@
 <template>
-    <scroller class="root">
-        <div v-if="" class="mainCell">
-            <image class="mainImage" :src="imageSet[0].image_url" @click="mainImageClick"></image>
-            <text v-if="salePoint.length>0" class="salePoint">{{salePoint}}</text>
-            <text class="title">{{title}}</text>
+    <div style="position: absolute">
+        <scroller class="scroll">
+            <div v-if="" class="mainCell">
+                <image class="mainImage" :src="imageSet[0].image_url" @click="mainImageClick"></image>
+                <text v-if="salePoint.length>0" class="salePoint">{{salePoint}}</text>
+                <text class="title">{{title}}</text>
 
-            <div class="divPrice">
-                <text class="price">￥</text>
-                <text class="price2">{{price}}</text>
-                <text class="marketPrice">{{marketPrice}}</text>
-            </div>
+                <div class="divPrice">
+                    <text class="price">￥</text>
+                    <text class="price2">{{price}}</text>
+                    <text class="marketPrice">{{marketPrice}}</text>
+                </div>
 
-            <div  class="divDeliver">
-                <div class="divDeliverCell" v-for="item in deliverInfo">
-                    <image src="asset://icon-detailpage-OK" class="deliverIcon"></image>
-                    <text class="deliver">{{item.label_name}}</text>
+                <div  class="divDeliver">
+                    <div class="divDeliverCell" v-for="item in deliverInfo">
+                        <image src="asset://icon-detailpage-OK" class="deliverIcon"></image>
+                        <text class="deliver">{{item.label_name}}</text>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="activityCell" v-for="num in activityList">
-            <div class="activityItem">
-                <image></image>
-                <text></text>
-                <text></text>
-                <image></image>
+            <div class="activityCell" v-for="num in activityList">
+                <div class="activityItem">
+                    <image></image>
+                    <text></text>
+                    <text></text>
+                    <image></image>
+                </div>
+            </div>
+            <div class="rulecell">
+                <image class="ruleImage" :src="ruleImage"></image>
+            </div>
+            <div class="sunbianCell">
+                <text class="sunbianTitle">笋编说</text>
+                <text class="sunbianInfo">{{sunbianInfo}}</text>
+            </div>
+            <div class="brandCell">
+                <text class="brandtitle">品牌</text>
+                <image class="brandimage" :src="brandData.image" @click="brandClick"></image>
+                <text class="brandname">{{brandData.name}}</text>
+                <text class="brandinfo">{{brandData.info}}</text>
+            </div>
+            <web2 ref="web1" class="webView2" :style='styleWeb' :src="detailUrl" @onPageHeightChange="webHeightChange"></web2>
+
+        </scroller>
+        <div style="height: 1px;background-color: #4a4a4a;"></div>
+        <div class="bottomCell" :style="bottomStyle">
+
+            <div style="width: 280px;align-items: center;justify-content: center;background-color: white" v-if="isShowLeft">
+                <text>单独买</text>
+                <text>123</text>
+            </div>
+            <div style="align-items: center;justify-content: center;background-color: #ff6692;flex: 1">
+                <text>￥拼团买</text>
+                <text>123</text>
             </div>
         </div>
-        <div class="rulecell">
-            <image class="ruleImage" :src="ruleImage"></image>
-        </div>
-        <div class="sunbianCell">
-            <text class="sunbianTitle">笋编说</text>
-            <text class="sunbianInfo">{{sunbianInfo}}</text>
-        </div>
-        <div class="brandCell">
-            <text class="brandtitle">品牌</text>
-            <image class="brandimage" :src="brandData.image" @click="brandClick"></image>
-            <text class="brandname">{{brandData.name}}</text>
-            <text class="brandinfo">{{brandData.info}}</text>
-        </div>
-        <web2 ref="web1" class="webView2" :style='styleWeb' :src="detailUrl" @onPageHeightChange="webHeightChange"></web2>
-        <!--<div class="errordiv" ></div>-->
-    </scroller>
+    </div>
+
 </template>
 
 <style scoped>
+
     .errordiv{
         width: 750px;
         height: 750px;
 
         position: fixed;
         background-color: red;
-    ;
+
     }
     .sunbianCell{
         padding: 30px;
@@ -133,10 +149,11 @@
         background-color: #fafafa;
         align-items: center;
     }
-    .root{
+    .scroll{
         flex-direction: column;
         background-color: #f4f4f4;
-        position: absolute;
+        flex: 1;
+        /*position: absolute;*/
     }
 
     .mainCell{
@@ -213,7 +230,10 @@
                 ruleImage:'',
                 activityList:[],
                 brandData:{image:'',info:'',},
-                styleWeb:{width:'750px',height:'1350px','margin-top':'20px'}
+                styleWeb:{width:'750px',height:'1350px','margin-top':'20px'},
+                isShowLeft:true,
+                commentModel:null,
+
 
             }
         },
@@ -221,6 +241,13 @@
             this.reloadPage()
 
         },
+        computed: {
+            bottomStyle(){
+                return {height:'128px',width:'750px','flex-direction':'row'}
+            },
+
+        },
+
         methods: {
             reloadPage:function () {
                 var ws = this;
