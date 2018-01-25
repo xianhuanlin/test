@@ -27,19 +27,36 @@
                     <image></image>
                 </div>
             </div>
-            <div class="rulecell">
-                <image class="ruleImage" :src="ruleImage"></image>
+
+            <div class="rulecell" style="width: 750px;height: 180px;margin-top: 20px;padding: 30px;background-color: white">
+                <text class="normaltext">闪电图流程</text>
+                <image class="ruleImage" src="asset://icon-groupdetail-rule" style="width: 696px; height: 79px; margin-top: 10px"></image>
             </div>
+
             <div class="sunbianCell">
                 <text class="sunbianTitle">笋编说</text>
                 <text class="sunbianInfo">{{sunbianInfo}}</text>
             </div>
+
             <div class="brandCell">
                 <text class="brandtitle">品牌</text>
                 <image class="brandimage" :src="brandData.image" @click="brandClick"></image>
                 <text class="brandname">{{brandData.name}}</text>
                 <text class="brandinfo">{{brandData.info}}</text>
             </div>
+            <div class="divCommentCell">
+                <div class='commentButton' v-for="item in commentModel.commentlables">
+                    <text style="color:#f55a84;font-size:28px">{{item}}我是一个好人</text>
+
+                </div>
+            </div>
+            <div class="gotoCommentCell">
+                <div class="gotoCommentBtn">
+                    <text style="color: #4a4a4a;font-size: 28px;">{{gotoCommentBtnText}}</text>
+                </div>
+
+            </div>
+
             <web2 ref="web1" class="webView2" :style='styleWeb' :src="detailUrl" @onPageHeightChange="webHeightChange"></web2>
 
         </scroller>
@@ -60,6 +77,42 @@
 </template>
 
 <style scoped>
+    .gotoCommentBtn{
+        /*padding: 30px;*/
+        border-radius: 50%;
+        height: 68px;
+        width: 280px;
+        border-color: #4a4a4a;
+        border-width: 1px;
+        justify-content: center;
+        align-items: center;
+    }
+    .gotoCommentCell{
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        padding-bottom: 20px;
+    }
+    .normaltext{
+        font-size: 26px;
+        color: #4a4a4a;
+
+    }
+    .commentButton{
+        background-color:#fbecf0;
+        margin-right: 14px;
+        padding: 26px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+    .divCommentCell {
+        flex-direction: row;
+        background-color: white;
+        padding: 30px;
+        margin-top: 20px;
+        width: 750px;
+        flex-wrap: wrap;
+    }
 
     .errordiv{
         width: 750px;
@@ -232,7 +285,8 @@
                 brandData:{image:'',info:'',},
                 styleWeb:{width:'750px',height:'1350px','margin-top':'20px'},
                 isShowLeft:true,
-                commentModel:null,
+                commentModel:{commentlables:['iam', 'people', 'studetn']},
+                gotoCommentBtnText:'查看全部评价  >'
 
 
             }
@@ -326,6 +380,10 @@
                 })
 
             },
+            gotoCommentPage:function (e) {
+
+            },
+
         }
     }
 </script>
