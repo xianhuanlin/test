@@ -24,7 +24,11 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
         console.log("连接成功！");
     }
     // console.log(db)
+    var data = {user:'xianhuan',pwd:'123456789'}
+    var data2 = {user:'xianhuan2',pwd:'123456789'}
+
     var collection = db.db('poke').collection('user');
+    // var collection = db.db('poke').collection('user2');
     //查询数据
     var whereStr = {"username":'lxh'};
     collection.find(whereStr).toArray(function(err, result) {
@@ -36,4 +40,34 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
         console.log(result)
         // callback(result);
     });
+    collection.insert(data2,function (err,result) {
+        db.close()
+    })
 });
+
+
+var DataAdapter = new Object{
+    var isOk = false;
+}
+
+
+
+DataAdapter.startService = function () {
+    isOk = true;
+}
+
+DataAdapter.query = function (state,ret) {
+
+};
+
+DataAdapter.add = function (state,ret) {
+
+};
+
+DataAdapter.delete = function (state,ret) {
+
+}
+
+DataAdapter.stopService = function () {
+    isOk = false;
+}
