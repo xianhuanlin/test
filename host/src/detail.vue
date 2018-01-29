@@ -29,7 +29,7 @@
             </div>
 
             <div class="rulecell" style="width: 750px;height: 180px;margin-top: 20px;padding: 30px;background-color: white">
-                <text class="normaltext">闪电图流程</text>
+                <text class="sunbianTitle">闪电图流程</text>
                 <image class="ruleImage" src="asset://icon-groupdetail-rule" style="width: 696px; height: 79px; margin-top: 10px"></image>
             </div>
 
@@ -44,15 +44,25 @@
                 <text class="brandname">{{brandData.name}}</text>
                 <text class="brandinfo">{{brandData.info}}</text>
             </div>
-            <div class="divCommentCell">
-                <div class='commentButton' v-for="item in commentModel.commentlables">
-                    <text style="color:#f55a84;font-size:28px">{{item}}我是一个好人</text>
+            <div v-if="commentModel.length > 0" style="background-color: white;margin-top: 20px">
+                <div class="divCommentCell" v-if="commentModel.length > 0">
+                    <div class='commentButton' v-for="item in commentModel" @click="gotoCommentPage(item)">
+                        <text style="color:#f55a84;font-size:28px">{{item.tag + '(' + item.num + ')'}}</text>
+                    </div>
 
                 </div>
-            </div>
-            <div class="gotoCommentCell">
-                <div class="gotoCommentBtn">
-                    <text style="color: #4a4a4a;font-size: 28px;">{{gotoCommentBtnText}}</text>
+                <div class="divCommentCell2" v-if="latestComment">
+                    <div style="flex-direction: row;align-items: center">
+                        <image :src="latestComment.user_img_url" class="commentHedad"></image>
+                        <text style="font-size: 30px;color: black;margin-left: 10px">{{latestComment.nick_name}}</text>
+                    </div>
+                    <text style="font-size:26px;color:#4a4a4a;margin-top: 20px">{{latestComment.sku_reviews}}</text>
+                </div>
+                <div class="gotoCommentCell">
+                    <div class="gotoCommentBtn" @click="gotoFullCommentPage">
+                        <text style="color: #4a4a4a;font-size: 28px;">{{gotoCommentBtnText}}</text>
+                    </div>
+
                 </div>
 
             </div>
@@ -62,7 +72,6 @@
         </scroller>
         <div style="height: 1px;background-color: #4a4a4a;"></div>
         <div class="bottomCell" :style="bottomStyle">
-
             <div style="width: 280px;align-items: center;justify-content: center;background-color: white" v-if="isShowLeft">
                 <text>单独买</text>
                 <text>123</text>
@@ -77,6 +86,11 @@
 </template>
 
 <style scoped>
+    .commentHedad{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
     .gotoCommentBtn{
         /*padding: 30px;*/
         border-radius: 50%;
@@ -101,9 +115,22 @@
     .commentButton{
         background-color:#fbecf0;
         margin-right: 14px;
-        padding: 26px;
+        /*padding: 26px;*/
+        padding-bottom: 10px;
+        padding-top:10px;
+        padding-right: 26px;
+        padding-left: 26px;
         border-radius: 50%;
         margin-bottom: 20px;
+    }
+    .divCommentCell2 {
+        /*flex-direction: row;*/
+        background-color: white;
+        padding: 30px;
+        /*margin-top: 20px;*/
+        width: 750px;
+        /*flex-wrap: wrap;*/
+        /*justify-content: space-around;*/
     }
     .divCommentCell {
         flex-direction: row;
@@ -112,6 +139,7 @@
         margin-top: 20px;
         width: 750px;
         flex-wrap: wrap;
+        justify-content: space-around;
     }
 
     .errordiv{
@@ -269,6 +297,7 @@
         components: {},
         data() {
             return {
+                itemModel:null,
                 imageSet:[{image_url:''}],
                 deliverInfo:[],
 
@@ -285,9 +314,9 @@
                 brandData:{image:'',info:'',},
                 styleWeb:{width:'750px',height:'1350px','margin-top':'20px'},
                 isShowLeft:true,
-                commentModel:{commentlables:['iam', 'people', 'studetn']},
-                gotoCommentBtnText:'查看全部评价  >'
-
+                commentModel:[], //这里只缓存最多10个评论
+                gotoCommentBtnText:'查看全部评价  >',
+                latestComment:null,
 
             }
         },
@@ -324,6 +353,7 @@
                     }
 
                     var item = rsp.data.item;
+                    ws.itemModel = item;
                     ws.title = item.item_long_name;
                     ws.salePoint = item.item_short_name;
                     ws.imageSet = item.item_sku_image_list
@@ -354,7 +384,11 @@
                     //10秒后停止interval
                     setTimeout(function () {
                         clearInterval(id)
-                    }, 10000)
+                    }, 10000);
+
+                    setTimeout(function () {
+                        ws.loadCommentData()
+                    },500);
 
                     const { title,price} = ws
                     ws.price = '1120'
@@ -380,8 +414,30 @@
                 })
 
             },
-            gotoCommentPage:function (e) {
+            loadCommentData:function () {
+                var params = {item_id:this.itemModel.item_id,sku_id:0,has_img:0,hot_tag:'',count:10}
+                var ws = this;
+                wtsEvent.fetch("post","item/reviews/list",params,function (rsp) {
+                    if (rsp.code == 10000) {
+                         ws.commentModel = rsp.data.hot_tags;
+                         // if (rsp.data.reviews.length > 0){
+                             ws.latestComment = rsp.data.reviews[0];
+                         // }
+                    }
 
+                })
+            },
+            gotoCommentPage:function (e) {
+                // wtsEvent.toast(e.tag)
+                var index = this.commentModel.indexOf(e)
+                var params = {itemid:this.itemModel.item_id,tagIndex:index};
+                wtsEvent.openNativePage('WTSDetailCommentViewController',params)
+
+            },
+            gotoFullCommentPage:function () {
+                // var index = this.commentModel.indexOf(e)
+                var params = {itemid:this.itemModel.item_id};
+                wtsEvent.openNativePage('WTSDetailCommentViewController',params)
             },
 
         }
