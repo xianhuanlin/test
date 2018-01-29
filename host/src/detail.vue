@@ -2,7 +2,10 @@
     <div style="position: absolute">
         <scroller class="scroll">
             <div v-if="" class="mainCell">
-                <image class="mainImage" :src="imageSet[0].image_url" @click="mainImageClick"></image>
+                <div style="background: red">
+                    <image2 class="mainImage" :src="imageSet[0].image_url" @click="mainImageClick"></image2>
+                </div>
+
                 <text v-if="salePoint.length>0" class="salePoint">{{salePoint}}</text>
                 <text class="title">{{title}}</text>
 
@@ -35,7 +38,7 @@
 
             <div class="sunbianCell">
                 <text class="sunbianTitle">笋编说</text>
-                <text class="sunbianInfo">{{sunbianInfo}}</text>
+                <text class="sunbianInfo">{{brief}}</text>
             </div>
 
             <div class="brandCell">
@@ -56,7 +59,7 @@
                         <image :src="latestComment.user_img_url" class="commentHedad"></image>
                         <text style="font-size: 30px;color: black;margin-left: 10px">{{latestComment.nick_name}}</text>
                     </div>
-                    <text style="font-size:26px;color:#4a4a4a;margin-top: 20px">{{latestComment.sku_reviews}}</text>
+                    <text style="font-size:28px;color:#4a4a4a;margin-top: 20px">{{latestComment.sku_reviews}}</text>
                 </div>
                 <div class="gotoCommentCell">
                     <div class="gotoCommentBtn" @click="gotoFullCommentPage">
@@ -72,13 +75,13 @@
         </scroller>
         <div style="height: 1px;background-color: #4a4a4a;"></div>
         <div class="bottomCell" :style="bottomStyle">
-            <div style="width: 280px;align-items: center;justify-content: center;background-color: white" v-if="isShowLeft">
-                <text>单独买</text>
-                <text>123</text>
+            <div style="width: 280px;align-items: center;justify-content: center;background-color: white" v-if="isShowLeft" @click="singleBuy">
+                <text style="font-size: 32px;color: #4a4a4a">￥2.34</text>
+                <text style="font-size: 24px;color: #4a4a4a">(单独买)</text>
             </div>
-            <div style="align-items: center;justify-content: center;background-color: #ff6692;flex: 1">
-                <text>￥拼团买</text>
-                <text>123</text>
+            <div style="align-items: center;justify-content: center;background-color: #ff6692;flex: 1" @click="groupBuy">
+                <text style="font-size: 32px;color: white">￥33.00</text>
+                <text style="font-size: 24px;color: white">(2人团)</text>
             </div>
         </div>
     </div>
@@ -86,6 +89,10 @@
 </template>
 
 <style scoped>
+    .style{
+        font-size: 30px;
+
+    }
     .commentHedad{
         width: 60px;
         height: 60px;
@@ -135,11 +142,16 @@
     .divCommentCell {
         flex-direction: row;
         background-color: white;
+        /*padding-top: 30px;*/
+        /*padding-left: 30px;*/
+        /*padding-right: 0px;*/
+        /*padding-bottom: 30px;*/
         padding: 30px;
+        padding-right: 0px;
         margin-top: 20px;
         width: 750px;
         flex-wrap: wrap;
-        justify-content: space-around;
+        /*justify-content: space-around;*/
     }
 
     .errordiv{
@@ -303,12 +315,11 @@
 
                 title: "card info",
                 salePoint:"好卖",
-
+                brief:'',
                 price:"123",
                 marketPrice:"￥130",
                 detailUrl:"https://h5.watsons.com.cn/appItem?url=http://asset.watsons.com.cn/d/1286_04a349f7a0b8600b7b60cfbccb5a40ac.html",
                 loadingOk:false,
-                sunbianInfo:'',
                 ruleImage:'',
                 activityList:[],
                 brandData:{image:'',info:'',},
@@ -335,6 +346,7 @@
             reloadPage:function () {
                 var ws = this;
                 var params = util.parseUrl(weex.config.bundleUrl)
+                params.uid = '11_102'
                 wtsEvent.showLoading('1');
                 wtsEvent.fetch("get","item/ws/get",{item_uid:params.uid},function (rsp) {
                     wtsEvent.showLoading('0')
@@ -355,18 +367,23 @@
                     var item = rsp.data.item;
                     ws.itemModel = item;
                     ws.title = item.item_long_name;
-                    ws.salePoint = item.item_short_name;
+                    ws.salePoint = item.sale_point;
                     ws.imageSet = item.item_sku_image_list
+                    ws.brief = item.item_brief
                     // wtsEvent.toast(util.deviceHeight().toString());
                     console.log(rsp);
                     ws.price =  parseFloat(item.min_price)/100 + ''
+                    if (item.max_price > 0 && item.max_price > item.min_price){
+                        ws.marketPrice = parseFloat(item.max_market_price)/100 + ''
+                    }
+
                     // ws.marketPrice = '9999'
                     ws.sunbianInfo = '我是一个笋编说'
                     ws.detailUrl = item.item_menu_list[0].item_desc_url;
                     ws.deliverInfo = item.item_label_list;
                     ws.brandData = {
                         image: item.item_brand.logo,
-                        info: item.item_long_name + item.item_long_name,
+                        info: item.item_brand.brand_desc + item.item_long_name,
                         id: item.item_brand.id,
                         name: item.item_brand.brand_name,
                     }
@@ -428,16 +445,22 @@
                 })
             },
             gotoCommentPage:function (e) {
-                // wtsEvent.toast(e.tag)
                 var index = this.commentModel.indexOf(e)
                 var params = {itemid:this.itemModel.item_id,tagIndex:index};
                 wtsEvent.openNativePage('WTSDetailCommentViewController',params)
 
             },
             gotoFullCommentPage:function () {
-                // var index = this.commentModel.indexOf(e)
                 var params = {itemid:this.itemModel.item_id};
                 wtsEvent.openNativePage('WTSDetailCommentViewController',params)
+            },
+            singleBuy:function () {
+                var params = {"itemUId":'11_8354'};
+                wtsEvent.openNativePage('WTSItemDetailViewController',params)
+            },
+            groupBuy:function () {
+                var params = {SKUID:0,itemUID:0,radix:0,tradeType:0,itemType:0,}
+                wtsEvent.postEvent(params)
             },
 
         }
