@@ -77,12 +77,12 @@
         <div style="height: 1px;background-color: #4a4a4a;opacity: 0.1"></div>
         <div class="bottomCell" :style="bottomStyle">
             <div style="width: 280px;align-items: center;justify-content: center;background-color: white" v-if="isShowLeft" @click="singleBuy">
-                <text style="font-size: 36px;color: #4a4a4a">￥2.34</text>
+                <text style="font-size: 36px;color: #4a4a4a">￥{{singleBuyPrice}}</text>
                 <text style="font-size: 24px;color: #4a4a4a">(单独买)</text>
             </div>
             <div style="align-items: center;justify-content: center;background-color: #ff6692;flex: 1" @click="groupBuy">
-                <text style="font-size: 36px;color: white">￥33.00</text>
-                <text style="font-size: 24px;color: white">(2人团)</text>
+                <text style="font-size: 36px;color: white">￥{{groupBuyPrice}}</text>
+                <text style="font-size: 24px;color: white">({{memberCount}}人团)</text>
             </div>
         </div>
     </div>
@@ -316,7 +316,7 @@
                 salePoint:"好卖",
                 brief:'',
                 price:"123",
-                marketPrice:"￥130",
+                marketPrice:"",
                 detailUrl:'',
                 loadingOk:false,
                 ruleImage:'',
@@ -327,7 +327,9 @@
                 commentModel:[], //这里只缓存最多10个评论
                 gotoCommentBtnText:'查看全部评价  >',
                 latestComment:null,
-
+                singleBuyPrice:'',
+                groupBuyPrice:'',
+                memberCount:'',
             }
         },
         mounted () {
@@ -367,29 +369,32 @@
                         return;
                     }
 
-                    var item = rsp.data.item;
+                    var item = rsp.data.item_d_t_o;
                     ws.itemModel = item;
-                    ws.title = item.item_long_name;
+                    ws.title = item.item_name;
                     ws.salePoint = item.sale_point;
-                    ws.imageSet = item.item_sku_image_list
+                    ws.imageSet = item.item_sku_image_d_t_o_list
                     ws.brief = item.item_brief
                     // wtsEvent.toast(util.deviceHeight().toString());
-                    console.log(rsp);
+                    // console.log(rsp);
                     ws.price =  parseFloat(item.min_price)/100 + ''
                     if (item.max_price > 0 && item.max_price > item.min_price){
-                        ws.marketPrice = parseFloat(item.max_market_price)/100 + ''
+                        ws.marketPrice = '￥' + parseFloat(item.max_market_price)/100 + ''
                     }
 
-                    // ws.marketPrice = '9999'
-                    ws.sunbianInfo = '我是一个笋编说'
                     ws.detailUrl = item.item_menu_list[0].item_desc_url;
-                    ws.deliverInfo = item.item_label_list;
+                    ws.deliverInfo = item.item_label_d_t_o_list;
                     ws.brandData = {
-                        image: item.item_brand.logo,
-                        info: item.item_brand.brand_desc + item.item_long_name,
-                        id: item.item_brand.id,
-                        name: item.item_brand.brand_name,
+                        image: item.item_brand_d_t_o.logo,
+                        info: item.item_brand_d_t_o.brand_desc + item.item_long_name,
+                        id: item.item_brand_d_t_o.id,
+                        name: item.item_brand_d_t_o.brand_name,
                     }
+                    var activityObj = rsp.data.activity_v_o;
+                    ws.singleBuyPrice = parseFloat(activityObj.item_original_price) / 100 + ''
+                    ws.groupBuyPrice = parseFloat(activityObj.item_price) / 100 + ''
+                    ws.isShowLeft = activityObj.normal_buy;
+                    ws.memberCount = activityObj.member_count;
                     //异步加载头部
                     setTimeout(function () {
                         wtsEvent.addTopupButton(100)
@@ -410,10 +415,10 @@
                         ws.loadCommentData()
                     },500);
 
-                    const { title,price} = ws
-                    ws.price = '1120'
-                    wtsEvent.toast(title)
-                    wtsEvent.toast(price)
+                    // const { title,price} = ws
+                    // // ws.price = '1120'
+                    // wtsEvent.toast(title)
+                    // wtsEvent.toast(price)
                 })
             },
             mainImageClick:function (e) {
