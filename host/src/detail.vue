@@ -2,8 +2,9 @@
     <div style="position: absolute">
         <scroller class="scroll">
             <div v-if="" class="mainCell">
-                <div style="background: red">
-                    <image2 class="mainImage" :src="imageSet[0].image_url" @click="mainImageClick"></image2>
+                <div @click="mainImageClick">
+                    <image class="mainImage" :src="imageSet[0].image_url" @click="mainImageClick"></image>
+                    <div style="opacity: 0.02; background-color: black;width: 750px;height: 750px;position: absolute;top:0;"></div>
                 </div>
 
                 <text v-if="salePoint.length>0" class="salePoint">{{salePoint}}</text>
@@ -73,7 +74,7 @@
             <web2 ref="web1" class="webView2" :style='styleWeb' :src="detailUrl" @onPageHeightChange="webHeightChange"></web2>
 
         </scroller>
-        <div style="height: 1px;background-color: #4a4a4a;"></div>
+        <div style="height: 1px;background-color: #4a4a4a;opacity: 0.1"></div>
         <div class="bottomCell" :style="bottomStyle">
             <div style="width: 280px;align-items: center;justify-content: center;background-color: white" v-if="isShowLeft" @click="singleBuy">
                 <text style="font-size: 32px;color: #4a4a4a">￥2.34</text>
@@ -159,8 +160,6 @@
         height: 750px;
 
         position: fixed;
-        background-color: red;
-
     }
     .sunbianCell{
         padding: 30px;
