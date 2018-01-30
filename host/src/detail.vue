@@ -1,6 +1,6 @@
 <template>
-    <div style="position: absolute">
-        <scroller class="scroll">
+    <div style="position: absolute;background-color: white">
+        <scroller class="scroll" v-if="loadingOk">
             <div v-if="" class="mainCell">
                 <div @click="mainImageClick">
                     <image class="mainImage" :src="imageSet[0].image_url" @click="mainImageClick"></image>
@@ -77,11 +77,11 @@
         <div style="height: 1px;background-color: #4a4a4a;opacity: 0.1"></div>
         <div class="bottomCell" :style="bottomStyle">
             <div style="width: 280px;align-items: center;justify-content: center;background-color: white" v-if="isShowLeft" @click="singleBuy">
-                <text style="font-size: 32px;color: #4a4a4a">￥2.34</text>
+                <text style="font-size: 36px;color: #4a4a4a">￥2.34</text>
                 <text style="font-size: 24px;color: #4a4a4a">(单独买)</text>
             </div>
             <div style="align-items: center;justify-content: center;background-color: #ff6692;flex: 1" @click="groupBuy">
-                <text style="font-size: 32px;color: white">￥33.00</text>
+                <text style="font-size: 36px;color: white">￥33.00</text>
                 <text style="font-size: 24px;color: white">(2人团)</text>
             </div>
         </div>
@@ -189,13 +189,13 @@
     .brandimage{
         width: 170px;
         height: 170px;
-        margin-top: 30px;
+        margin-top: 25px;
         border-width: 2px;
         border-color: #ebe9e9;
         position: absolute;
     }
     .brandname{
-        margin-top: 30px;
+        margin-top: 25px;
         margin-left: 200px;
         font-size: 30px;
         font-weight: bold;
@@ -203,7 +203,7 @@
         position: absolute;
     }
     .brandinfo{
-        margin-top: 80px;
+        margin-top: 75px;
         margin-left: 200px;
         font-size: 26px;
         color: #4a4a4a;
@@ -317,7 +317,7 @@
                 brief:'',
                 price:"123",
                 marketPrice:"￥130",
-                detailUrl:"https://h5.watsons.com.cn/appItem?url=http://asset.watsons.com.cn/d/1286_04a349f7a0b8600b7b60cfbccb5a40ac.html",
+                detailUrl:'',
                 loadingOk:false,
                 ruleImage:'',
                 activityList:[],
