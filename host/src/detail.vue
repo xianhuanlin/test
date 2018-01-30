@@ -346,8 +346,12 @@
                 var ws = this;
                 var params = util.parseUrl(weex.config.bundleUrl)
                 params.uid = '11_102'
+                var para = 'key1:' + params.activityKey + 'key2:' + params.groupKey;
+
+                // wtsEvent.toast(para)
+                // return;
                 wtsEvent.showLoading('1');
-                wtsEvent.fetch("get","item/ws/get",{item_uid:params.uid},function (rsp) {
+                wtsEvent.fetch("get","group/item/detail/get",{activity_key:params.activityKey},function (rsp) {
                     wtsEvent.showLoading('0')
                     // wtsEvent.toast("fetch ok");
                     if (rsp == null) {
