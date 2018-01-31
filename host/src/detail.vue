@@ -1,6 +1,6 @@
 <template>
     <div style="position: absolute;background-color: white">
-        <scroller class="scroll" v-if="loadingOk">
+        <scroller class="scroll" v-if="loadingOk" ref="scroll">
             <div v-if="" class="mainCell">
                 <div @click="mainImageClick">
                     <image class="mainImage" :src="imageSet[0].image_url" @click="mainImageClick"></image>
@@ -66,7 +66,6 @@
                     <div class="gotoCommentBtn" @click="gotoFullCommentPage">
                         <text style="color: #4a4a4a;font-size: 28px;">{{gotoCommentBtnText}}</text>
                     </div>
-
                 </div>
 
             </div>
@@ -74,8 +73,8 @@
             <web2 ref="web1" class="webView2" :style='styleWeb' :src="detailUrl" @onPageHeightChange="webHeightChange"></web2>
 
         </scroller>
-        <div style="height: 1px;background-color: #4a4a4a;opacity: 0.1"></div>
-        <div class="bottomCell" :style="bottomStyle">
+        <div style="height: 1px;background-color: #4a4a4a;opacity: 0.1" v-if="loadingOk"></div>
+        <div class="bottomCell" :style="bottomStyle" v-if="loadingOk">
             <div style="width: 280px;align-items: center;justify-content: center;background-color: white" v-if="isShowLeft" @click="singleBuy">
                 <text style="font-size: 36px;color: #4a4a4a">￥{{singleBuyPrice}}</text>
                 <text style="font-size: 24px;color: #4a4a4a">(单独买)</text>
@@ -263,6 +262,7 @@
         margin-top: 10px;
         padding-left: 30px;
         padding-right: 30px;
+        color: #4a4a4a;
         /*text-align: center;*/
     }
     .title{
@@ -270,6 +270,7 @@
         margin-top: 10px;
         padding-left: 30px;
         padding-right: 30px;
+        color: #4a4a4a;
     }
     .divPrice{
         margin-top: 10px;
@@ -277,6 +278,7 @@
         align-items: flex-end;
         padding-left: 30px;
         padding-right: 30px;
+        color: #4a4a4a;
     }
     .price{
         font-size: 26px;
@@ -303,12 +305,15 @@
 <script>
     const wtsEvent = weex.requireModule('WTSEvent')
     const animation = weex.requireModule('animation')
+    const modal = weex.requireModule('modal')
     import util from './util.js'
     export default {
         components: {},
         data() {
             return {
                 itemModel:null,
+                activityModel:null,
+                params:null,
                 imageSet:[{image_url:''}],
                 deliverInfo:[],
 
@@ -329,6 +334,7 @@
                 latestComment:null,
                 singleBuyPrice:'',
                 groupBuyPrice:'',
+
                 memberCount:'',
             }
         },
@@ -345,15 +351,16 @@
 
         methods: {
             reloadPage:function () {
+                console.log('weex:ok')
                 var ws = this;
-                var params = util.parseUrl(weex.config.bundleUrl)
-                params.uid = '11_102'
-                var para = 'key1:' + params.activityKey + 'key2:' + params.groupKey;
+                var reqParams = {activity_key:this.activityKey}
+                reqParams.stock_code = '729'
+                if (this.groupKey != null && this.groupKey.length > 0){
+                    reqParams.group_key = this.groupKey
+                }
 
-                // wtsEvent.toast(para)
-                // return;
                 wtsEvent.showLoading('1');
-                wtsEvent.fetch("get","group/item/detail/get",{activity_key:params.activityKey},function (rsp) {
+                wtsEvent.fetch("get","group/item/detail/get",reqParams,function (rsp) {
                     wtsEvent.showLoading('0')
                     // wtsEvent.toast("fetch ok");
                     if (rsp == null) {
@@ -370,7 +377,10 @@
                     }
 
                     var item = rsp.data.item_d_t_o;
+
                     ws.itemModel = item;
+                    ws.activityModel = rsp.data.activity_v_o;
+                    // ws.params = params;
                     ws.title = item.item_name;
                     ws.salePoint = item.sale_point;
                     ws.imageSet = item.item_sku_image_d_t_o_list
@@ -395,6 +405,8 @@
                     ws.groupBuyPrice = parseFloat(activityObj.item_price) / 100 + ''
                     ws.isShowLeft = activityObj.normal_buy;
                     ws.memberCount = activityObj.member_count;
+
+                    ws.saveDataToNative()
                     //异步加载头部
                     setTimeout(function () {
                         wtsEvent.addTopupButton(100)
@@ -425,8 +437,8 @@
                 wtsEvent.showFullImage([this.imageSet[0].image_url],0)
             },
             brandClick:function (e) {
-                var params = {"itemUId":'11_8354'};
-                wtsEvent.openNativePage('WTSItemDetailViewController',params)
+                var params = {"brand_id":this.brandData.id,trade_type:this.itemModel.trade_type};
+                wtsEvent.openNativePage('WTSHotBrandDetailViewController',params)
             },
             updateHeight:function (e) {
                 var ws = this;
@@ -435,7 +447,6 @@
                     if (newHeight != ws.styleWeb.height){
                         ws.styleWeb.height = newHeight
                     }
-
                 })
 
             },
@@ -463,12 +474,61 @@
                 wtsEvent.openNativePage('WTSDetailCommentViewController',params)
             },
             singleBuy:function () {
-                var params = {"itemUId":'11_8354'};
+                var params = {"itemUId":this.itemModel.item_uid};
                 wtsEvent.openNativePage('WTSItemDetailViewController',params)
             },
             groupBuy:function () {
-                var params = {SKUID:0,itemUID:0,radix:0,tradeType:0,itemType:0,}
-                wtsEvent.postEvent(params)
+                // var item = this.itemModel;
+                // var act = this.activityModel;
+                // var params = {SKUID:item.act.sku_id,itemUID:item.item_uid,radix:act.radix,tradeType:item.trade_type,
+                //     itemType:item.item_type}
+                //
+
+                var ws = this;
+                this.checkStock(function (ret) {
+                    if (ret){
+                        wtsEvent.postEvent('onGroupBuy',{})
+                    }
+                })
+
+            },
+            checkStock:function (ret) {
+                var ws = this;
+                var item = this.activityModel;
+
+                var reqParams = {activity_key:this.activityKey
+                  ,number:1,item_id:item.item_id, sku_id:item.sku_id,radix:item.radix};
+                if (item.stock_code){
+                    reqParams.stock_code = item.stock_code
+                }
+
+                // modal.toast({message: util.formatObj(reqParams)})
+                // return
+                wtsEvent.fetch("get","group/settlement/get/v1",reqParams,function (rsp) {
+                  if (rsp.code == 10000){
+                      ret(true)
+                  }else{
+                      ret(false)
+                      wtsEvent.toast(rsp.msg)
+                  }
+                })
+
+            },
+            saveDataToNative:function () {
+                var item = this.itemModel;
+                var act = this.activityModel;
+
+                var params = {sku_id:act.sku_id,item_uid:item.item_uid,radix:act.radix,trade_type:item.trade_type,
+                    item_type:item.item_type,price:item.item_price};
+
+                    //这几个比较可能缺少所以一个个赋值
+                params.short_name = item.item_short_name;
+                params.long_ame= item.item_long_name;
+                params.image=item.item_menu_list[0].item_desc_url;
+                params.share_url=item.share_url;
+                params.sale_point=item.sale_point;
+
+                wtsEvent.postEvent('onPageLoadingOk',params)
             },
 
         }

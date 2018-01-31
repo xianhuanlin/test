@@ -1,3 +1,5 @@
+
+
 var util = new Object()
 
 util.verSign = "1.1.1"
@@ -43,5 +45,11 @@ util.getPageHeight = function(){
     const navHeight = 0;//Utils.env.isWeb() ? 0 : (Utils.env.isIPhoneX() ? 176 : 132);
     return env.deviceHeight / env.deviceWidth * 750 - navHeight;
 }
-export default util
+
+util.formatObj = function (obj) {
+    return JSON.stringify(obj)
+}
+
+ // console.log(util.formatObj(tp))
+ export default util
 
