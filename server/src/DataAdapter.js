@@ -1,5 +1,14 @@
+
+
 var MongoClient = require('mongodb').MongoClient;
- var DB_CONN_STR = 'mongodb://root:root@localhost:27017/admin';
+var DB_CONN_STR = 'mongodb://root:root@localhost:27017/admin';
+
+var tableTypes = {
+    USER:'user',
+    ORDER:'order',
+    SKU:'sku',
+}
+
 var selectData = function(db, callback) {
     //连接到表
     var collection = db.collection('user');
@@ -38,7 +47,6 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
             return;
         }
         console.log(result)
-        // callback(result);
     });
     collection.insert(data2,function (err,result) {
         db.close()
@@ -46,28 +54,39 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
 });
 
 
-var DataAdapter = new Object{
-    var isOk = false;
+var DataAdapter = {isOk:false}
+
+DataAdapter.startService = function (ret) {
+    if (this.isOk){
+        return;
+
+    }
+    this.isOk = true;
+
+    MongoClient.connect(DB_CONN_STR, function(err, db) {
+        if (!err){
+            this.dataBase = db.db('poke')//.collection('user');
+        }
+        ret(err,db);
+    });
+
 }
 
-
-
-DataAdapter.startService = function () {
-    isOk = true;
+DataAdapter.query = function (type,state,ret) {
+    //this.dataBase.collection(type).
 }
 
-DataAdapter.query = function (state,ret) {
+DataAdapter.add = function (type,state,ret) {
 
 };
 
-DataAdapter.add = function (state,ret) {
-
-};
-
-DataAdapter.delete = function (state,ret) {
+DataAdapter.delete = function (type,state,ret) {
 
 }
 
 DataAdapter.stopService = function () {
-    isOk = false;
+    this.isOk = false;
 }
+
+DataAdapter.startService();
+console.log(DataAdapter.isOk)
