@@ -354,11 +354,13 @@
                 console.log('weex:ok')
                 var ws = this;
                 var reqParams = {activity_key:this.activityKey}
-                reqParams.stock_code = '729'
+                // reqParams.stock_code = '729'
                 if (this.groupKey != null && this.groupKey.length > 0){
                     reqParams.group_key = this.groupKey
                 }
-
+                if (this.stockCode && this.stockCode.length > 0){
+                    reqParams.stock_code = this.stockCode;
+                }
                 wtsEvent.showLoading('1');
                 wtsEvent.fetch("get","group/item/detail/get",reqParams,function (rsp) {
                     wtsEvent.showLoading('0')
@@ -524,7 +526,7 @@
                     //这几个比较可能缺少所以一个个赋值
                 params.short_name = item.item_short_name;
                 params.long_ame= item.item_long_name;
-                params.image=item.item_menu_list[0].item_desc_url;
+                params.image= this.imageSet[0].image_url;
                 params.share_url=item.share_url;
                 params.sale_point=item.sale_point;
 
