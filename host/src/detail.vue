@@ -84,14 +84,27 @@
                 <text style="font-size: 24px;color: white">({{memberCount}}人团)</text>
             </div>
         </div>
+
+        <div v-if="errorInfo.show" style="align-items:center;margin-top: 300px;">
+            <image src="asset://icon-all-net" style="width: 220px;height: 220px"></image>
+            <text style="margin-top: 10px;color: #919191;">{{errorInfo.info}}</text>
+            <div class="errorButton" @click="reloadClick">
+                <text style="color: white;font-size: 32px;">重新加载</text>
+            </div>
+        </div>
     </div>
 
 </template>
 
 <style scoped>
-    .style{
-        font-size: 30px;
-
+    .errorButton{
+        width: 288px;
+        height: 88px;
+        background-color: #4CD7C0;
+        border-radius: 8px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px
     }
     .commentHedad{
         width: 60px;
@@ -154,12 +167,6 @@
         /*justify-content: space-around;*/
     }
 
-    .errordiv{
-        width: 750px;
-        height: 750px;
-
-        position: fixed;
-    }
     .sunbianCell{
         padding: 30px;
         background-color: white;
@@ -317,10 +324,10 @@
                 imageSet:[{image_url:''}],
                 deliverInfo:[],
 
-                title: "card info",
-                salePoint:"好卖",
-                brief:'',
-                price:"123",
+                title: " ",
+                salePoint:" ",
+                brief:' ',
+                price:"0",
                 marketPrice:"",
                 detailUrl:'',
                 loadingOk:false,
@@ -336,6 +343,8 @@
                 groupBuyPrice:'',
 
                 memberCount:'',
+
+                errorInfo:{show:false,info:''}
             }
         },
         mounted () {
@@ -361,20 +370,33 @@
                 if (this.stockCode && this.stockCode.length > 0){
                     reqParams.stock_code = this.stockCode;
                 }
+
+                ws.errorInfo.show = false
+                ws.loadingOk = false
                 wtsEvent.showLoading('1');
+
                 wtsEvent.fetch("get","group/item/detail/get",reqParams,function (rsp) {
                     wtsEvent.showLoading('0')
-                    // wtsEvent.toast("fetch ok");
                     if (rsp == null) {
                         wtsEvent.toast("系统错误");
-                        wtsEvent.toast("fetch return");
                         return
                     }
+
                     if (rsp.code == 10000) {
                         ws.loadingOk = true;
                         // wtsEvent.toast("fetch 10000");
                     } else {
-                        wtsEvent.toast('系统错误!');
+                        if (rsp.msg){
+                            wtsEvent.toast(rsp.msg);
+                        }
+
+                        if (rsp.code == -1009){
+                            ws.errorInfo.info = '网络不太顺畅喔~'
+                        }else{
+                            ws.errorInfo.info = '系统错误'
+                        }
+
+                        ws.errorInfo.show = true
                         return;
                     }
 
@@ -384,9 +406,9 @@
                     ws.activityModel = rsp.data.activity_v_o;
                     // ws.params = params;
                     ws.title = item.item_name;
-                    ws.salePoint = item.sale_point;
+                    ws.salePoint = item.sale_point ? item.sale_point : ''
                     ws.imageSet = item.item_sku_image_d_t_o_list
-                    ws.brief = item.item_brief
+                    ws.brief = item.item_brief ? item.item_brief : ''
                     // wtsEvent.toast(util.deviceHeight().toString());
                     // console.log(rsp);
                     ws.price =  parseFloat(item.min_price)/100 + ''
@@ -476,6 +498,7 @@
                 wtsEvent.openNativePage('WTSDetailCommentViewController',params)
             },
             singleBuy:function () {
+                wtsEvent.umengReport('10246')
                 var params = {"itemUId":this.itemModel.item_uid};
                 wtsEvent.openNativePage('WTSItemDetailViewController',params)
             },
@@ -485,7 +508,7 @@
                 // var params = {SKUID:item.act.sku_id,itemUID:item.item_uid,radix:act.radix,tradeType:item.trade_type,
                 //     itemType:item.item_type}
                 //
-
+                wtsEvent.umengReport('10247')
                 var ws = this;
                 this.checkStock(function (ret) {
                     if (ret){
@@ -532,7 +555,9 @@
 
                 wtsEvent.postEvent('onPageLoadingOk',params)
             },
-
+            reloadClick:function () {
+                this.reloadPage()
+            }
         }
     }
 </script>
