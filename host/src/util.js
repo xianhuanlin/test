@@ -50,6 +50,11 @@ util.formatObj = function (obj) {
     return JSON.stringify(obj)
 }
 
- // console.log(util.formatObj(tp))
+util.safeAssign = function (a,b) {
+    if (b){
+        a = b
+    }
+}
+
  export default util
 

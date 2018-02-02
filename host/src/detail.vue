@@ -552,7 +552,7 @@
                 params.image= this.imageSet[0].image_url;
                 params.share_url=item.share_url;
                 params.sale_point=item.sale_point;
-
+                params.sku_uid = 11 + '_' + act.sku_id
                 wtsEvent.postEvent('onPageLoadingOk',params)
             },
             reloadClick:function () {

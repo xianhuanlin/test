@@ -1,15 +1,9 @@
-var a = {'a':0,b:21}
-for (key in a){
-    console.log(a[key])
-}
 
-var c = {}
-c.dd = 11;
-c.bb = a.dddd
-// if (a.c == undefined){
-//     console.log(a.c)
-//     console.log(a.c.length)
-// }
+
+var a = ['a','ec','ed','dd']
+
+a = a.sort(function (a,b) {
+    return b > a
+})
 
 console.log(a)
-console.log(c)
