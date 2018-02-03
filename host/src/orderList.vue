@@ -1,49 +1,88 @@
 <template>
     <div style="position: absolute;background-color: white">
-        <scroller class="scroll" v-if="loadingOk" ref="scroll">
-            <div style="padding: 30px;background-color: gray;">
-                <div v-for="item in itemModel.order_list" class="orderSection">
-
+        <list class="scroll" v-if="loadingOk" ref="scroll">
+            <!--<div style="padding: 30px;background-color: gray;">-->
+                <cell v-for="item in itemModel.order_list" >
+                    <div style="margin-top: 30px" class="orderSection" @click="orderClick(item)">
                         <div class="orderHeader">
                             <image resize="cover" src="../res/card.png2" style="left: 0; position: absolute;width:720px;height: 54px"></image>
-                            <tex>123</tex>
-                            <text>123</text>
+                            <text class="shopName">店铺:{{item.delivery_warehouse}}</text>
+                            <text class="orderDate">{{item.order_time}}</text>
                         </div>
-
-
-                    <!--<div>-->
                         <div v-for="subItem in item.order_item_list" class="orderRow">
-                            <div style="">
-                                <image></image>
-                                <text>1</text>
-                                <text>2</text>
-                                <text>3</text>
-                                <text>4</text>
+                            <div class="orderContent">
+                                <image class="rowImage" :src="subItem.icon_url" ></image>
+                                <div style="position: absolute;left: 200px;">
+                                    <text class="rowTitle">{{subItem.item_name}}</text>
+                                    <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
+                                </div>
+                                <div style="margin-top: 30px;">
+                                    <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
+                                    <text class="rowNum">X{{subItem.number}}</text>
+                                </div>
                             </div>
                         </div>
-                    <!--</div>-->
+                        <!--</div>-->
 
-                    <div class="orderFooter">
-                        <text style="margin-right: 30px;font-size: 26px;color: #4a4a4a;">1</text>
-                        <text style="margin-right: 20px;color: #ff6692;font-size: 30px">2</text>
+                        <div class="orderFooter">
+                            <text style="margin-right: 30px;font-size: 26px;color: #4a4a4a;">优惠:￥{{calcPrice(item.discount_amount)}}</text>
+                            <text style="margin-right: 20px;color: #ff6692;font-size: 30px">实付:￥{{calcPrice(item.total_amount)}}</text>
+                        </div>
                     </div>
 
-                </div>
-            </div>
-        </scroller>
+                    <!--<div style="height: 20px;width: 690px;background-color: transparent"></div>-->
+                </cell>
 
-        <div v-if="errorInfo.show" style="align-items:center;margin-top: 300px;">
+        </list>
+        <div v-if="errorInfo.show"  style="align-items:center;margin-top: 300px;justify-content: center">
             <image src="asset://icon-all-net" style="width: 220px;height: 220px"></image>
             <text style="margin-top: 10px;color: #919191;">{{errorInfo.info}}</text>
             <div class="errorButton" @click="reloadClick">
                 <text style="color: white;font-size: 32px;">重新加载</text>
             </div>
         </div>
+
     </div>
 
 </template>
 
 <style scoped>
+    .orderDate{
+        font-size: 30px;
+        color: white;
+    }
+    .shopName{
+        font-size: 26px;
+        color: white;
+    }
+    .rowNum{
+        margin-top: 10px;
+        font-size: 26px;
+        color: #919090;
+        text-align:right;
+    }
+    .rowPrice{
+        font-size: 32px;
+        color: #ff6692;
+        text-align:right;
+    }
+    .rowInfo{
+        margin-top: 10px;
+        font-size: 24px;
+        color: #919090;
+    }
+    .rowTitle{
+        margin-top: 10px;
+        width: 300px;
+        /*height: ;*/
+        lines:2;
+        font-size: 26px;
+        color: #4a4a4a;
+    }
+    .rowImage{
+        height: 150px;
+        width: 170px;
+    }
     .orderFooter{
         background-color: white;
         flex-direction: row;
@@ -63,23 +102,31 @@
 
     }
     .orderSection{
-        /*padding: 30px;*/
         border-radius: 20px;
         background-color: white;
-        margin-bottom: 20px;
         overflow: hidden;
+        width: 690px;
+        margin-left: 30px;
+        margin-top: 30px;
+        /*padding: 30px;*/
 
     }
-    .orderCntent {
-        padding: 30px;background-color: green;
+    .orderContent {
+        flex-direction: row;
+        padding-top: 30px;
+        /*padding-bottom: 30px;*/
+        border-bottom-width: 1px;
+        border-bottom-color: #dadad8;
+        height: 200px;
+        justify-content: space-between;
+        /*align-items: center;*/
     }
     .orderRow{
-        background-color: #afddff;
-        height: 206px;
+        /*background-color: red;*/
         padding-left: 30px;
         padding-right: 30px;
-        border-bottom-width: 1;
-        border-bottom-color: dadad8;
+        /*padding: 30px;*/
+
     }
     .errorButton{
         width: 288px;
@@ -88,12 +135,13 @@
         border-radius: 8px;
         justify-content: center;
         align-items: center;
-        margin-top: 10px
+        margin-top: 10px;
     }
 
     .scroll{
         flex-direction: column;
         background-color: #f4f4f4;
+        justify-content: center;
         flex: 1;
     }
 
@@ -123,10 +171,19 @@
             bottomStyle(){
                 return {height:'128px',width:'750px','flex-direction':'row'}
             },
+            // price(e){
+            //     var pricef = parseFloat(e)/100;
+            //     return pricef.toString()
+            // },
+
 
         },
 
         methods: {
+            calcPrice:function(e){
+                var pricef = parseFloat(e)/100;
+                return pricef.toString()
+            },
             reloadPage:function () {
                 var ws = this;
 
@@ -188,6 +245,9 @@
                     },500);
 
                 })
+            },
+            orderClick:function(item){
+                wtsEvent.toast('ok')
             },
             saveDataToNative:function () {
                 // var item = this.itemModel;
