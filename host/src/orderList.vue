@@ -1,11 +1,11 @@
 <template>
     <div style="position: absolute;background-color: white">
-        <list class="scroll" v-if="loadingOk" ref="scroll">
+        <list class="scroll" v-if="loadingOk" ref="scroll" loadmoreoffset="10" @loadmore="fetchMore">
             <!--<div style="padding: 30px;background-color: gray;">-->
                 <cell v-for="item in itemModel.order_list" >
                     <div style="margin-top: 30px" class="orderSection" @click="orderClick(item)">
                         <div class="orderHeader">
-                            <image resize="cover" src="../res/card.png2" style="left: 0; position: absolute;width:720px;height: 54px"></image>
+                            <image resize="cover"  style="left: 0; position: absolute;width:720px;height: 54px"></image>
                             <text class="shopName">店铺:{{item.delivery_warehouse}}</text>
                             <text class="orderDate">{{item.order_time}}</text>
                         </div>
@@ -25,8 +25,8 @@
                         <!--</div>-->
 
                         <div class="orderFooter">
-                            <text style="margin-right: 30px;font-size: 26px;color: #4a4a4a;">优惠:￥{{calcPrice(item.discount_amount)}}</text>
-                            <text style="margin-right: 20px;color: #ff6692;font-size: 30px">实付:￥{{calcPrice(item.total_amount)}}</text>
+                            <text class="discount">优惠:￥{{calcPrice(item.discount_amount)}}</text>
+                            <text class="amount">实付:￥{{calcPrice(item.total_amount)}}</text>
                         </div>
                     </div>
 
@@ -47,6 +47,19 @@
 </template>
 
 <style scoped>
+    .amount{
+        margin-right: 20px;
+        color: #ff6692;
+        font-size: 30px;
+        /*background-color: #4a4a4a;*/
+    }
+    .discount{
+        /*text-align: center;*/
+        margin-right: 30px;
+        font-size: 26px;
+        color: #4a4a4a;
+        /*background-color: greenyellow;*/
+    }
     .orderDate{
         font-size: 30px;
         color: white;
@@ -89,6 +102,7 @@
         justify-content: flex-end;
         align-items: center;
         height: 88px;
+        /*background-color: #0088fb;*/
     }
 
     .orderHeader{
@@ -218,31 +232,31 @@
                         return;
                     }
 
-                    wtsEvent.toast(rsp.data.total_count + '')
+                    // wtsEvent.toast(rsp.data.total_count + '')
                     var item = rsp.data.order_list;
-
+                    ws.reqParams.offset = item.length;
                     //ws.itemModel = item;
 
                     ws.saveDataToNative()
                     //异步加载头部
                     setTimeout(function () {
                         wtsEvent.addTopupButton(100)
-                        wtsEvent.addReloadHeader()
+                        // wtsEvent.addReloadHeader()
                     }, 100)
 
                     //更新web的高度
-                    var id = setInterval(function () {
-
-                    },500)
-
-                    //10秒后停止interval
-                    setTimeout(function () {
-                        clearInterval(id)
-                    }, 10000);
-
-                    setTimeout(function () {
-
-                    },500);
+                    // var id = setInterval(function () {
+                    //
+                    // },500)
+                    //
+                    // //10秒后停止interval
+                    // setTimeout(function () {
+                    //     clearInterval(id)
+                    // }, 10000);
+                    //
+                    // setTimeout(function () {
+                    //
+                    // },500);
 
                 })
             },
@@ -269,6 +283,31 @@
                 this.reloadPage()
             },
             fetchMore:function () {
+                var ws = this;
+                wtsEvent.toast('loadMore')
+                wtsEvent.showLoading('1')
+
+                wtsEvent.fetch("get","trade/order/list",this.reqParams,function (rsp) {
+                    wtsEvent.showLoading('0')
+                    if (rsp == null) {
+                        wtsEvent.toast("系统错误");
+                        return
+                    }
+
+                    if (rsp.code == 10000) {
+                    } else {
+                        return;
+                    }
+
+                    var itemMore = rsp.data.order_list;
+                    var length = itemMore.length;
+                    var itemList = ws.itemModel.order_list;
+                    for (var t = 0 ; t < length; t++){
+                        itemList.push(rsp.data.order_list[t])
+                     }
+                    ws.reqParams.offset += itemMore.length;
+                    // wtsEvent.toast(rsp.data.order_list.length + '')
+                });
 
             },
         }
