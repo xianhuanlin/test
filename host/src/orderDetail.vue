@@ -26,9 +26,9 @@
                 </div>
                 <div class="orderFooter">
                     <div>
-                        <text class="detailText">支付流水号：</text>
-                        <text class="detailText">支付方式：</text>
-                        <text class="detailText">支付时间：</text>
+                        <text class="detailText">支付流水号：{{item.order_payment.out_trade_no}}</text>
+                        <text class="detailText">支付方式：{{payType(item.order_payment.payment_id)}}</text>
+                        <text class="detailText">支付时间：{{item.order_time}}</text>
                     </div>
                     <div style="flex-direction: row;align-items: center;">
                         <text class="normalText">实付:</text>
@@ -38,13 +38,13 @@
                 </div>
                 <div style="height: 1px;background-color: #dadad8"></div>
                 <div class="bottom">
-                    <div class="bottomButton" @click="onCheckOrderClick">
+                    <div class="bottomButton" @click="onCheckOrderClick(item)">
                         <image src="asset://sc-order" class="buttonImage"></image>
                         <text class="normalText">查看小票</text>
                     </div>
 
                     <div style="width: 1px;background-color: #dadad8"></div>
-                    <div class="bottomButton" @click="onTaxClick">
+                    <div class="bottomButton" @click="onTaxClick(item)">
                         <image src="asset://sc-tax"  class="buttonImage"></image>
                         <text class="normalText">查看电子发票</text>
                     </div>
@@ -235,10 +235,10 @@
         components: {},
         data() {
             return {
-                itemModel:null,
+                itemModel:null, //这里存的是一个order列表，兼容后面可能会有多个门店的订单的情况
                 loadingOk:false,
                 errorInfo:{show:false,info:'系统错误'},
-                reqParams:{offset:2,count:1}
+                reqParams:{offset:0,count:1}
             }
         },
         mounted () {
@@ -264,12 +264,20 @@
             },
             reloadPage:function () {
                 var ws = this;
-
+                wtsEvent.toast(new Date().getTime().toString())
+                // wtsEvent.toast(weex.config.bundleUrl)
+                var pageParams = {}//util.parseUrl(weex.config.bundleUrl);
                 ws.errorInfo.show = false
                 ws.loadingOk = false
                 wtsEvent.showLoading('1');
 
-                wtsEvent.fetch("get","trade/order/list",this.reqParams,function (rsp) {
+                // if (pageParams.order_uid == undefined){
+                    this.order_uid = '11_57_297810'
+                    pageParams.order_uid = this.order_uid;
+                // }
+
+                this.reqParams = {order_uid:pageParams.order_uid}
+                wtsEvent.fetch("get","trade/order/get",this.reqParams,function (rsp) {
                     wtsEvent.showLoading('0')
                     if (rsp == null) {
                         wtsEvent.toast("系统错误");
@@ -277,7 +285,7 @@
                     }
 
                     if (rsp.code == 10000) {
-                        ws.itemModel = rsp.data;
+                        ws.itemModel = {order_list:[rsp.data.order]};
                         ws.loadingOk = true;
                         ws.errorInfo.show = false;
                         // wtsEvent.toast("fetch 10000");
@@ -297,8 +305,8 @@
                     }
 
                     // wtsEvent.toast(rsp.data.total_count + '')
-                    var item = rsp.data.order_list;
-                    ws.reqParams.offset = item.length;
+                    // var item = rsp.data.order_list;
+                    // ws.reqParams.offset = item.length;
                     //ws.itemModel = item;
 
                     ws.saveDataToNative()
@@ -376,15 +384,29 @@
                 });
 
             },
-            onCheckOrderClick:function () {
-                wtsEvent.openPage('http://www.baidu.com')
+            onCheckOrderClick:function (item) {
+                wtsEvent.openPage(item.electronic_ticket_url)
             },
-            onTaxClick:function () {
-                wtsEvent.openPage('http://www.baidu.com')
+            onTaxClick:function (item) {
+                wtsEvent.openPage(item.got_invoice_url)
             },
             imageClick:function (e) {
                  wtsEvent.showFullImage([e.icon_url],0)
             },
+            payType:function (payId) {
+                if (payId == 1 || payId == 11){
+                    return '支付宝支付'
+                }else if (payId == 2){
+                    return '微信支付'
+                }
+                else {
+                    return 'unknown'
+                }
+            },
+            payTime:function (timeStamp) {
+
+            }
+
         }
     }
 </script>

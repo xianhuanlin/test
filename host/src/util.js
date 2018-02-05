@@ -7,6 +7,7 @@ util.verSign = "1.1.1"
 util.srcRoot = "http://192.168.0.105:8081/"
 
 util.parseUrl = function (url) {
+    //if (!url.indexOf('?')  url.indexOf)
     var query = url.split("?")[1];
     var queryArr = query.split("&");
     var obj = {};
