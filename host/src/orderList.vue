@@ -5,7 +5,7 @@
                 <cell v-for="item in itemModel.order_list" >
                     <div style="margin-top: 30px" class="orderSection" @click="orderClick(item)">
                         <div class="orderHeader">
-                            <image resize="cover"  style="left: 0; position: absolute;width:720px;height: 54px"></image>
+                            <image resize="cover" src="asset://sc-cardHeader" style="left: 0; position: absolute;width:720px;height: 54px"></image>
                             <text class="shopName">店铺:{{item.delivery_warehouse}}</text>
                             <text class="orderDate">{{item.order_time}}</text>
                         </div>
@@ -284,7 +284,7 @@
             },
             fetchMore:function () {
                 var ws = this;
-                wtsEvent.toast('loadMore')
+                // wtsEvent.toast('loadMore')
                 wtsEvent.showLoading('1')
 
                 wtsEvent.fetch("get","trade/order/list",this.reqParams,function (rsp) {
