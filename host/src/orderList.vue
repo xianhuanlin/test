@@ -11,7 +11,7 @@
                         </div>
                         <div v-for="subItem in item.order_item_list" class="orderRow">
                             <div class="orderContent">
-                                <image class="rowImage" :src="subItem.icon_url" ></image>
+                                <image class="rowImage" :src="subItem.icon_url" @click="imageClick(subItem)"></image>
                                 <div style="position: absolute;left: 200px;">
                                     <text class="rowTitle">{{subItem.item_name}}</text>
                                     <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
@@ -111,7 +111,7 @@
         justify-content: space-between;
         padding-left: 30px;
         padding-right: 30px;
-        height: 54px;
+        height: 60px;
         align-items: center;
 
     }
@@ -309,6 +309,9 @@
                     // wtsEvent.toast(rsp.data.order_list.length + '')
                 });
 
+            },
+            imageClick:function (e) {
+                wtsEvent.showFullImage([e.icon_url],0)
             },
         }
     }
