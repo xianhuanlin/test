@@ -1,58 +1,58 @@
 <template>
     <div style="position: absolute;background-color: white">
-        <div class="scroll" v-if="loadingOk" ref="scroll">
+        <scroller class="scroll" v-if="loadingOk" ref="scroll">
             <div v-for="item in itemModel.order_list" >
-                <div style="margin-top: 30px" class="orderSection"">
-                    <div class="orderHeader">
-                        <image resize="cover" src="asset://sc-cardHeader"style="left: 0; position: absolute;width:720px;height: 54px"></image>
-                        <text class="shopName">订单号:{{item.order_sn}}</text>
-                        <!--<text class="orderDate">{{item.order_time}}</text>-->
-                    </div>
-                    <div v-for="subItem in item.order_item_list" class="orderRow">
-                        <div class="orderContent">
-                            <image class="rowImage" :src="subItem.icon_url" @click="imageClick(subItem)" ></image>
-                            <div style="position: absolute;left: 200px;">
-                                <text class="rowTitle">{{subItem.item_name}}</text>
-                                <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
-                            </div>
-                            <div style="margin-top: 30px;">
-                                <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
-                                <text class="rowNum">X{{subItem.number}}</text>
-                            </div>
+                <div style="margin-top: 30px" class="orderSection">
+                <div class="orderHeader">
+                    <image resize="cover" src="asset://sc-cardHeader"style="left: 0; position: absolute;width:720px;height: 54px"></image>
+                    <text class="shopName">订单号:{{item.order_sn}}</text>
+                    <!--<text class="orderDate">{{item.order_time}}</text>-->
+                </div>
+                <div v-for="subItem in item.order_item_list" class="orderRow">
+                    <div class="orderContent">
+                        <image class="rowImage" :src="subItem.icon_url" @click="imageClick(subItem)" ></image>
+                        <div style="position: absolute;left: 200px;">
+                            <text class="rowTitle">{{subItem.item_name}}</text>
+                            <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                         </div>
-                    </div>
-                    <div style="margin-top: -20px">
-                        <image class="separator" src="asset://sc-cardBlock"></image>
-                    </div>
-                    <div class="orderFooter">
-                        <div>
-                            <text class="detailText">支付流水号：</text>
-                            <text class="detailText">支付方式：</text>
-                            <text class="detailText">支付时间：</text>
-                        </div>
-                        <div style="flex-direction: row;align-items: center;">
-                            <text class="normalText">实付:</text>
-                            <text class="amount">￥{{calcPrice(item.total_amount)}}</text>
-                        </div>
-
-                    </div>
-                    <div style="height: 1px;background-color: #dadad8"></div>
-                    <div class="bottom">
-                        <div class="bottomButton" @click="onCheckOrderClick">
-                            <image src="asset://sc-order" class="buttonImage"></image>
-                            <text class="normalText">查看小票</text>
-                        </div>
-
-                        <div style="width: 1px;background-color: #dadad8"></div>
-                        <div class="bottomButton" @click="onTaxClick">
-                            <image src="asset://sc-tax"  class="buttonImage"></image>
-                            <text class="normalText">查看电子发票</text>
+                        <div style="margin-top: 30px;">
+                            <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
+                            <text class="rowNum">X{{subItem.number}}</text>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div style="margin-top: -20px">
+                    <image class="separator" src="asset://sc-cardBlock"></image>
+                </div>
+                <div class="orderFooter">
+                    <div>
+                        <text class="detailText">支付流水号：</text>
+                        <text class="detailText">支付方式：</text>
+                        <text class="detailText">支付时间：</text>
+                    </div>
+                    <div style="flex-direction: row;align-items: center;">
+                        <text class="normalText">实付:</text>
+                        <text class="amount">￥{{calcPrice(item.total_amount)}}</text>
+                    </div>
 
+                </div>
+                <div style="height: 1px;background-color: #dadad8"></div>
+                <div class="bottom">
+                    <div class="bottomButton" @click="onCheckOrderClick">
+                        <image src="asset://sc-order" class="buttonImage"></image>
+                        <text class="normalText">查看小票</text>
+                    </div>
+
+                    <div style="width: 1px;background-color: #dadad8"></div>
+                    <div class="bottomButton" @click="onTaxClick">
+                        <image src="asset://sc-tax"  class="buttonImage"></image>
+                        <text class="normalText">查看电子发票</text>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        </scroller>
         <div v-if="errorInfo.show"  style="align-items:center;margin-top: 300px;justify-content: center">
             <image src="asset://icon-all-net" style="width: 220px;height: 220px"></image>
             <text style="margin-top: 10px;color: #919191;">{{errorInfo.info}}</text>
