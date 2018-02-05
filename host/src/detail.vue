@@ -320,6 +320,7 @@
             return {
                 itemModel:null,
                 activityModel:null,
+                groupModel:null,
                 params:null,
                 imageSet:[{image_url:''}],
                 deliverInfo:[],
@@ -404,6 +405,7 @@
 
                     ws.itemModel = item;
                     ws.activityModel = rsp.data.activity_v_o;
+                    ws.groupModel = rsp.data.group;
                     // ws.params = params;
                     ws.title = item.item_name;
                     ws.salePoint = item.sale_point ? item.sale_point : ''
@@ -553,6 +555,7 @@
                 params.share_url=item.share_url;
                 params.sale_point=item.sale_point;
                 params.sku_uid = 11 + '_' + act.sku_id
+                params.group_type = this.groupModel.group_type;
                 wtsEvent.postEvent('onPageLoadingOk',params)
             },
             reloadClick:function () {
