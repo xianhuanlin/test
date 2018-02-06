@@ -2,6 +2,7 @@
     <div style="position: absolute;background-color: white">
         <scroller class="scroll" v-if="loadingOk" ref="scroll">
             <div v-if="" class="mainCell">
+                <div class="iphonXDiv" v-if="isiPhonX"></div>
                 <div @click="mainImageClick">
                     <image class="mainImage" :src="imageSet[0].image_url" @click="mainImageClick"></image>
                     <div style="opacity: 0.02; background-color: black;width: 750px;height: 750px;position: absolute;top:0;"></div>
@@ -67,7 +68,7 @@
                         <text style="color: #4a4a4a;font-size: 28px;">{{gotoCommentBtnText}}</text>
                     </div>
                 </div>
-
+                <div class="iphonXtop" v-if="isiPhonX"></div>
             </div>
 
             <web2 ref="web1" class="webView2" :style='styleWeb' :src="detailUrl" @onPageHeightChange="webHeightChange"></web2>
@@ -83,8 +84,9 @@
                 <text style="font-size: 36px;color: white">￥{{groupBuyPrice}}</text>
                 <text style="font-size: 24px;color: white">({{memberCount}}人团)</text>
             </div>
-        </div>
 
+        </div>
+        <div class="iphonXDiv" v-if="isiPhonX"></div>
         <div v-if="errorInfo.show" style="align-items:center;margin-top: 300px;">
             <image src="asset://icon-all-net" style="width: 220px;height: 220px"></image>
             <text style="margin-top: 10px;color: #919191;">{{errorInfo.info}}</text>
@@ -97,6 +99,10 @@
 </template>
 
 <style scoped>
+    .iphonXDiv{
+        height: 62px;
+        background-color: #f4f4f4;
+    }
     .errorButton{
         width: 288px;
         height: 88px;
@@ -345,7 +351,9 @@
 
                 memberCount:'',
 
-                errorInfo:{show:false,info:''}
+                errorInfo:{show:false,info:''},
+
+                isiPhonX:false,
             }
         },
         mounted () {
@@ -432,6 +440,9 @@
                     ws.isShowLeft = activityObj.normal_buy;
                     ws.memberCount = activityObj.member_count;
 
+                    // if (util.isIPhoneX()){
+                        ws.isiPhonX = true;
+                    // }
                     ws.saveDataToNative()
                     //异步加载头部
                     setTimeout(function () {
@@ -556,6 +567,7 @@
                 params.sale_point=item.sale_point;
                 params.sku_uid = 11 + '_' + act.sku_id
                 params.group_type = this.groupModel.group_type;
+                params.stock_code = this.activityModel.stock_code;
                 wtsEvent.postEvent('onPageLoadingOk',params)
             },
             reloadClick:function () {
