@@ -386,7 +386,7 @@
                 ws.errorInfo.show = false
                 ws.loadingOk = false
                 wtsEvent.showLoading('1');
-
+                // reqParams.domain = 'http://10.66.48.126:8080/'
                 wtsEvent.fetch("get","group/item/detail/get",reqParams,function (rsp) {
                     wtsEvent.showLoading('0')
                     if (rsp == null) {
