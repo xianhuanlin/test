@@ -33,11 +33,14 @@
                 </div>
             </div>
 
-            <div class="rulecell" v-if="groupModel.group_type == 1" style="width: 750px;height: 180px;margin-top: 20px;padding: 30px;background-color: white">
+            <div class="rulecell" v-if="activityModel.group_type == 1" style="width: 750px;height: 180px;margin-top: 20px;padding: 30px;background-color: white">
                 <text class="sunbianTitle">闪电团流程</text>
                 <image class="ruleImage" src="asset://icon-groupdetail-rule" style="width: 696px; height: 79px; margin-top: 10px"></image>
             </div>
-
+            <div class="rulecell" v-if="activityModel.group_type == 0" style="width: 750px;height: 180px;margin-top: 20px;padding: 30px;background-color: white">
+                <text class="sunbianTitle">拼团玩法</text>
+                <image class="ruleImage" src="asset://icon-groupDetail2-rule" style="width: 696px; height: 79px; margin-top: 10px"></image>
+            </div>
             <div class="sunbianCell">
                 <text class="sunbianTitle">笋编说</text>
                 <text class="sunbianInfo">{{brief}}</text>
@@ -566,7 +569,7 @@
                 params.share_url=item.share_url;
                 params.sale_point=item.sale_point;
                 params.sku_uid = 11 + '_' + act.sku_id
-                params.group_type = this.groupModel.group_type;
+                params.group_type = this.activityModel.group_type;
                 params.stock_code = this.activityModel.stock_code;
                 wtsEvent.postEvent('onPageLoadingOk',params)
             },
