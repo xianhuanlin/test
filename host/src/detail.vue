@@ -33,8 +33,8 @@
                 </div>
             </div>
 
-            <div class="rulecell" style="width: 750px;height: 180px;margin-top: 20px;padding: 30px;background-color: white">
-                <text class="sunbianTitle">闪电图流程</text>
+            <div class="rulecell" v-if="groupModel.group_type == 1" style="width: 750px;height: 180px;margin-top: 20px;padding: 30px;background-color: white">
+                <text class="sunbianTitle">闪电团流程</text>
                 <image class="ruleImage" src="asset://icon-groupdetail-rule" style="width: 696px; height: 79px; margin-top: 10px"></image>
             </div>
 
@@ -440,9 +440,9 @@
                     ws.isShowLeft = activityObj.normal_buy;
                     ws.memberCount = activityObj.member_count;
 
-                    // if (util.isIPhoneX()){
+                    if (util.isIPhoneX()){
                         ws.isiPhonX = true;
-                    // }
+                    }
                     ws.saveDataToNative()
                     //异步加载头部
                     setTimeout(function () {
