@@ -365,7 +365,7 @@
         },
         computed: {
             bottomStyle(){
-                return {height:'128px',width:'750px','flex-direction':'row'}
+                return {height:'98px',width:'750px','flex-direction':'row'}
             },
 
         },
