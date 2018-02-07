@@ -426,8 +426,9 @@
                     // wtsEvent.toast(util.deviceHeight().toString());
                     // console.log(rsp);
                     ws.price =  parseFloat(item.min_price)/100 + ''
+
                     if (item.max_price > 0 && item.max_price > item.min_price){
-                        ws.marketPrice = '￥' + parseFloat(item.max_market_price)/100 + ''
+                        ws.price += '-' + parseFloat(item.max_price)/100
                     }
 
                     ws.detailUrl = item.item_menu_list[0].item_desc_url;
