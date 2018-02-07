@@ -1,6 +1,6 @@
 <template>
     <div style="position: absolute;background-color: white">
-        <scroller class="scroll" v-if="loadingOk" ref="scroll">
+        <scroller class="scroll" v-if="loadingOk" show-scrollbar="false" ref="scroll">
             <div v-if="" class="mainCell">
                 <div class="iphonXDiv" v-if="isiPhonX"></div>
                 <div @click="mainImageClick">
@@ -13,8 +13,8 @@
 
                 <div class="divPrice">
                     <text class="price">￥</text>
-                    <text class="price2">{{price}}</text>
-                    <text class="marketPrice">{{marketPrice}}</text>
+                    <text class="price2">{{groupBuyPrice}}</text>
+                    <text class="marketPrice">￥{{price}}</text>
                 </div>
 
                 <div  class="divDeliver">
@@ -33,13 +33,13 @@
                 </div>
             </div>
 
-            <div class="rulecell" v-if="activityModel.group_type == 1" style="width: 750px;height: 180px;margin-top: 20px;padding: 30px;background-color: white">
-                <text class="sunbianTitle">闪电团流程</text>
-                <image class="ruleImage" src="asset://icon-groupdetail-rule" style="width: 696px; height: 79px; margin-top: 10px"></image>
+            <div class="rulecell" v-if="activityModel.group_type == 1" style="width: 750px;height: 214px;margin-top: 20px;padding: 30px;background-color: white">
+                <text class="sunbianTitle">自提团流程</text>
+                <image class="ruleImage" src="asset://icon-groupdetail-rule" style="width: 696px; height: 79px; margin-top: 34px"></image>
             </div>
-            <div class="rulecell" v-if="activityModel.group_type == 0" style="width: 750px;height: 180px;margin-top: 20px;padding: 30px;background-color: white">
+            <div class="rulecell" v-if="activityModel.group_type == 0" style="width: 750px;height: 214px;margin-top: 20px;padding: 30px;background-color: white">
                 <text class="sunbianTitle">拼团玩法</text>
-                <image class="ruleImage" src="asset://icon-groupDetail2-rule" style="width: 696px; height: 79px; margin-top: 10px"></image>
+                <image class="ruleImage" src="asset://icon-groupDetail2-rule" style="width: 696px; height: 79px; margin-top: 34px"></image>
             </div>
             <div class="sunbianCell">
                 <text class="sunbianTitle">笋编说</text>
@@ -84,7 +84,7 @@
                 <text style="font-size: 24px;color: #4a4a4a">(单独买)</text>
             </div>
             <div style="align-items: center;justify-content: center;background-color: #ff6692;flex: 1" @click="groupBuy">
-                <text style="font-size: 36px;color: white">￥{{groupBuyPrice}}</text>
+                <text style="font-size: 36px;color: white">￥{{groupBuyPrice}}(拼团买)</text>
                 <text style="font-size: 24px;color: white">({{memberCount}}人团)</text>
             </div>
 
@@ -224,6 +224,7 @@
         color: #4a4a4a;
         position: absolute;
         lines:2;
+        text-overflow:ellipsis;
     }
 
     .activityItem{
