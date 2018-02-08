@@ -43,11 +43,11 @@
                         <text class="normalText">查看小票</text>
                     </div>
 
-                    <div style="width: 1px;background-color: #dadad8"></div>
-                    <div class="bottomButton" @click="onTaxClick(item)">
-                        <image src="asset://sc-tax"  class="buttonImage"></image>
-                        <text class="normalText">查看电子发票</text>
-                    </div>
+                    <!--<div style="width: 1px;background-color: #dadad8"></div>-->
+                    <!--<div class="bottomButton" @click="onTaxClick(item)">-->
+                        <!--<image src="asset://sc-tax"  class="buttonImage"></image>-->
+                        <!--<text class="normalText">查看电子发票</text>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -103,7 +103,7 @@
         font-size: 26px;
     }
     .amount{
-        margin-right: 20px;
+        /*margin-right: 20px;*/
         color: #ff6692;
         font-size: 40px;
         margin-left: 5px;
@@ -272,7 +272,7 @@
                 wtsEvent.showLoading('1');
 
                 // if (pageParams.order_uid == undefined){
-                    this.order_uid = '11_57_297810'
+                    this.order_uid = '11_379_1151694'
                     pageParams.order_uid = this.order_uid;
                 // }
 

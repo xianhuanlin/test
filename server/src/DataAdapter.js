@@ -83,10 +83,14 @@ DataAdapter.add = function (type,state,ret) {
 DataAdapter.delete = function (type,state,ret) {
 
 }
+;
+DataAdapter.update = function (type,state,ret) {
 
+}
 DataAdapter.stopService = function () {
     this.isOk = false;
-}
+};
 
 DataAdapter.startService();
-console.log(DataAdapter.isOk)
+
+console.log(DataAdapter.isOk);

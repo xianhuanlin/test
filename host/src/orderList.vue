@@ -6,8 +6,8 @@
                     <div style="margin-top: 30px" class="orderSection" @click="orderClick(item)">
                         <div class="orderHeader">
                             <image resize="cover" src="asset://sc-cardHeader" style="left: 0; position: absolute;width:720px;height: 54px"></image>
-                            <text class="shopName">店铺:{{item.delivery_warehouse}}</text>
-                            <text class="orderDate">{{item.order_time}}</text>
+                            <text class="shopName">店铺:{{item.store_name}}</text>
+                            <text class="orderDate">{{timeForamt(item.pay_time_long)}}</text>
                         </div>
                         <div v-for="subItem in item.order_item_list" class="orderRow">
                             <div class="orderContent">
@@ -165,6 +165,7 @@
 <script>
     const wtsEvent = weex.requireModule('WTSEvent')
     const animation = weex.requireModule('animation')
+    const navigator = weex.requireModule('navigator')
     const modal = weex.requireModule('modal')
     import util from './util.js'
     export default {
@@ -174,7 +175,7 @@
                 itemModel:null,
                 loadingOk:false,
                 errorInfo:{show:false,info:'系统错误'},
-                reqParams:{offset:0,count:20}
+                reqParams:{offset:0,count:20,type:20}
             }
         },
         mounted () {
@@ -261,7 +262,13 @@
                 })
             },
             orderClick:function(item){
-                wtsEvent.toast('ok')
+                navigator.push({
+                    url: 'http://10.66.48.126:8081/dist/orderDetail.js?order_uid=' + item.order_uid,
+                    animated: "true"
+                }, event => {
+                    //modal.toast({ message: 'callback: ' + event })
+                })
+                // wtsEvent.toast(item.order_uid)
             },
             saveDataToNative:function () {
                 // var item = this.itemModel;
@@ -313,6 +320,11 @@
             imageClick:function (e) {
                 wtsEvent.showFullImage([e.icon_url],0)
             },
+            timeForamt:function (e) {
+                // e.toString()
+                return util.formatStamp(e,'YYYY MM dd')
+            },
+
         }
     }
 </script>
