@@ -264,7 +264,7 @@
             },
             reloadPage:function () {
                 var ws = this;
-                wtsEvent.toast(new Date().getTime().toString())
+                // wtsEvent.toast(new Date().getTime().toString())
                 // wtsEvent.toast(weex.config.bundleUrl)
                 var pageParams = {}//util.parseUrl(weex.config.bundleUrl);
                 ws.errorInfo.show = false

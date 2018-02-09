@@ -51,6 +51,7 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
     collection.insert(data2,function (err,result) {
         db.close()
     })
+    collection.insertOne()
 });
 
 
@@ -91,6 +92,10 @@ DataAdapter.stopService = function () {
     this.isOk = false;
 };
 
-DataAdapter.startService();
+DataAdapter.types = tableTypes;
+
+// DataAdapter.startService();
 
 console.log(DataAdapter.isOk);
+
+module.exports = DataAdapter;

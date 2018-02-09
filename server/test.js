@@ -5,20 +5,32 @@
  // lodash/add.js
  var _ = require('lodash');
 
- var a = new Date()
- console.log(util.currentStamp())
- console.log(util.formatData(a,'YYYY M dd hh:mm'))
+ var CryptoJS = require("crypto-js");
 
-console.log(_.random(1,50000))
- console.log(_.split('ab_cd','+'))
+ // Encrypt
+ console.log(CryptoJS.MD5('123').toString().length);
+ // var ciphertext = CryptoJS.AES.encrypt('my message', 'secret key 123');
+ // console.log(ciphertext.toString());
+ // // Decrypt
+ // var bytes  = CryptoJS.AES.decrypt(ciphertext.toString(), 'secret key 123');
+ // var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+ //
+ // console.log(plaintext);
 
- var users = [11,22,33]
- var pdws = [{user:11,pwd:22},{user:2,pwd:66},{user:7,pwd:99},]
- console.log(_.filter(users, function (e) {
-     return e >= 22
- }));
-
- console.log(_.map(pdws,'pwd'))
- var str = 'cd 12'
-
- console.log( str.split(' ')[0])
+//  var a = new Date()
+//  console.log(util.currentStamp())
+//  console.log(util.formatData(a,'YYYY M dd hh:mm'))
+//
+// console.log(_.random(1,50000))
+//  console.log(_.split('ab_cd','+'))
+//
+//  var users = [11,22,33]
+//  var pdws = [{user:11,pwd:22},{user:2,pwd:66},{user:7,pwd:99},]
+//  console.log(_.filter(users, function (e) {
+//      return e >= 22
+//  }));
+//
+//  console.log(_.map(pdws,'pwd'))
+//  var str = 'cd 12'
+//
+//  console.log( str.split(' ')[0])
