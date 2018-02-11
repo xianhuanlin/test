@@ -230,6 +230,7 @@
     const animation = weex.requireModule('animation')
     const modal = weex.requireModule('modal')
     const navigator = weex.requireModule('navigator')
+    // const CryptoJS = require("crypto-js/md5");
     import util from './util.js'
     export default {
         components: {},
@@ -269,10 +270,14 @@
                 var pageParams = {}//util.parseUrl(weex.config.bundleUrl);
                 ws.errorInfo.show = false
                 ws.loadingOk = false
+                if (this.order_uid == undefined){
+                    this.order_uid = ''
+                }
+
                 wtsEvent.showLoading('1');
 
                 // if (pageParams.order_uid == undefined){
-                    this.order_uid = '11_379_1151694'
+                //     this.order_uid = '11_379_1151694'
                     pageParams.order_uid = this.order_uid;
                 // }
 

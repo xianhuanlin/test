@@ -244,7 +244,9 @@
                         wtsEvent.addTopupButton(100)
                         // wtsEvent.addReloadHeader()
                     }, 100)
+                    navigator.setNavBarTitle({title:"订单列表"},function () {
 
+                    })
                     //更新web的高度
                     // var id = setInterval(function () {
                     //
