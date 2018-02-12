@@ -267,11 +267,12 @@
                 var ws = this;
                 // wtsEvent.toast(new Date().getTime().toString())
                 // wtsEvent.toast(weex.config.bundleUrl)
-                var pageParams = {}//util.parseUrl(weex.config.bundleUrl);
+
                 ws.errorInfo.show = false
                 ws.loadingOk = false
                 if (this.order_uid == undefined){
-                    this.order_uid = ''
+                    var pageParams = util.parseUrl(weex.config.bundleUrl);
+                    this.order_uid = pageParams.order_uid;
                 }
 
                 wtsEvent.showLoading('1');
@@ -323,6 +324,12 @@
                     navigator.setNavBarTitle({title:"订单详情"},function () {
 
                     })
+                    if (!ws.isReport){
+                        wtsEvent.wtsViewReport('Scan_go_order_details',ws.order_uid)
+                        ws.isReport = true
+                    }
+
+
                     //更新web的高度
                     // var id = setInterval(function () {
                     //
@@ -391,6 +398,7 @@
             },
             onCheckOrderClick:function (item) {
                 wtsEvent.openPage(item.electronic_ticket_url)
+                wtsEvent.umengReport('10270')
             },
             onTaxClick:function (item) {
                 wtsEvent.openPage(item.got_invoice_url)

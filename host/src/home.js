@@ -17,3 +17,7 @@ var st = 'abc'
 if (st.indexOf('abc') >= 0){
     console.log('ok')
 }
+
+if (a.bcd == undefined || b.length == 0){
+    console.log('ok')
+}

@@ -1,6 +1,6 @@
 <template>
     <div style="position: absolute;background-color: white">
-        <list class="scroll" v-if="loadingOk" ref="scroll" loadmoreoffset="10" @loadmore="fetchMore">
+        <list class="scroll" v-if="loadingOk && !emptyShow" ref="scroll" loadmoreoffset="10" @loadmore="fetchMore">
             <!--<div style="padding: 30px;background-color: gray;">-->
                 <cell v-for="item in itemModel.order_list" >
                     <div style="margin-top: 30px" class="orderSection" @click="orderClick(item)">
@@ -41,7 +41,10 @@
                 <text style="color: white;font-size: 32px;">重新加载</text>
             </div>
         </div>
-
+        <div v-if="emptyShow"  style="align-items:center;margin-top: 300px;;flex: 1;background-color: white">
+            <image src="asset://sc-order-empty" style="width: 220px;height: 220px"></image>
+            <text style="margin-top: 10px;color: #919191;">暂无相关订单</text>
+        </div>
     </div>
 
 </template>
@@ -175,6 +178,7 @@
                 itemModel:null,
                 loadingOk:false,
                 errorInfo:{show:false,info:'系统错误'},
+                emptyShow:false,
                 reqParams:{offset:0,count:20,type:20}
             }
         },
@@ -186,12 +190,6 @@
             bottomStyle(){
                 return {height:'128px',width:'750px','flex-direction':'row'}
             },
-            // price(e){
-            //     var pricef = parseFloat(e)/100;
-            //     return pricef.toString()
-            // },
-
-
         },
 
         methods: {
@@ -202,7 +200,8 @@
             reloadPage:function () {
                 var ws = this;
 
-                ws.errorInfo.show = false
+                // ws.errorInfo.show = false
+                ws.emptyShow = false
                 ws.loadingOk = false
                 wtsEvent.showLoading('1');
 
@@ -234,38 +233,30 @@
                     }
 
                     // wtsEvent.toast(rsp.data.total_count + '')
+                    navigator.setNavBarTitle({title:"订单列表"},function () {
+
+                    })
+
                     var item = rsp.data.order_list;
+                    ws.emptyShow = (!item || item.length == 0);
                     ws.reqParams.offset = item.length;
                     //ws.itemModel = item;
-
+                    // ws.emptyShow = (!item || item.length == 0);
                     ws.saveDataToNative()
                     //异步加载头部
                     setTimeout(function () {
                         wtsEvent.addTopupButton(100)
                         // wtsEvent.addReloadHeader()
                     }, 100)
-                    navigator.setNavBarTitle({title:"订单列表"},function () {
 
-                    })
-                    //更新web的高度
-                    // var id = setInterval(function () {
-                    //
-                    // },500)
-                    //
-                    // //10秒后停止interval
-                    // setTimeout(function () {
-                    //     clearInterval(id)
-                    // }, 10000);
-                    //
-                    // setTimeout(function () {
-                    //
-                    // },500);
 
                 })
             },
             orderClick:function(item){
+                const toUrl = weex.config.bundleUrl.split('/').slice(0, -1).join('/') + '/' + 'orderDetail' + '.js'
+                console.log(toUrl)
                 navigator.push({
-                    url: 'http://10.66.48.126:8081/dist/orderDetail.js?order_uid=' + item.order_uid,
+                    url: toUrl + '?order_uid=' + item.order_uid,
                     animated: "true"
                 }, event => {
                     //modal.toast({ message: 'callback: ' + event })

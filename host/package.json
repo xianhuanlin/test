@@ -16,6 +16,7 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
+        "crypto-js": "^3.1.9-1",
         "fs-extra": "^4.0.1",
         "vue": "^2.4.3",
         "weex-html5": "^0.4.1",
