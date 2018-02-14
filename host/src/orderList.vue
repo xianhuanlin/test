@@ -315,6 +315,9 @@
             },
             timeForamt:function (e) {
                 // e.toString()
+                if (!e){
+                    return ''
+                }
                 return util.formatStamp(e,'YYYY MM dd')
             },
 
