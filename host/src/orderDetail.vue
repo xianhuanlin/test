@@ -26,8 +26,12 @@
                 </div>
                 <div class="orderFooter">
                     <div>
-                        <text class="detailText">支付流水号：{{item.order_payment.out_trade_no}}</text>
-                        <text class="detailText">支付方式：{{payType(item.order_payment.payment_id)}}</text>
+                        <div style="flex-direction: row;align-items:flex-start">
+                            <text class="detailText">支付流水号：</text>
+                            <text class="detailText detailText2">{{item.order_payment.out_trade_no}}</text>
+                        </div>
+
+                        <text class="detailText">支付方式：{{item.order_payment.pay_type}}</text>
                         <text class="detailText">支付时间：{{item.order_time}}</text>
                     </div>
                     <div style="flex-direction: row;align-items: center;">
@@ -83,8 +87,17 @@
     .detailText{
         font-size: 22px;
         color: #9c9a9c;
-    }
 
+        text-overflow:ellipsis;
+
+    }
+    .detailText2{
+        width: 280px;
+        lines:2;
+        text-align: left;
+        font-size: 22px;
+        margin-top: 2px;
+    }
     .separator {
         width: 710px;
         height: 98px ;
@@ -157,7 +170,7 @@
         flex-direction: row;
         justify-content: space-between;
         /*align-items: center;*/
-        height: 120px;
+        /*height: 120px;*/
         /*border-bottom-width: 1px;*/
         /*border-bottom-color: #dadad8;*/
         padding-left: 30px;
