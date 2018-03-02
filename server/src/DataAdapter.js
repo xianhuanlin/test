@@ -1,15 +1,13 @@
 
 
 var MongoClient = require('mongodb').MongoClient;
-var DB_CONN_STR = 'mongodb://root:root@localhost:27017/admin';
+var DB_CONN_STR = 'mongodb://xianhuan2:123456@localhost:27017/admin';
 
 var tableTypes = {
     USER:'user',
     ORDER:'order',
     SKU:'sku',
 }
-
-
 
 var selectData = function(db, callback) {
     //连接到表
@@ -25,39 +23,39 @@ var selectData = function(db, callback) {
         callback(result);
     });
 }
+//
+// MongoClient.connect(DB_CONN_STR, function(err, db) {
+//
+//     if (err){
+//         console.log(err)
+//         return;
+//     }else{
+//         console.log("连接成功！");
+//     }
+//     // console.log(db)
+//     var data = {user:'xianhuan',pwd:'123456789'}
+//     var data2 = {user:'xianhuan2',pwd:'123456789'}
+//
+//     var collection = db.db('poke').collection('user');
+//     // var collection = db.db('poke').collection('user2');
+//     //查询数据
+//     var whereStr = {"username":'lxh'};
+//     collection.find(whereStr).toArray(function(err, result) {
+//         if(err)
+//         {
+//             console.log('Error:'+ err);
+//             return;
+//         }
+//         console.log(result)
+//     });
+//     collection.insert(data2,function (err,result) {
+//         // db.close()
+//     })
+//     // collection.insertOne()
+// });
 
-MongoClient.connect(DB_CONN_STR, function(err, db) {
 
-    if (err){
-        console.log(err)
-        return;
-    }else{
-        console.log("连接成功！");
-    }
-    // console.log(db)
-    var data = {user:'xianhuan',pwd:'123456789'}
-    var data2 = {user:'xianhuan2',pwd:'123456789'}
-
-    var collection = db.db('poke').collection('user');
-    // var collection = db.db('poke').collection('user2');
-    //查询数据
-    var whereStr = {"username":'lxh'};
-    collection.find(whereStr).toArray(function(err, result) {
-        if(err)
-        {
-            console.log('Error:'+ err);
-            return;
-        }
-        console.log(result)
-    });
-    collection.insert(data2,function (err,result) {
-        // db.close()
-    })
-    // collection.insertOne()
-});
-
-
-var DataAdapter = {isOk:false}
+var DataAdapter = {isOk:false,types:tableTypes}
 
 DataAdapter.startService = function (ret) {
     if (this.isOk){
@@ -65,21 +63,22 @@ DataAdapter.startService = function (ret) {
 
     }
     this.isOk = true;
-
+    var self = this;
     MongoClient.connect(DB_CONN_STR, function(err, db) {
         if (!err){
-            this.dataBase = db.db('poke')//.collection('user');
+            self.dataBase = db//.collection('user');
         }
-        ret(err,db);
+        ret(err);
     });
 
 }
 
 DataAdapter.query = function (type,state,ret) {
-    var collection = db.db('poke').collection(type);
+    console.log(this.dataBase.db)
+    var collection = this.dataBase.db('poke').collection(type);
 
     collection.find(state).toArray(function(err, result) {
-        if(err)
+        if(err || !result || result.length == 0)
         {
             //console.log('Error:'+ err);
             ret(null);
@@ -94,14 +93,14 @@ DataAdapter.query = function (type,state,ret) {
 }
 
 DataAdapter.add = function (type,state,ret) {
-    var collection = db.db('poke').collection(type);
+    var collection = this.dataBase.db('poke').collection(type);
 
     collection.find(state).toArray(function(err, result) {
-        if(err)
+        if(result && result.length > 0)
         {
-            //console.log('Error:'+ err);
             ret({msg:"already has the same record'"});
             return;
+
         }else{
             collection.insert(state,function (err,result) {
                 if (!err){
@@ -110,10 +109,7 @@ DataAdapter.add = function (type,state,ret) {
                     ret({msg:"can not add this record" + err.toString()})
                 }
             })
-
-            //ret(result);
         }
-        // console.log(result)
     });
 };
 
@@ -127,11 +123,23 @@ DataAdapter.update = function (type,state,ret) {
 }
 DataAdapter.stopService = function () {
     this.isOk = false;
+    this.dataBase.close()
 };
 
 DataAdapter.types = tableTypes;
 
-// DataAdapter.startService();
+DataAdapter.startService(function (err) {
+     if (!err){
+         DataAdapter.add(DataAdapter.types.USER,{user:'lxh2',pwd:1222},function (ret) {
+             console.log(ret)
+
+             DataAdapter.stopService();
+         })
+
+
+     }
+
+ });
 
 console.log(DataAdapter.isOk);
 
