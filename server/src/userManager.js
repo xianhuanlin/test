@@ -2,10 +2,14 @@ var apdapter =  require('./DataAdapter')
 var util = require('../util')
 var userManager = new Object();
 //http://localhost:8080/user/register?user=123&pwd=123
-userManager.addUser = function (params,result) {
-    // apdapter.query(apdapter.types.USER)
+userManager.addUser = function (params,add_result) {
+    apdapter.query(apdapter.types.USER,params,function (ret) {
+        if (add_result){
+            add_result(ret)
+        }
+    })
 
-    result(true);
+    // result(true);
 };
 
 userManager.editUserPwd = function (name,pdw,newPwd,result) {
@@ -22,10 +26,13 @@ userManager.handleReq = function (url, rsp) {
             }
 
             this.addUser(params, function (ret) {
+                var data = ret;
                 if (ret){
-                    rsp({code:100})
+                    data.code = 100;
+                    rsp(data)
                 }else{
-                    rsp({code:-10000})
+                    data.code = -10000;
+                    rsp(data)
                 }
             })
         }

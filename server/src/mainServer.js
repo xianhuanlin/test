@@ -1,10 +1,8 @@
 var util =  require('../util')
 var root = require('./serviceRooter')
 
- console.log(util.version)
-//
-// var http = require('http');
-// var data = {a:11,b:22}
+ // console.log(util.version)
+
 
 var srv = http.createServer(function (req, res) {
     // console.log(req.url)

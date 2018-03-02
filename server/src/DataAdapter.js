@@ -9,6 +9,8 @@ var tableTypes = {
     SKU:'sku',
 }
 
+
+
 var selectData = function(db, callback) {
     //连接到表
     var collection = db.collection('user');
@@ -49,9 +51,9 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
         console.log(result)
     });
     collection.insert(data2,function (err,result) {
-        db.close()
+        // db.close()
     })
-    collection.insertOne()
+    // collection.insertOne()
 });
 
 
@@ -74,15 +76,50 @@ DataAdapter.startService = function (ret) {
 }
 
 DataAdapter.query = function (type,state,ret) {
-    //this.dataBase.collection(type).
+    var collection = db.db('poke').collection(type);
+
+    collection.find(state).toArray(function(err, result) {
+        if(err)
+        {
+            //console.log('Error:'+ err);
+            ret(null);
+            return;
+        }else{
+            ret(result)
+            // collection.insertOne()
+
+        }
+        // console.log(result)
+    });
 }
 
 DataAdapter.add = function (type,state,ret) {
+    var collection = db.db('poke').collection(type);
 
+    collection.find(state).toArray(function(err, result) {
+        if(err)
+        {
+            //console.log('Error:'+ err);
+            ret({msg:"already has the same record'"});
+            return;
+        }else{
+            collection.insert(state,function (err,result) {
+                if (!err){
+                    ret({});
+                }else{
+                    ret({msg:"can not add this record" + err.toString()})
+                }
+            })
+
+            //ret(result);
+        }
+        // console.log(result)
+    });
 };
 
 DataAdapter.delete = function (type,state,ret) {
-
+    var collection = db.db('poke').collection(type);
+    //collection.deleteOne()
 }
 ;
 DataAdapter.update = function (type,state,ret) {
