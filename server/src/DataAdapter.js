@@ -102,7 +102,7 @@ DataAdapter.add = function (type,state,ret) {
             return;
 
         }else{
-            collection.insert(state,function (err,result) {
+            collection.insertOne(state,function (err,result) {
                 if (!err){
                     ret({});
                 }else{
@@ -114,8 +114,10 @@ DataAdapter.add = function (type,state,ret) {
 };
 
 DataAdapter.delete = function (type,state,ret) {
-    var collection = db.db('poke').collection(type);
-    //collection.deleteOne()
+    var collection = this.dataBase.db('poke').collection(type);
+    collection.deleteOne(state,function (err,result) {
+        console.log(err)
+    })
 }
 ;
 DataAdapter.update = function (type,state,ret) {
@@ -130,7 +132,7 @@ DataAdapter.types = tableTypes;
 
 DataAdapter.startService(function (err) {
      if (!err){
-         DataAdapter.add(DataAdapter.types.USER,{user:'lxh2',pwd:1222},function (ret) {
+         DataAdapter.delete(DataAdapter.types.USER,{user:'lxh222',pwd:1222},function (ret) {
              console.log(ret)
 
              DataAdapter.stopService();

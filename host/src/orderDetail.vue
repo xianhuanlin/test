@@ -16,6 +16,7 @@
                             <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                         </div>
                         <div style="margin-top: 30px;">
+                            <text class="roworgPrice">￥{{parseFloat(subItem.price)/100}}</text>
                             <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
                             <text class="rowNum">X{{subItem.number}}</text>
                         </div>
@@ -142,6 +143,12 @@
         font-size: 26px;
         color: #919090;
         text-align:right;
+    }
+    .roworgPrice{
+        font-size: 30px;
+        color: #DAD8D8;
+        text-decoration:line-through;
+        /*margin-left: 10px;*/
     }
     .rowPrice{
         font-size: 32px;
@@ -283,7 +290,8 @@
 
                 ws.errorInfo.show = false
                 ws.loadingOk = false
-                if (this.order_uid == undefined){
+                // var pageParams = new Object()
+                if (!this.order_uid){
                     var pageParams = util.parseUrl(weex.config.bundleUrl);
                     this.order_uid = pageParams.order_uid;
                 }
@@ -292,10 +300,10 @@
 
                 // if (pageParams.order_uid == undefined){
                 //     this.order_uid = '11_379_1151694'
-                    pageParams.order_uid = this.order_uid;
+                //     pageParams.order_uid = this.order_uid;
                 // }
 
-                this.reqParams = {order_uid:pageParams.order_uid}
+                this.reqParams = {order_uid:this.order_uid}
                 wtsEvent.fetch("get","trade/order/get",this.reqParams,function (rsp) {
                     wtsEvent.showLoading('0')
                     if (rsp == null) {

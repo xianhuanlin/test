@@ -16,7 +16,8 @@
                                     <text class="rowTitle">{{subItem.item_name}}</text>
                                     <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                                 </div>
-                                <div style="margin-top: 30px;">
+                                <div>
+                                    <text class="roworgPrice">￥{{parseFloat(subItem.price)/100}}</text>
                                     <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
                                     <text class="rowNum">X{{subItem.number}}</text>
                                 </div>
@@ -77,8 +78,14 @@
         color: #919090;
         text-align:right;
     }
+    .roworgPrice{
+        font-size: 30px;
+        color: #DAD8D8;
+        text-decoration:line-through;
+        /*margin-left: 10px;*/
+    }
     .rowPrice{
-        font-size: 32px;
+        font-size: 30px;
         color: #ff6692;
         text-align:right;
     }
