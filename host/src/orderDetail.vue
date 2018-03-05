@@ -15,8 +15,9 @@
                             <text class="rowTitle">{{subItem.item_name}}</text>
                             <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                         </div>
-                        <div style="margin-top: 30px;">
-                            <text class="roworgPrice">￥{{parseFloat(subItem.price)/100}}</text>
+                        <div>
+                            <text class="roworgPrice" v-if="subItem.delete_price">{{safePrice(subItem.delete_price)}}</text>
+                            <text class="rowPrice" v-if="!subItem.delete_price">{{safePrice(subItem.delete_price)}}</text>
                             <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
                             <text class="rowNum">X{{subItem.number}}</text>
                         </div>
@@ -151,7 +152,7 @@
         /*margin-left: 10px;*/
     }
     .rowPrice{
-        font-size: 32px;
+        font-size: 30px;
         color: #ff6692;
         text-align:right;
     }
@@ -346,7 +347,7 @@
 
                     })
                     if (!ws.isReport){
-                        wtsEvent.wtsViewReport('Scan_go_order_details',ws.order_uid)
+                        wtsEvent.wtsViewReport('Scan_go_order_details',rsp.data.order.order_sn)
                         ws.isReport = true
                     }
 
@@ -439,6 +440,13 @@
             },
             payTime:function (timeStamp) {
 
+            },
+            safePrice:function (price) {
+                if (!price){
+                    return ' '
+                }
+
+                return '￥' + parseFloat(price)/100
             }
 
         }

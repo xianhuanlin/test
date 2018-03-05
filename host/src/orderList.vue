@@ -17,7 +17,8 @@
                                     <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                                 </div>
                                 <div>
-                                    <text class="roworgPrice">￥{{parseFloat(subItem.price)/100}}</text>
+                                    <text class="roworgPrice" v-if="subItem.delete_price">{{safePrice(subItem.price2)}}</text>
+                                    <text class="rowPrice" v-if="!subItem.delete_price">{{safePrice(subItem.price2)}}</text>
                                     <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
                                     <text class="rowNum">X{{subItem.number}}</text>
                                 </div>
@@ -327,6 +328,13 @@
                 }
                 return util.formatStamp(e,'YYYY MM dd')
             },
+            safePrice:function (price) {
+                if (!price){
+                    return ' '
+                }
+
+                return '￥' + parseFloat(price)/100
+            }
 
         }
     }
