@@ -29,14 +29,18 @@
                 <div class="orderFooter">
                     <div>
                         <div style="flex-direction: row;align-items:flex-start">
-                            <text class="detailText">支付流水号：</text>
+                            <text class="detailText">支付流水号:</text>
                             <text class="detailText detailText2">{{item.order_payment.out_trade_no}}</text>
                         </div>
-
-                        <text class="detailText">支付方式：{{item.order_payment.pay_type}}</text>
-                        <text class="detailText">支付时间：{{item.order_time}}</text>
+                        <text class="detailText">   支付方式:{{item.order_payment.pay_type}}</text>
+                        <text class="detailText">   商品总价:{{calcPrice(item.total_price)}}</text>
+                        <div v-for="priceItem in  item.price_detail_list">
+                            <text class="detailText">   {{priceItem.title}}{{priceItem.content}}</text>
+                        </div>
+                        <!--<text class="detailText">   订单优惠：{{calcPrice(item.discount_amount)}}</text>-->
+                        <!--<text class="detailText">   积分抵扣：{{calcPrice(item.discount_amount)}}</text>-->
                     </div>
-                    <div style="flex-direction: row;align-items: center;">
+                    <div style="position: absolute;top: 0; right: 30px; flex-direction: row;align-items: center;justify-content: flex-start">
                         <text class="normalText">实付:</text>
                         <text class="amount">￥{{calcPrice(item.total_amount)}}</text>
                     </div>
@@ -94,7 +98,7 @@
 
     }
     .detailText2{
-        width: 280px;
+        width: 220px;
         lines:2;
         text-align: left;
         font-size: 22px;
@@ -122,6 +126,7 @@
         color: #ff6692;
         font-size: 40px;
         margin-left: 5px;
+
         /*background-color: #4a4a4a;*/
     }
     .discount{
@@ -149,6 +154,7 @@
         font-size: 30px;
         color: #DAD8D8;
         text-decoration:line-through;
+        text-align: right;
         /*margin-left: 10px;*/
     }
     .rowPrice{
@@ -176,16 +182,12 @@
     .orderFooter{
         background-color: white;
         flex-direction: row;
+        align-items: flex-start;
         justify-content: space-between;
-        /*align-items: center;*/
-        /*height: 120px;*/
-        /*border-bottom-width: 1px;*/
-        /*border-bottom-color: #dadad8;*/
         padding-left: 30px;
         padding-right: 30px;
-        /*padding-top: 40px;*/
         padding-bottom: 40px;
-        /*background-color: #0088fb;*/
+
     }
 
     .orderHeader{
