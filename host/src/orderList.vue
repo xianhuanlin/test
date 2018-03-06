@@ -5,14 +5,14 @@
                 <cell v-for="item in itemModel.order_list" >
                     <div style="margin-top: 30px" class="orderSection" @click="orderClick(item)">
                         <div class="orderHeader">
-                            <image resize="cover" src="asset://sc-cardHeader" style="left: 0; position: absolute;width:720px;height: 54px"></image>
+                            <image resize="cover" src="asset://sc-cardHeader" style="left: 0; position: absolute;width:720px;height: 60px"></image>
                             <text class="shopName">店铺:{{item.store_name}}</text>
                             <text class="orderDate">{{timeForamt(item.pay_time_long)}}</text>
                         </div>
                         <div v-for="subItem in item.order_item_list" class="orderRow">
                             <div class="orderContent">
-                                <image class="rowImage" :src="subItem.icon_url" @click="imageClick(subItem)"></image>
-                                <div style="position: absolute;left: 200px;">
+                                <image class="rowImage" resize="cover" :src="subItem.icon_url" @click="imageClick(subItem)"></image>
+                                <div style="position: absolute;left: 200px;top:40px;">
                                     <text class="rowTitle">{{subItem.item_name}}</text>
                                     <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                                 </div>
@@ -27,7 +27,7 @@
                         <!--</div>-->
 
                         <div class="orderFooter">
-                            <text class="discount">优惠:￥{{calcPrice(item.discount_amount)}}</text>
+                            <!--<text class="discount">优惠:￥{{calcPrice(item.discount_amount)}}</text>-->
                             <text class="amount">实付:￥{{calcPrice(item.total_amount)}}</text>
                         </div>
                     </div>
@@ -56,6 +56,7 @@
         margin-right: 20px;
         color: #ff6692;
         font-size: 30px;
+        font-weight: bold;
         /*background-color: #4a4a4a;*/
     }
     .discount{
@@ -89,6 +90,7 @@
         font-size: 30px;
         color: #ff6692;
         text-align:right;
+
     }
     .rowInfo{
         margin-top: 10px;
@@ -105,7 +107,7 @@
     }
     .rowImage{
         height: 150px;
-        width: 170px;
+        width: 150px;
     }
     .orderFooter{
         background-color: white;
@@ -138,11 +140,11 @@
     }
     .orderContent {
         flex-direction: row;
-        padding-top: 30px;
+        padding-top: 34px;
         /*padding-bottom: 30px;*/
         border-bottom-width: 1px;
         border-bottom-color: #dadad8;
-        height: 200px;
+        height: 208px;
         justify-content: space-between;
         /*align-items: center;*/
     }

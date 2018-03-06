@@ -2,6 +2,12 @@ var userManager = require('./userManager')
 
 var serviceRooter = new Object()
 
+var checkSignList = []
+    'user/editUser',
+    'cart/getOrderList'
+
+];
+
 serviceRooter.handleReq = function (req, ret) {
     this.req = req
     var params = req.url.split('?')[1]
@@ -20,6 +26,17 @@ serviceRooter.handleReq = function (req, ret) {
 
     }
 
+}
+
+serviceRooter.checkSign = function (req) {
+    for (index in checkSignList){
+        if (req.indexOf(checkSignList[index]) >= 0){
+
+        }
+
+    }
+
+    return true
 }
 
 module.exports = serviceRooter;

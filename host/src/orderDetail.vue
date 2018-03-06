@@ -4,14 +4,14 @@
             <div v-for="item in itemModel.order_list" >
                 <div style="margin-top: 30px" class="orderSection">
                 <div class="orderHeader">
-                    <image resize="cover" src="asset://sc-cardHeader"style="left: 0; position: absolute;width:720px;height: 54px"></image>
+                    <image resize="cover" src="asset://sc-cardHeader"style="left: 0; position: absolute;width:720px;height: 60px"></image>
                     <text class="shopName">订单号:{{item.order_sn}}</text>
                     <!--<text class="orderDate">{{item.order_time}}</text>-->
                 </div>
                 <div v-for="subItem in item.order_item_list" class="orderRow">
                     <div class="orderContent">
                         <image class="rowImage" :src="subItem.icon_url" @click="imageClick(subItem)" ></image>
-                        <div style="position: absolute;left: 200px;">
+                        <div style="position: absolute;left: 200px;top:40px;">
                             <text class="rowTitle">{{subItem.item_name}}</text>
                             <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                         </div>
@@ -171,7 +171,7 @@
     }
     .rowImage{
         height: 150px;
-        width: 170px;
+        width: 150px;
     }
     .orderFooter{
         background-color: white;
@@ -210,11 +210,11 @@
     }
     .orderContent {
         flex-direction: row;
-        padding-top: 30px;
+        padding-top: 34px;
         /*padding-bottom: 30px;*/
         border-bottom-width: 1px;
         border-bottom-color: #dadad8;
-        height: 200px;
+        height: 208px;
         justify-content: space-between;
         /*align-items: center;*/
     }

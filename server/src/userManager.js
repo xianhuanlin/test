@@ -1,7 +1,9 @@
 var apdapter =  require('./DataAdapter')
 var util = require('../util')
 var userManager = new Object();
-//http://localhost:8080/user/register?user=123&pwd=123
+
+userManager.tokenCache = {};
+
 userManager.addUser = function (params,add_result) {
     apdapter.query(apdapter.types.USER,params,function (ret) {
         if (add_result){
@@ -12,7 +14,23 @@ userManager.addUser = function (params,add_result) {
     // result(true);
 };
 
-userManager.editUserPwd = function (name,pdw,newPwd,result) {
+userManager.genToken = function (user,pwd) {
+    if (user && pwd){
+
+    }
+
+
+}
+
+userManager.login = function (user,pwd,result) {
+    apdapter.query(apdapter.types.USER,{user:user,pwd:pwd},function (ret) {
+        if (add_result){
+            add_result(ret)
+        }
+    })
+};
+
+userManager.editUserPwd = function (name,state,result) {
 
 };
 
@@ -36,8 +54,21 @@ userManager.handleReq = function (url, rsp) {
                 }
             })
         }
+        else if (url.indexOf('login')){
 
+        }
+        else if (url.indexOf('logout')){
+
+        }
+        else if (url.indexOf('edit')){
+
+        }
+        else if (url.indexOf('delete')){
+
+        }
     }
 }
+
+
 
 module.exports = userManager

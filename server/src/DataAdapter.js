@@ -116,33 +116,41 @@ DataAdapter.add = function (type,state,ret) {
 DataAdapter.delete = function (type,state,ret) {
     var collection = this.dataBase.db('poke').collection(type);
     collection.deleteOne(state,function (err,result) {
-        console.log(err)
+        console.log(result)
+        ret(result)
     })
 }
 ;
-DataAdapter.update = function (type,state,ret) {
-
+DataAdapter.update = function (type,state,newState,ret) {
+    var collection = this.dataBase.db('poke').collection(type);
+    collection.updateMany(state,newState,function (err,result) {
+        if (ret){
+            ret(result)
+        }
+        console.log( err)
+        console.log(result)
+    })
 }
 DataAdapter.stopService = function () {
     this.isOk = false;
     this.dataBase.close()
+    this.dataBase = null
 };
 
 DataAdapter.types = tableTypes;
 
 DataAdapter.startService(function (err) {
      if (!err){
-         DataAdapter.delete(DataAdapter.types.USER,{user:'lxh222',pwd:1222},function (ret) {
-             console.log(ret)
-
+         // DataAdapter.delete(DataAdapter.types.USER,{user:'lxh222',pwd:1222},function (ret) {
+         //     DataAdapter.stopService();
+         //     console.log(DataAdapter.dataBase)
+         // })
+         DataAdapter.update(DataAdapter.types.USER,{pwd:1234},{$set:{pwd:4567}},function (result) {
              DataAdapter.stopService();
          })
-
 
      }
 
  });
-
-console.log(DataAdapter.isOk);
 
 module.exports = DataAdapter;
