@@ -17,8 +17,8 @@
                                     <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                                 </div>
                                 <div>
-                                    <text class="roworgPrice" v-if="subItem.delete_price">{{safePrice(subItem.delete_price)}}</text>
-                                    <text class="rowPrice" v-if="!subItem.delete_price">{{safePrice(subItem.delete_price)}}</text>
+                                    <text class="roworgPrice" v-if="subItem.delete_price && subItem.delete_price > subItem.price">{{safePrice(subItem.delete_price)}}</text>
+                                    <text class="rowPrice" v-if="!(subItem.delete_price && subItem.delete_price > subItem.price)">{{safePrice(subItem.delete_price2)}}</text>
                                     <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
                                     <text class="rowNum">X{{subItem.number}}</text>
                                 </div>

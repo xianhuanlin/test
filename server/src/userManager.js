@@ -16,6 +16,7 @@ userManager.addUser = function (params,add_result) {
 
 userManager.genToken = function (user,pwd) {
     if (user && pwd){
+        var token = ''
 
     }
 

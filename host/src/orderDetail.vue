@@ -16,8 +16,8 @@
                             <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                         </div>
                         <div>
-                            <text class="roworgPrice" v-if="subItem.delete_price">{{safePrice(subItem.delete_price)}}</text>
-                            <text class="rowPrice" v-if="!subItem.delete_price">{{safePrice(subItem.delete_price)}}</text>
+                            <text class="roworgPrice" v-if="subItem.delete_price && subItem.delete_price > subItem.price">{{safePrice(subItem.delete_price)}}</text>
+                            <text class="rowPrice" v-if="!(subItem.delete_price && subItem.delete_price > subItem.price)">{{safePrice(subItem.delete_price2)}}</text>
                             <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
                             <text class="rowNum">X{{subItem.number}}</text>
                         </div>
@@ -33,7 +33,7 @@
                             <text class="detailText detailText2">{{item.order_payment.out_trade_no}}</text>
                         </div>
                         <text class="detailText">   支付方式:{{item.order_payment.pay_type}}</text>
-                        <text class="detailText">   商品总价:{{calcPrice(item.total_price)}}</text>
+                        <!--<text class="detailText">   商品总价:{{calcPrice(item.total_price)}}</text>-->
                         <div v-for="priceItem in  item.price_detail_list">
                             <text class="detailText">   {{priceItem.title}}{{priceItem.content}}</text>
                         </div>
