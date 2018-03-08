@@ -451,7 +451,7 @@
                     ws.saveDataToNative()
                     //异步加载头部
                     setTimeout(function () {
-                        wtsEvent.addTopupButton(100)
+                        wtsEvent.addTopupButton(0)
                         wtsEvent.addReloadHeader()
                     }, 100)
 
