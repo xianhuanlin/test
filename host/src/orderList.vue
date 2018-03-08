@@ -12,11 +12,11 @@
                         <div v-for="subItem in item.order_item_list" class="orderRow">
                             <div class="orderContent">
                                 <image class="rowImage" resize="cover" :src="subItem.icon_url" @click="imageClick(subItem)"></image>
-                                <div style="position: absolute;left: 200px;top:40px;">
+                                <div style="position: absolute;left: 200px;top:30px;">
                                     <text class="rowTitle">{{subItem.item_name}}</text>
                                     <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                                 </div>
-                                <div>
+                                <div style="margin-top: 6px">
                                     <text class="roworgPrice" v-if="subItem.delete_price && subItem.delete_price > subItem.price">{{safePrice(subItem.delete_price)}}</text>
                                     <text class="rowPrice" v-if="!(subItem.delete_price && subItem.delete_price > subItem.price)">{{safePrice(subItem.delete_price2)}}</text>
                                     <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
@@ -34,6 +34,9 @@
 
                     <!--<div style="height: 20px;width: 690px;background-color: transparent"></div>-->
                 </cell>
+                <cell>
+                    <div class="iphonXDiv" v-if="isiPhonX"></div>
+                </cell>
 
         </list>
         <div v-if="errorInfo.show"  style="align-items:center;margin-top: 300px;justify-content: center">
@@ -47,24 +50,22 @@
             <image src="asset://sc-order-empty" style="width: 220px;height: 220px"></image>
             <text style="margin-top: 10px;color: #919191;">暂无相关订单</text>
         </div>
+
     </div>
 
 </template>
 
 <style scoped>
+    .iphonXDiv{
+        height: 72px;
+        background-color: #f4f4f4;
+    }
     .amount{
         margin-right: 20px;
         color: #ff6692;
         font-size: 30px;
         font-weight: bold;
         /*background-color: #4a4a4a;*/
-    }
-    .discount{
-        /*text-align: center;*/
-        margin-right: 30px;
-        font-size: 26px;
-        color: #4a4a4a;
-        /*background-color: greenyellow;*/
     }
     .orderDate{
         font-size: 30px;
@@ -141,11 +142,12 @@
     }
     .orderContent {
         flex-direction: row;
-        padding-top: 34px;
+        padding-top: 24px;
         /*padding-bottom: 30px;*/
         border-bottom-width: 1px;
         border-bottom-color: #dadad8;
         height: 208px;
+
         justify-content: space-between;
         /*align-items: center;*/
     }
@@ -190,7 +192,8 @@
                 loadingOk:false,
                 errorInfo:{show:false,info:'系统错误'},
                 emptyShow:false,
-                reqParams:{offset:0,count:20,type:20}
+                reqParams:{offset:0,count:20,type:20},
+
             }
         },
         mounted () {
@@ -200,6 +203,9 @@
         computed: {
             bottomStyle(){
                 return {height:'128px',width:'750px','flex-direction':'row'}
+            },
+            isiPhonX(){
+                return util.isIPhoneX()
             },
         },
 
@@ -259,7 +265,6 @@
                         wtsEvent.addTopupButton(100)
                         // wtsEvent.addReloadHeader()
                     }, 100)
-
 
                 })
             },

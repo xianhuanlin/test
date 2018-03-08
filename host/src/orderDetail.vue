@@ -11,11 +11,11 @@
                 <div v-for="subItem in item.order_item_list" class="orderRow">
                     <div class="orderContent">
                         <image class="rowImage" :src="subItem.icon_url" @click="imageClick(subItem)" ></image>
-                        <div style="position: absolute;left: 200px;top:40px;">
+                        <div style="position: absolute;left: 200px;top:30px;">
                             <text class="rowTitle">{{subItem.item_name}}</text>
                             <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                         </div>
-                        <div>
+                        <div style="margin-top: 6px">
                             <text class="roworgPrice" v-if="subItem.delete_price && subItem.delete_price > subItem.price">{{safePrice(subItem.delete_price)}}</text>
                             <text class="rowPrice" v-if="!(subItem.delete_price && subItem.delete_price > subItem.price)">{{safePrice(subItem.delete_price2)}}</text>
                             <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
@@ -28,13 +28,13 @@
                 </div>
                 <div class="orderFooter">
                     <div>
-                        <div style="flex-direction: row;align-items:flex-start">
+                        <div style="flex-direction: row;align-items:flex-start;margin-bottom: 8px">
                             <text class="detailText">支付流水号:</text>
                             <text class="detailText detailText2">{{item.order_payment.out_trade_no}}</text>
                         </div>
                         <text class="detailText">   支付方式:{{item.order_payment.pay_type}}</text>
                         <!--<text class="detailText">   商品总价:{{calcPrice(item.total_price)}}</text>-->
-                        <div v-for="priceItem in  item.price_detail_list">
+                        <div v-for="priceItem in  item.price_detail_list" style="margin-bottom: 8px;margin-top: 8px;">
                             <text class="detailText">   {{priceItem.title}}{{priceItem.content}}</text>
                         </div>
                         <!--<text class="detailText">   订单优惠：{{calcPrice(item.discount_amount)}}</text>-->
@@ -61,6 +61,7 @@
                 </div>
             </div>
         </div>
+            <div class="iphonXDiv" v-if="isIphoneX"></div>
 
         </scroller>
         <div v-if="errorInfo.show"  style="align-items:center;margin-top: 300px;justify-content: center">
@@ -76,6 +77,10 @@
 </template>
 
 <style scoped>
+    .iphonXDiv{
+        height: 72px;
+        background-color: #f4f4f4;
+    }
     .buttonText{
 
     }
@@ -212,7 +217,7 @@
     }
     .orderContent {
         flex-direction: row;
-        padding-top: 34px;
+        padding-top: 24px;
         /*padding-bottom: 30px;*/
         border-bottom-width: 1px;
         border-bottom-color: #dadad8;
@@ -277,6 +282,9 @@
             //     var pricef = parseFloat(e)/100;
             //     return pricef.toString()
             // },
+            isIphoneX(){
+                return util.isIPhoneX()
+            },
 
 
         },
