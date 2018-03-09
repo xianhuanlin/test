@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a94e2163-489d-46a6-aaa6-f4d075b1ef45" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/detail.vue" afterPath="$PROJECT_DIR$/src/detail.vue" />
-      <change beforePath="$PROJECT_DIR$/src/orderList.vue" afterPath="$PROJECT_DIR$/src/orderList.vue" />
+      <change beforePath="$PROJECT_DIR$/../server/src/userManager.js" afterPath="$PROJECT_DIR$/../server/src/userManager.js" />
+      <change beforePath="$PROJECT_DIR$/../server/test.js" afterPath="$PROJECT_DIR$/../server/test.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -21,8 +21,8 @@
       <file leaf-file-name="detail.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/detail.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="423">
-              <caret line="457" column="30" lean-forward="true" selection-start-line="457" selection-start-column="30" selection-end-line="457" selection-end-column="30" />
+            <state relative-caret-position="1571">
+              <caret line="457" column="30" lean-forward="false" selection-start-line="457" selection-start-column="30" selection-end-line="457" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -189,11 +189,6 @@
             <path>
               <item name="host" type="b2602c69:ProjectViewProjectNode" />
               <item name="host" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="host" type="b2602c69:ProjectViewProjectNode" />
-              <item name="host" type="462c0819:PsiDirectoryNode" />
               <item name="todo" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -289,13 +284,6 @@
       <workItem from="1516328791664" duration="69726000" />
       <workItem from="1517196280226" duration="37000" />
       <workItem from="1517196351851" duration="81424000" />
-    </task>
-    <task id="LOCAL-00003" summary="修改一下逻辑">
-      <created>1514627212357</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1514627212357</updated>
     </task>
     <task id="LOCAL-00004" summary="增加了一些ui库的引入">
       <created>1514733359065</created>
@@ -633,11 +621,18 @@
       <option name="project" value="LOCAL" />
       <updated>1520490780815</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="修改了一下ui">
+      <created>1520492286865</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1520492286865</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="338626000" />
+    <option name="totallyTimeSpent" value="339214000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="6" />
@@ -651,7 +646,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25513905" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16475645" sideWeight="0.1342513" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25272068" sideWeight="0.48853868" order="7" side_tool="false" content_ui="tabs" x="22" y="244" width="1396" height="282" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2034384" sideWeight="0.8657487" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2034384" sideWeight="0.8657487" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32769045" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1088,8 +1083,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/detail.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="457" column="30" lean-forward="true" selection-start-line="457" selection-start-column="30" selection-end-line="457" selection-end-column="30" />
+        <state relative-caret-position="1571">
+          <caret line="457" column="30" lean-forward="false" selection-start-line="457" selection-start-column="30" selection-end-line="457" selection-end-column="30" />
           <folding />
         </state>
       </provider>

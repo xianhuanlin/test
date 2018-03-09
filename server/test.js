@@ -6,9 +6,36 @@
  var _ = require('lodash');
 
  var CryptoJS = require("crypto-js");
+ var com = {}
 
+
+ var cd = '123'
+ var bb = '1234'
+ if (cd == bb){
+     console.log('ok')
+ }
+
+ com.cd = 11
+ com['123'] = 'abcd'
+
+ for (a in com){
+     console.log(a)
+ }
+var genToken = function (user,pwd) {
+     if (user && pwd){
+
+         var token = user + pwd + Date.now().toString()
+         console.log(token)
+
+         this.tokenCache
+     }
+
+
+ }
  // Encrypt
- console.log(CryptoJS.MD5('123').toString().length);
+ var date = new Date()
+ console.log(date.toJSON())
+ console.log(CryptoJS.MD5(new Date().toUTCString()).toString());
  // var ciphertext = CryptoJS.AES.encrypt('my message', 'secret key 123');
  // console.log(ciphertext.toString());
  // // Decrypt
