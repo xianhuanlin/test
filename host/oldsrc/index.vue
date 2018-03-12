@@ -108,7 +108,7 @@
 
 <script>
 
-    import util from './util.js'
+    import util from '../src/util.js'
 //    import {WxcOverlay} from './includes'
 //    import { WxcOverlay } from 'weex-ui/packages/wxc-overlay';
 //    import WxcOverlay from 'weex-ui/packages/wxc-overlay';

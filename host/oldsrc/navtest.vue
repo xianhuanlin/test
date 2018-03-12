@@ -37,7 +37,7 @@
     const animation = weex.requireModule('animation')
     var nav = weex.requireModule('event2')
     const clipboard = weex.requireModule('clipboard')
-    import util from './util.js'
+    import util from '../src/util.js'
     var isok = false
     export default {
         components: {},

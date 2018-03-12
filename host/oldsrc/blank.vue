@@ -39,7 +39,7 @@
     const wtsEvent = weex.requireModule('WTSEvent')
     const animation = weex.requireModule('animation')
     const modal = weex.requireModule('modal')
-    import util from './util.js'
+    import util from '../src/util.js'
     export default {
         components: {},
         data() {

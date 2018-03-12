@@ -54,7 +54,7 @@
     const animation = weex.requireModule('animation')
     // var nav = weex.requireModule('event2222')
     const clipboard = weex.requireModule('clipboard')
-    import util from './util.js'
+    import util from '../src/util.js'
     var temp = undefined
     export default {
         components: {},
