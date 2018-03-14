@@ -1,44 +1,73 @@
 <template>
-    <div style="position: absolute;background-color: white">
-        <list class="scroll" v-if="loadingOk && !emptyShow" ref="scroll" loadmoreoffset="10" @loadmore="fetchMore">
-            <!--<div style="padding: 30px;background-color: gray;">-->
-            <cell v-for="item in itemModel.order_list" >
-                <div style="margin-top: 30px" class="orderSection" @click="orderClick(item)">
-                    <div class="orderHeader">
-                        <image resize="cover" src="asset://sc-cardHeader" style="left: 0; position: absolute;width:720px;height: 60px"></image>
-                        <text class="shopName">店铺:{{item.store_name}}</text>
-                        <text class="orderDate">{{timeForamt(item.pay_time_long)}}</text>
-                    </div>
-                    <div v-for="subItem in item.order_item_list" class="orderRow">
-                        <div class="orderContent">
-                            <image class="rowImage" resize="cover" :src="subItem.icon_url" @click="imageClick(subItem)"></image>
-                            <div style="position: absolute;left: 200px;top:30px;">
-                                <text class="rowTitle">{{subItem.item_name}}</text>
-                                <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
-                            </div>
-                            <div style="margin-top: 6px">
-                                <text class="roworgPrice" v-if="subItem.delete_price && subItem.delete_price > subItem.price">{{safePrice(subItem.delete_price)}}</text>
-                                <text class="rowPrice" v-if="!(subItem.delete_price && subItem.delete_price > subItem.price)">{{safePrice(subItem.delete_price2)}}</text>
-                                <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
-                                <text class="rowNum">X{{subItem.number}}</text>
-                            </div>
+    <div style="position: absolute;">
+        <scroller class="scroll" v-if="loadingOk" ref="scroll">
+            <div class="addressHeader"></div>
+            <div class="address">
+                <image class="addressTopImage" src="asset://bg-page-bar"></image>
+                <div class="addressContent">
+                    <div>
+                        <text class="addressUser">收货人{{}}</text>
+                        <text class="addressInfo"></text>
+                        <div v-if="showSubAddress">
+                            <text class="addressInfoSubInfo"></text>
+                            <text class="addressInfoSubTip"></text>
                         </div>
-                    </div>
-                    <!--</div>-->
 
-                    <div class="orderFooter">
-                        <!--<text class="discount">优惠:￥{{calcPrice(item.discount_amount)}}</text>-->
-                        <text class="amount">实付:￥{{calcPrice(item.total_amount)}}</text>
                     </div>
+                    <image class="moreIcon" src="asset://order-arrow-right"></image>
+                    <text class="addressPhone"></text>
                 </div>
 
-                <!--<div style="height: 20px;width: 690px;background-color: transparent"></div>-->
-            </cell>
-            <cell>
-                <div class="iphonXDiv" v-if="isiPhonX"></div>
-            </cell>
+            </div>
 
-        </list>
+            <div class="itemList">
+                <div v-for="item in orderSettleModel.package_list">
+
+                    <div class="orderContent">
+                        <image class="rowImage" resize="cover" :src="subItem.icon_url"></image>
+                        <div style="position: absolute;left: 200px;top:30px;">
+                            <text class="rowTitle">{{subItem.item_name}}</text>
+                            <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
+                        </div>
+                        <div style="margin-top: 6px">
+                            <text class="roworgPrice" v-if="subItem.delete_price && subItem.delete_price > subItem.price">{{safePrice(subItem.delete_price)}}</text>
+                            <text class="rowPrice" v-if="!(subItem.delete_price && subItem.delete_price > subItem.price)">{{safePrice(subItem.delete_price2)}}</text>
+                            <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
+                            <text class="rowNum">X{{subItem.number}}</text>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+            <div class="coupon">
+
+            </div>
+
+            <div class="pointExchange">
+
+            </div>
+
+            <div class="deliver">
+
+            </div>
+
+            <div class="priceDetail">
+
+            </div>
+
+            <div class="vipPoint">
+
+            </div>
+            <div class="invo">
+
+            </div>
+            <div class="iphonXDiv" v-if="isIphoneX"></div>
+        </scroller>
+
         <div v-if="errorInfo.show"  style="align-items:center;margin-top: 300px;justify-content: center">
             <image src="asset://icon-all-net" style="width: 220px;height: 220px"></image>
             <text style="margin-top: 10px;color: #919191;">{{errorInfo.info}}</text>
@@ -46,118 +75,55 @@
                 <text style="color: white;font-size: 32px;">重新加载</text>
             </div>
         </div>
-        <div v-if="emptyShow"  style="align-items:center;margin-top: 300px;;flex: 1;background-color: white">
-            <image src="asset://sc-order-empty" style="width: 220px;height: 220px"></image>
-            <text style="margin-top: 10px;color: #919191;">暂无相关订单</text>
-        </div>
 
     </div>
 
 </template>
 
 <style scoped>
+    .addressContent{
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .addressInfo{
+        margin-top: 34px;
+
+    }
+    .address {
+        background-color: white;
+        /*padding: 30px;*/
+
+    }
+
+    .addressTopImage{
+        width: 750px;
+        height: 10px;
+
+    }
+
+    .normalText{
+
+    }
+
+    .addressUser{
+        margin-left: 30px;
+        margin-top: 30px;
+    }
+    .addressPhone{
+        position: absolute;
+        margin-left: 220px;
+        margin-top: 30px;
+    }
+
+    .moreIcon{
+
+    }
+
     .iphonXDiv{
         height: 72px;
         background-color: #f4f4f4;
     }
-    .amount{
-        margin-right: 20px;
-        color: #ff6692;
-        font-size: 30px;
-        font-weight: bold;
-        /*background-color: #4a4a4a;*/
-    }
-    .orderDate{
-        font-size: 30px;
-        color: white;
-    }
-    .shopName{
-        font-size: 26px;
-        color: white;
-    }
-    .rowNum{
-        margin-top: 10px;
-        font-size: 26px;
-        color: #919090;
-        text-align:right;
-    }
-    .roworgPrice{
-        font-size: 30px;
-        color: #DAD8D8;
-        text-decoration:line-through;
-        text-align: right;
-        /*margin-left: 10px;*/
-    }
-    .rowPrice{
-        font-size: 30px;
-        color: #ff6692;
-        text-align:right;
 
-    }
-    .rowInfo{
-        margin-top: 10px;
-        font-size: 24px;
-        color: #919090;
-    }
-    .rowTitle{
-        margin-top: 10px;
-        width: 300px;
-        /*height: ;*/
-        lines:2;
-        font-size: 26px;
-        color: #4a4a4a;
-    }
-    .rowImage{
-        height: 150px;
-        width: 150px;
-    }
-    .orderFooter{
-        background-color: white;
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: center;
-        height: 88px;
-        /*background-color: #0088fb;*/
-    }
-
-    .orderHeader{
-        background-color: #4CD7C0;
-        flex-direction: row;
-        justify-content: space-between;
-        padding-left: 30px;
-        padding-right: 30px;
-        height: 60px;
-        align-items: center;
-
-    }
-    .orderSection{
-        border-radius: 20px;
-        background-color: white;
-        overflow: hidden;
-        width: 690px;
-        margin-left: 30px;
-        margin-top: 30px;
-        /*padding: 30px;*/
-
-    }
-    .orderContent {
-        flex-direction: row;
-        padding-top: 24px;
-        /*padding-bottom: 30px;*/
-        border-bottom-width: 1px;
-        border-bottom-color: #dadad8;
-        height: 208px;
-
-        justify-content: space-between;
-        /*align-items: center;*/
-    }
-    .orderRow{
-        /*background-color: red;*/
-        padding-left: 30px;
-        padding-right: 30px;
-        /*padding: 30px;*/
-
-    }
     .errorButton{
         width: 288px;
         height: 88px;
@@ -171,7 +137,6 @@
     .scroll{
         flex-direction: column;
         background-color: #f4f4f4;
-        justify-content: center;
         flex: 1;
     }
 
@@ -181,19 +146,21 @@
 <script>
     const wtsEvent = weex.requireModule('WTSEvent')
     const animation = weex.requireModule('animation')
-    const navigator = weex.requireModule('navigator')
     const modal = weex.requireModule('modal')
+    const navigator = weex.requireModule('navigator')
+
     import util from './util.js'
     export default {
         components: {},
         data() {
             return {
-                itemModel:null,
+                orderSettleModel:null,
+                
+                itemModel:null, //这里存的是一个order列表，兼容后面可能会有多个门店的订单的情况
                 loadingOk:false,
                 errorInfo:{show:false,info:'系统错误'},
-                emptyShow:false,
-                reqParams:{offset:0,count:20,type:20},
-
+                reqParams:{offset:0,count:1},
+                showSubAddress:true,
             }
         },
         mounted () {
@@ -204,9 +171,11 @@
             bottomStyle(){
                 return {height:'128px',width:'750px','flex-direction':'row'}
             },
-            isiPhonX(){
+            isIphoneX(){
                 return util.isIPhoneX()
             },
+
+
         },
 
         methods: {
@@ -215,14 +184,26 @@
                 return pricef.toString()
             },
             reloadPage:function () {
+                this.loadingOk = true;
+                console.log('wxxx')
+                console.log(this.order_item_list.length)
+                navigator.setNavBarTitle({title:"提交订单"},function () {
+
+                })
+                return;
                 var ws = this;
 
-                // ws.errorInfo.show = false
-                ws.emptyShow = false
+                ws.errorInfo.show = false
                 ws.loadingOk = false
-                wtsEvent.showLoading('1');
 
-                wtsEvent.fetch("get","trade/order/list",this.reqParams,function (rsp) {
+                if (!this.order_uid){
+                    var pageParams = util.parseUrl(weex.config.bundleUrl);
+                    this.order_uid = pageParams.order_uid;
+                }
+
+                wtsEvent.showLoading('1');
+                this.reqParams = {order_uid:this.order_uid}
+                wtsEvent.fetch("get","trade/order/get",this.reqParams,function (rsp) {
                     wtsEvent.showLoading('0')
                     if (rsp == null) {
                         wtsEvent.toast("系统错误");
@@ -230,7 +211,7 @@
                     }
 
                     if (rsp.code == 10000) {
-                        ws.itemModel = rsp.data;
+                        ws.itemModel = {order_list:[rsp.data.order]};
                         ws.loadingOk = true;
                         ws.errorInfo.show = false;
                         // wtsEvent.toast("fetch 10000");
@@ -249,35 +230,16 @@
                         return;
                     }
 
-                    // wtsEvent.toast(rsp.data.total_count + '')
-                    navigator.setNavBarTitle({title:"订单列表"},function () {
-
-                    })
-
-                    var item = rsp.data.order_list;
-                    ws.emptyShow = (!item || item.length == 0);
-                    ws.reqParams.offset = item.length;
-                    //ws.itemModel = item;
-                    // ws.emptyShow = (!item || item.length == 0);
                     ws.saveDataToNative()
                     //异步加载头部
                     setTimeout(function () {
-                        wtsEvent.addTopupButton(util.isIPhoneX() ? 100 : 0)
-                        // wtsEvent.addReloadHeader()
+                        wtsEvent.addTopupButton(100)
                     }, 100)
 
+                    navigator.setNavBarTitle({title:"提交订单"},function () {
+
+                    })
                 })
-            },
-            orderClick:function(item){
-                const toUrl = weex.config.bundleUrl.split('/').slice(0, -1).join('/') + '/' + 'orderDetail' + '.js'
-                console.log(toUrl)
-                navigator.push({
-                    url: toUrl + '?order_uid=' + item.order_uid,
-                    animated: "true"
-                }, event => {
-                    //modal.toast({ message: 'callback: ' + event })
-                })
-                // wtsEvent.toast(item.order_uid)
             },
             saveDataToNative:function () {
                 // var item = this.itemModel;
@@ -298,43 +260,10 @@
             reloadClick:function () {
                 this.reloadPage()
             },
-            fetchMore:function () {
-                var ws = this;
-                // wtsEvent.toast('loadMore')
-                wtsEvent.showLoading('1')
 
-                wtsEvent.fetch("get","trade/order/list",this.reqParams,function (rsp) {
-                    wtsEvent.showLoading('0')
-                    if (rsp == null) {
-                        wtsEvent.toast("系统错误");
-                        return
-                    }
-
-                    if (rsp.code == 10000) {
-                    } else {
-                        return;
-                    }
-
-                    var itemMore = rsp.data.order_list;
-                    var length = itemMore.length;
-                    var itemList = ws.itemModel.order_list;
-                    for (var t = 0 ; t < length; t++){
-                        itemList.push(rsp.data.order_list[t])
-                    }
-                    ws.reqParams.offset += itemMore.length;
-                    // wtsEvent.toast(rsp.data.order_list.length + '')
-                });
-
-            },
-            imageClick:function (e) {
-                wtsEvent.showFullImage([e.icon_url],0)
-            },
-            timeForamt:function (e) {
-                // e.toString()
-                if (!e){
-                    return ''
-                }
-                return util.formatStamp(e,'YYYY MM dd')
+            onCheckOrderClick:function (item) {
+                wtsEvent.openPage(item.electronic_ticket_url)
+                wtsEvent.umengReport('10270')
             },
             safePrice:function (price) {
                 if (!price){
