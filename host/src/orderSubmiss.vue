@@ -1,31 +1,39 @@
 <template>
-    <div style="position: absolute;">
+    <div style="position: absolute;" @consigneeChange="onConsigneechange" @couponChange="onCoupneChange">
         <scroller class="scroll" v-if="loadingOk" ref="scroll">
             <div class="addressHeader"></div>
-            <div class="address">
+            <div class="addressCell">
                 <image class="addressTopImage" src="asset://bg-page-bar"></image>
                 <div class="addressContent">
                     <div>
-                        <text class="addressUser">收货人{{}}</text>
-                        <text class="addressInfo"></text>
-                        <div v-if="showSubAddress">
-                            <text class="addressInfoSubInfo"></text>
-                            <text class="addressInfoSubTip"></text>
+                        <div style="flex-direction: row;justify-content: space-between;width: 660px">
+                            <text class="addressUser">收货人{{}}</text>
+                            <text class="addressUser">135900000000</text>
                         </div>
 
+                        <text class="addressInfo normalText">收货地址:</text>
+                        <div v-if="0 && showSubAddress">
+                            <text class="addressInfoSubInfo">123</text>
+                            <text class="addressInfoSubTip">456</text>
+                        </div>
+                        <text class="addresstips">(收货不方便时，可选择门店自提)</text>
+
                     </div>
-                    <image class="moreIcon" src="asset://order-arrow-right"></image>
-                    <text class="addressPhone"></text>
+                    <div class="divRight">
+                        <image class="moreIcon" src="asset://order-arrow-right"></image>
+                    </div>
+
+                    <!--<text class="addressPhone">135900000000</text>-->
                 </div>
 
             </div>
 
-            <div class="itemList">
+            <div class="itemsCell" v-if="orderSettleModel">
                 <div v-for="item in orderSettleModel.package_list">
 
-                    <div class="orderContent">
+                    <div class="itemContent">
                         <image class="rowImage" resize="cover" :src="subItem.icon_url"></image>
-                        <div style="position: absolute;left: 200px;top:30px;">
+                        <div style="position: absolute;left: 200px;top:2px;">
                             <text class="rowTitle">{{subItem.item_name}}</text>
                             <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
                         </div>
@@ -81,15 +89,56 @@
 </template>
 
 <style scoped>
+
+    .itemContent{
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 30px;
+        padding-bottom:30px ;
+    }
+    .rowInfo{
+        font-size: 24px;
+        color:#919191;
+    }
+    .rowTitle{
+        font-size: 26px;
+        color: #222222;
+    }
+    .rowImage{
+        width: 120px;
+        height: 120px;
+    }
+
+    .itemsCell {
+
+    }
+    .addresstips{
+        color: #4CD7C0;
+        font-size: 26px;
+        margin-top: 20px;
+    }
+
+
+    .divRight{
+        justify-content: center;
+        align-items:stretch ;
+        width: 18px;
+    }
     .addressContent{
         flex-direction: row;
         justify-content: space-between;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 40px;
+        padding-bottom: 40px;
     }
     .addressInfo{
-        margin-top: 34px;
+        margin-top: 20px;
+        max-lines: 2;
+
 
     }
-    .address {
+    .addressCell {
         background-color: white;
         /*padding: 30px;*/
 
@@ -102,21 +151,25 @@
     }
 
     .normalText{
-
+        color: #4a4a4a;
+        font-size: 26px;
     }
 
     .addressUser{
-        margin-left: 30px;
-        margin-top: 30px;
+        /*margin-left: 30px;*/
+        /*margin-top: 30px;*/
+        color: #4a4a4a;
     }
     .addressPhone{
         position: absolute;
-        margin-left: 220px;
-        margin-top: 30px;
+        /*margin-left: 220px;*/
+        /*margin-top: 30px;*/
     }
 
     .moreIcon{
-
+        width: 18px;
+        height: 30px;
+        /*top:50%;*/
     }
 
     .iphonXDiv{
@@ -155,7 +208,9 @@
         data() {
             return {
                 orderSettleModel:null,
-                
+                // addressId:-1,
+                addressInfo:{},
+                couponInfo:{},
                 itemModel:null, //这里存的是一个order列表，兼容后面可能会有多个门店的订单的情况
                 loadingOk:false,
                 errorInfo:{show:false,info:'系统错误'},
@@ -185,8 +240,6 @@
             },
             reloadPage:function () {
                 this.loadingOk = true;
-                console.log('wxxx')
-                console.log(this.order_item_list.length)
                 navigator.setNavBarTitle({title:"提交订单"},function () {
 
                 })
@@ -196,14 +249,17 @@
                 ws.errorInfo.show = false
                 ws.loadingOk = false
 
-                if (!this.order_uid){
+                if (!this.order_item_list){
                     var pageParams = util.parseUrl(weex.config.bundleUrl);
-                    this.order_uid = pageParams.order_uid;
+                    this.order_item_list = pageParams.order_item_list;
                 }
 
                 wtsEvent.showLoading('1');
-                this.reqParams = {order_uid:this.order_uid}
-                wtsEvent.fetch("get","trade/order/get",this.reqParams,function (rsp) {
+                this.reqParams = this.genPreSubmissParams()
+                var method = this.isGroupBuy? "get":"post"
+                var path = this.isGroupBuy ? "group/settlement/get/v1":"trade/order/settlement/get"
+
+                wtsEvent.fetch(method,path,this.reqParams,function (rsp) {
                     wtsEvent.showLoading('0')
                     if (rsp == null) {
                         wtsEvent.toast("系统错误");
@@ -211,7 +267,8 @@
                     }
 
                     if (rsp.code == 10000) {
-                        ws.itemModel = {order_list:[rsp.data.order]};
+                        ws.orderSettleModel =
+                        // ws.itemModel = {order_list:[rsp.data.order]};
                         ws.loadingOk = true;
                         ws.errorInfo.show = false;
                         // wtsEvent.toast("fetch 10000");
@@ -236,11 +293,9 @@
                         wtsEvent.addTopupButton(100)
                     }, 100)
 
-                    navigator.setNavBarTitle({title:"提交订单"},function () {
-
-                    })
                 })
             },
+
             saveDataToNative:function () {
                 // var item = this.itemModel;
                 // var act = this.activityModel;
@@ -261,9 +316,45 @@
                 this.reloadPage()
             },
 
-            onCheckOrderClick:function (item) {
-                wtsEvent.openPage(item.electronic_ticket_url)
-                wtsEvent.umengReport('10270')
+            //生成预结算接口的信息
+            genPreSubmissParams:function () {
+                var params = {}
+
+                if (!this.groupBuy){
+                    params.order_item_list = this.order_item_list;
+                    params.consignee_uid = this.consignee_uid
+                    params.auto_select_coupon = 0
+                    // params.radix = this.order_item_list[0].radix;
+                    // params.sku_id = this.order_item_list[0].sku_id;
+                    // params.number = this.order_item_list[0].number;
+                }else{
+                    params.order_item_list = this.order_item_list;
+                    params.consignee_uid = this.consignee_uid
+                    params.number = this.order_item_list[0].number;
+                    params.radix = this.order_item_list[0].radix;
+                    params.sku_id = this.order_item_list[0].sku_id;
+                    params.number = this.order_item_list[0].number;
+                }
+                return params;
+
+            },
+
+            //生成结算接口的信息
+            genSubmissParams:function () {
+                var params = {}
+
+                if (this.groupBuy){
+
+                }else{
+
+                }
+
+            },
+            onCoupneChange:function (params) {
+
+            },
+            onConsigneechange:function (params) {
+                wtsEvent.toast(params.uid)
             },
             safePrice:function (price) {
                 if (!price){
