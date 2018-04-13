@@ -2,16 +2,16 @@
     <div style="position: absolute;" @consigneeChange="onConsigneechange" @couponChange="onCoupneChange">
         <scroller class="scroll" v-if="loadingOk" ref="scroll">
             <div class="addressHeader"></div>
-            <div class="addressCell" >
+            <div class="addressCell" v-if="addressInfo">
                 <image class="addressTopImage" src="asset://bg-page-bar"></image>
                 <div class="addressContent">
                     <div>
-                        <div style="flex-direction: row;justify-content: space-between;width: 660px">
-                            <text class="addressUser">收货人:{{}}</text>
-                            <text class="addressUser">135900000000</text>
+                        <div style="flex-direction: row;justify-content: space-between;width: 630px">
+                            <text class="addressUser">收货人:{{addressInfo.consignee}}</text>
+                            <text class="addressUser">{{addressInfo.mobile}}</text>
                         </div>
 
-                        <text class="addressInfo normalText">收货地址:</text>
+                        <text class="addressInfo normalText">收货地址:{{addressInfo.detailInfo}}</text>
                         <div v-if="0 && showSubAddress">
                             <text class="addressInfoSubInfo">123</text>
                             <text class="addressInfoSubTip">456</text>
@@ -207,7 +207,7 @@
     }
     .deliverCell{
         padding-left: 30px;
-        padding-top: 30px;
+        padding-top: 22px;
         height: 88px;
         background-color: white;
     }
@@ -348,8 +348,7 @@
         data() {
             return {
                 orderSettleModel:null,
-                // addressId:-1,
-                addressInfo:{},
+                addressInfo:null,
                 couponInfo:{},
                 itemModel:null, //这里存的是一个order列表，兼容后面可能会有多个门店的订单的情况
                 loadingOk:false,
@@ -359,7 +358,9 @@
             }
         },
         mounted () {
-            this.reloadPage()
+            this.requestAddressInfo(function (isOk,rsp) {
+
+            })
 
         },
         computed: {
@@ -396,6 +397,7 @@
 
                 wtsEvent.showLoading('1');
                 this.reqParams = this.genPreSubmissParams()
+
                 var method = this.isGroupBuy? "get":"post"
                 var path = this.isGroupBuy ? "group/settlement/get/v1":"trade/order/settlement/get"
 
@@ -435,6 +437,60 @@
 
                 })
             },
+
+            addressFromJson:function (json) {
+                var addr = ''
+                if (json.province){
+                    addr += json.province
+                }
+                if (json.city){
+                    addr += json.city
+                }
+                if (json.area){
+                    addr += json.area
+                }
+                if (json.address){
+                    addr += json.address
+                }
+                return addr
+            },
+
+            requestAddressInfo:function (cb) {
+                //闪电购流程比较特殊
+
+                if (this.order_item_list[0].trade_type == 3 && this.appStockCode.length > 0){
+
+                }else{
+                    var ws = this;
+                    wtsEvent.showLoading('1')
+                    wtsEvent.fetch('get','user/consignee/list',{},function (rsp) {
+                        if (rsp.code == 10000){
+                            wtsEvent.showLoading('0')
+                            if (rsp.data.consignee_list.length > 0){
+                                var consigneeObj = rsp.data.consignee_list[0]
+                                var info = {}
+                                info.detailInfo = ws.addressFromJson(consigneeObj)
+                                info.consignee = consigneeObj.consignee
+                                info.mobile = consigneeObj.mobile
+                                info.consignee_uid = consigneeObj.consignee_uid
+
+                                ws.onConsigneechange(info)
+                            }
+                            else{
+                                cb(true,null)
+                                wtsEvent.showLoading('0')
+                            }
+                        }else{
+                             cb(false,null)
+                            wtsEvent.showLoading('0')
+                        }
+
+
+                    })
+                }
+            },
+
+
 
             saveDataToNative:function () {
                 // var item = this.itemModel;
@@ -494,7 +550,26 @@
 
             },
             onConsigneechange:function (params) {
-                wtsEvent.toast(params.uid)
+                this.addressInfo = params;
+                this.reloadPage()
+            },
+
+            //积分抵扣改变
+            onVipPointDikouChange:function (params) {
+
+            },
+            //使用会员卡积分
+            onVipPointChange:function (params) {
+
+            },
+            //修改发票
+            onInvoceChange:function (params) {
+
+            },
+            //native来的通知
+            onNativeNotification:function (nativeInfo) {
+
+
             },
             safePrice:function (price) {
                 if (!price){
