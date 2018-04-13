@@ -24,6 +24,9 @@ target 'testFrame' do
 #	pod 'Toast', '3.0'
 #腾讯bug上报
 	pod 'Bugly', '2.4.6'
+    pod 'YYWebImage'
+    pod 'YYImage/WebP'
+    
 end
 
 

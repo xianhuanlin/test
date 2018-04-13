@@ -85,7 +85,7 @@
                     <div class="divRow" style="margin-bottom: 20px">
                         <text :style="priceDetailStyle(detail,0)">{{detail.title}}</text>
                         <div class="divRow">
-                            <text style="background-color: #f4f4f4;color: #4a4a4a;font-size: 22px;margin-top: 3px" v-if="detail.tag">{{detail.tag}}</text>
+                            <text style="background-color: #f4f4f4;color: #4a4a4a;font-size: 22px;margin-top: 3px;margin-right: 10px" v-if="detail.tag">{{detail.tag}}</text>
                             <text :style="priceDetailStyle(detail,1)">{{detail.content}}</text>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
         height: 120px;
     }
     .rowNum{
-        margin-top: 5px;
+        margin-top: 10px;
         font-size: 26px;
         color: #919090;
         text-align:right;
