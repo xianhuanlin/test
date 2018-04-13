@@ -80,20 +80,58 @@
                 </div>
             </div>
 
-            <div class="priceDetailCell">
+            <div class="priceDetailCell" v-if="orderSettleModel">
+                <div v-for="detail in orderSettleModel.price_detail">
+                    <div class="divRow" style="margin-bottom: 20px">
+                        <text :style="priceDetailStyle(detail,0)">{{detail.title}}</text>
+                        <div class="divRow">
+                            <text style="background-color: #f4f4f4;color: #4a4a4a;font-size: 22px;margin-top: 3px" v-if="detail.tag">{{detail.tag}}</text>
+                            <text :style="priceDetailStyle(detail,1)">{{detail.content}}</text>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divLine2"></div>
+                <div class="cellAmount">
+                    <text class="titleText">合计</text>
+                    <text class="priceText">{{safePrice(orderSettleModel.total_amount)}}</text>
+                </div>
 
             </div>
 
-            <div class="vipPointCell">
+            <div class="deliverCell" style="margin-top: 20px">
+                <div style="flex-direction: row; justify-content: space-between">
+                    <text class="titleText">会员卡积分</text>
+                    <div style="flex-direction: row;">
+                        <text class="rightTextInfo">使用积分抵扣</text>
+                        <image class="moreIcon diliverRightIcon" src="asset://order-arrow-right"></image>
+                    </div>
+                </div>
 
             </div>
 
-            <div class="invoceCell">
-
+            <div class="deliverCell" style="margin-top: 20px">
+                <div style="flex-direction: row; justify-content: space-between">
+                    <text class="titleText">发票</text>
+                    <div style="flex-direction: row;">
+                        <text class="rightTextInfo">未选择</text>
+                        <image class="moreIcon diliverRightIcon" src="asset://order-arrow-right"></image>
+                    </div>
+                </div>
             </div>
+
             <div class="iphonXDiv" v-if="isIphoneX"></div>
         </scroller>
+        <div v-if="loadingOk" class="bottomCell">
+            <div class="divPay">
+                <text class="titleText">应付金额:</text>
+                <text class="priceText">{{safePrice(orderSettleModel.total_amount)}}</text>
+            </div>
+            <div style="background-color:#4cd7c0;justify-content: center;align-items: center;width: 240px">
+                <text style="color: white;font-size: 30px;">去支付</text>
+            </div>
 
+        </div>
         <div v-if="errorInfo.show"  style="align-items:center;margin-top: 300px;justify-content: center">
             <image src="asset://icon-all-net" style="width: 220px;height: 220px"></image>
             <text style="margin-top: 10px;color: #919191;">{{errorInfo.info}}</text>
@@ -107,8 +145,38 @@
 </template>
 
 <style scoped>
+    .divPay{
+        padding-left: 30px;
+        flex-direction: row;
+        width: 510px;
+        background-color: white;
+        align-items: center;border-color: #d8d8d8;border-top-width: 1px;
+    }
+    .bottomCell{
+        height: 88px;
+        flex-direction: row;
+    }
+    .cellAmount{
+        /*height: 70px;*/
+        padding-top: 30px;
+        background-color: white;
+        flex-direction: row;
+
+        justify-content: space-between;
+
+    }
+    .divRow{
+        flex-direction: row;
+        justify-content: space-between;
+    }
     .priceDetailCell{
         padding: 30px;
+        background-color: white;
+        margin-top: 20px;
+    }
+    .priceText{
+        font-size: 36px;
+        color: #ff6692;
     }
     .titleText{
         font-size: 30px;
@@ -118,6 +186,14 @@
         margin-left: 30px;
         height: 1px;width: 720px;
         background-color:#dad8d8;
+    }
+    .divLine2{
+        margin-left: 0px;
+        height: 2px;
+        width: 690px;
+        border-top-width: 2px;
+        border-top-color: #c7c4c4;
+        border-top-style: dashed;
     }
     .diliverRightIcon{
         margin-top: 6px;
@@ -173,7 +249,7 @@
 
     }
     .itemsCell {
-        margin-top: 30px;
+        margin-top: 20px;
 
     }
     .addresstips{
@@ -426,8 +502,16 @@
                 }
 
                 return '￥' + parseFloat(price)/100
-            }
+            },
+            priceDetailStyle:function (detail,isContent) {
+                if (isContent){
+                    return {'color':detail.content_color,'font-size':'30px'}
+                }
+                else{
+                    return {'color':detail.title_color,'font-size':'30px'}
+                }
 
+            },
         }
     }
 </script>
