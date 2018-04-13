@@ -2,12 +2,12 @@
     <div style="position: absolute;" @consigneeChange="onConsigneechange" @couponChange="onCoupneChange">
         <scroller class="scroll" v-if="loadingOk" ref="scroll">
             <div class="addressHeader"></div>
-            <div class="addressCell">
+            <div class="addressCell" >
                 <image class="addressTopImage" src="asset://bg-page-bar"></image>
                 <div class="addressContent">
                     <div>
                         <div style="flex-direction: row;justify-content: space-between;width: 660px">
-                            <text class="addressUser">收货人{{}}</text>
+                            <text class="addressUser">收货人:{{}}</text>
                             <text class="addressUser">135900000000</text>
                         </div>
 
@@ -29,48 +29,66 @@
             </div>
 
             <div class="itemsCell" v-if="orderSettleModel">
-                <div v-for="item in orderSettleModel.package_list">
+                <div v-for="item in orderSettleModel.item_list">
 
                     <div class="itemContent">
-                        <image class="rowImage" resize="cover" :src="subItem.icon_url"></image>
-                        <div style="position: absolute;left: 200px;top:2px;">
-                            <text class="rowTitle">{{subItem.item_name}}</text>
-                            <text class="rowInfo">{{subItem.sku_spec_list[0].values}}</text>
+                        <image class="rowImage" resize="cover" :src="item.icon_url"></image>
+                        <div style="position: absolute;left: 175px;top:35px">
+                            <text class="rowTitle">{{item.item_name}}</text>
+                            <text class="rowInfo">{{item.sku_snapshot[0].values}}</text>
                         </div>
                         <div style="margin-top: 6px">
-                            <text class="roworgPrice" v-if="subItem.delete_price && subItem.delete_price > subItem.price">{{safePrice(subItem.delete_price)}}</text>
-                            <text class="rowPrice" v-if="!(subItem.delete_price && subItem.delete_price > subItem.price)">{{safePrice(subItem.delete_price2)}}</text>
-                            <text class="rowPrice">￥{{parseFloat(subItem.price)/100}}</text>
-                            <text class="rowNum">X{{subItem.number}}</text>
+                            <text class="rowPrice">￥{{parseFloat(item.unit_price)/100}}</text>
+                            <text class="rowNum">X{{item.number}}</text>
                         </div>
                     </div>
 
-
-
+                    <div style="margin-left: 30px;width:690px;height: 1px;background-color:#dad8d8"></div>
                 </div>
+            </div>
+
+            <div class="deliverCell" style="margin-top: 20px">
+                <div style="flex-direction: row; justify-content: space-between">
+                    <text class="titleText">配送方式</text>
+                    <div style="flex-direction: row;">
+                        <text class="rightTextInfo">普通快递</text>
+                        <image class="moreIcon diliverRightIcon" src="asset://order-arrow-right"></image>
+                    </div>
+                </div>
+            </div>
+            <div class="divLine"></div>
+
+            <div class="deliverCell">
+                <div style="flex-direction: row; justify-content: space-between">
+                    <text class="titleText">优惠券</text>
+                    <div style="flex-direction: row;">
+                        <text class="rightTextInfo"></text>
+                        <text class="rightTextInfo">张</text>
+                        <image class="moreIcon diliverRightIcon" src="asset://order-arrow-right"></image>
+                    </div>
+                </div>
+            </div>
+            <div class="divLine"></div>
+
+            <div class="deliverCell">
+                <div style="flex-direction: row; justify-content: space-between">
+                    <text class="titleText">积分抵扣</text>
+                    <div style="flex-direction: row;">
+                        <text class="rightTextInfo">使用积分抵扣</text>
+                        <image class="moreIcon diliverRightIcon" src="asset://order-arrow-right"></image>
+                    </div>
+                </div>
+            </div>
+
+            <div class="priceDetailCell">
 
             </div>
 
-            <div class="coupon">
+            <div class="vipPointCell">
 
             </div>
 
-            <div class="pointExchange">
-
-            </div>
-
-            <div class="deliver">
-
-            </div>
-
-            <div class="priceDetail">
-
-            </div>
-
-            <div class="vipPoint">
-
-            </div>
-            <div class="invo">
+            <div class="invoceCell">
 
             </div>
             <div class="iphonXDiv" v-if="isIphoneX"></div>
@@ -89,16 +107,50 @@
 </template>
 
 <style scoped>
+    .priceDetailCell{
+        padding: 30px;
+    }
+    .titleText{
+        font-size: 30px;
+        color: #4a4a4a;
+    }
+    .divLine{
+        margin-left: 30px;
+        height: 1px;width: 720px;
+        background-color:#dad8d8;
+    }
+    .diliverRightIcon{
+        margin-top: 6px;
+        margin-right: 30px;
+    }
+    .rightTextInfo{
+        font-size: 30px;
+        color: #919090;
+        margin-right: 30px;
 
+    }
+    .deliverCell{
+        padding-left: 30px;
+        padding-top: 30px;
+        height: 88px;
+        background-color: white;
+    }
     .itemContent{
         padding-left: 30px;
         padding-right: 30px;
         padding-top: 30px;
         padding-bottom:30px ;
+        flex-direction: row;
+
+        justify-content: space-between;
+        background-color: white;
+        border-bottom-width: 1px;
+        border-bottom-color: #dadad8;
     }
     .rowInfo{
         font-size: 24px;
         color:#919191;
+        margin-top: 51px;
     }
     .rowTitle{
         font-size: 26px;
@@ -108,8 +160,20 @@
         width: 120px;
         height: 120px;
     }
+    .rowNum{
+        margin-top: 5px;
+        font-size: 26px;
+        color: #919090;
+        text-align:right;
+    }
+    .rowPrice{
+        font-size: 30px;
+        color: #4a4a4a;
+        text-align:right;
 
+    }
     .itemsCell {
+        margin-top: 30px;
 
     }
     .addresstips{
@@ -243,7 +307,7 @@
                 navigator.setNavBarTitle({title:"提交订单"},function () {
 
                 })
-                return;
+                // return;
                 var ws = this;
 
                 ws.errorInfo.show = false
@@ -267,7 +331,7 @@
                     }
 
                     if (rsp.code == 10000) {
-                        ws.orderSettleModel =
+                        ws.orderSettleModel = rsp.data.settlement_info
                         // ws.itemModel = {order_list:[rsp.data.order]};
                         ws.loadingOk = true;
                         ws.errorInfo.show = false;
