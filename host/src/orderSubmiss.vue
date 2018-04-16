@@ -110,11 +110,11 @@
 
             </div>
 
-            <div class="deliverCell" style="margin-top: 20px">
+            <div class="deliverCell" style="margin-top: 20px" @click="onInvoiceClick">
                 <div style="flex-direction: row; justify-content: space-between">
                     <text class="titleText">发票</text>
                     <div style="flex-direction: row;">
-                        <text class="rightTextInfo">未选择</text>
+                        <text class="rightTextInfo">不开发票</text>
                         <image class="moreIcon diliverRightIcon" src="asset://order-arrow-right"></image>
                     </div>
                 </div>
@@ -342,14 +342,31 @@
     const modal = weex.requireModule('modal')
     const navigator = weex.requireModule('navigator')
 
+
+    const WTSNewOrderEventAddress = "WTSNewOrderEventAddress";
+    const WTSNewOrderEventCoupon = "WTSNewOrderEventCoupon";
+    const WTSNewOrderEventDelevery = "WTSNewOrderEventDelevery";
+
+    //会员卡积分
+    const WTSNewOrderEventVipPoint = "WTSNewOrderEventVipPoint";
+
+    //积分抵扣
+    const WTSNewOrderEventMemberPoint = "WTSNewOrderEventMemberPoint";
+    const WTSNewOrderEventInvoice = "WTSNewOrderEventInvoice";
+
     import util from './util.js'
     export default {
         components: {},
         data() {
             return {
                 orderSettleModel:null,
+
+                //当前的地址信息
                 addressInfo:null,
-                couponInfo:{},
+
+                couponInfo:null,
+                //当前的发票信息,
+                curInvoiceInfo:null,
                 itemModel:null, //这里存的是一个order列表，兼容后面可能会有多个门店的订单的情况
                 loadingOk:false,
                 errorInfo:{show:false,info:'系统错误'},
@@ -490,24 +507,6 @@
                 }
             },
 
-
-
-            saveDataToNative:function () {
-                // var item = this.itemModel;
-                // var act = this.activityModel;
-                //
-                // var params = {sku_id:act.sku_id,item_uid:item.item_uid,radix:act.radix,trade_type:item.trade_type,
-                //     item_type:item.item_type,price:item.item_price};
-                //
-                // //这几个比较可能缺少所以一个个赋值
-                // params.short_name = item.item_short_name;
-                // params.long_ame= item.item_long_name;
-                // params.image= this.imageSet[0].image_url;
-                // params.share_url=item.share_url;
-                // params.sale_point=item.sale_point;
-                // params.sku_uid = 11 + '_' + act.sku_id
-                // wtsEvent.postEvent('onPageLoadingOk',params)
-            },
             reloadClick:function () {
                 this.reloadPage()
             },
@@ -566,9 +565,19 @@
             onInvoceChange:function (params) {
 
             },
+
             //native来的通知
             onNativeNotification:function (nativeInfo) {
+                var eventName = nativeInfo.eventName;
+                var router = ['']
+            },
 
+            postEventToNative:function (name,params) {
+                var userInfo = {event:name,params:params}
+                wtsEvent.postEvent('onPageNotify',userInfo)
+            },
+            onInvoiceClick:function (e) {
+                this.postEventToNative(WTSNewOrderEventInvoice,null)
 
             },
             safePrice:function (price) {
