@@ -62,8 +62,8 @@
                 <div style="flex-direction: row; justify-content: space-between">
                     <text class="titleText">优惠券</text>
                     <div style="flex-direction: row;">
-                        <text class="rightTextInfo"></text>
-                        <text class="rightTextInfo">张</text>
+                        <text class="priceText">{{orderSettleModel.coupon_amount}}</text>
+                        <text class="rightTextInfo">张可用</text>
                         <image class="moreIcon diliverRightIcon" src="asset://order-arrow-right"></image>
                     </div>
                 </div>
