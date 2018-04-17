@@ -12,6 +12,7 @@
 #import "ImageHandler.h"
 #import "navhandler.h"
 #import "protocol.h"
+#import <YYWebImage/YYWebImage.h>
 
 @implementation ObjcBridge{
     NSString* _fileRootPath;
@@ -68,5 +69,9 @@
     [WXSDKEngine registerHandler:[navhandler new] withProtocol:@protocol(WXNavigationProtocol)];
     [WXSDKEngine registerModule:@"event2" withClass:NSClassFromString(@"navNative")];
     [WXLog setLogLevel: WXLogLevelError];
+}
+
+-(void)loadImage:(UIImageView*)view url:(NSString*)url{
+
 }
 @end

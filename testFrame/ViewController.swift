@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import Alamofire
 import SnapKit
-
+import YYWebImage
 //extension NSObject{
 //    func doAsynAfter(time:Double, action: ( ()->Void )?){
 //        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + time){
@@ -32,6 +32,7 @@ class ViewController: UIViewController {
     let textEvent = PublishSubject<String>()
     var c = Variable("test")
 
+    
     //let text:Observable<String> = Observable.s
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,7 +105,7 @@ class ViewController: UIViewController {
         //c.asObservable().bind(to: textField.rx.text.orEmpty)
         
         //textField.text = "1122"
-        textField.text = "http://10.66.48.126:8081/dist/demo.js"
+        textField.text = "http://10.66.51.240:8081/dist/helloworld.js"
         textField2.text = "http://192.168.0.105:8081/dist/navtest.js"
         let lenthValid = textField.rx.text.orEmpty.asDriver().map{
            //return $0.count > 5
@@ -126,6 +127,20 @@ class ViewController: UIViewController {
         print(c.value)
         //textField.rx.text.orEmpty.bind(to: button.rx.title(for: .normal)).addDisposableTo(disposeBag)
         
+        
+//        let view2 = testView.init(frame: CGRect.init(x: 0, y: 0, width: self.view.width, height: self.view.height))
+//        self.view.addSubview(view2)
+        
+//        let u = UIView.init(frame: self.view.bounds)
+//        if #available(iOS 11.0, *) {
+//            u.frame = self.view.safeAreaLayoutGuide.layoutFrame
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//        u.backgroundColor = UIColor.gray
+//        self.view.addSubview(u)
+        
+        addYYImage()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -152,6 +167,26 @@ class ViewController: UIViewController {
         
         self.navigationController?.pushViewController(vc, animated: true)
         
+    }
+    
+    func addYYImage(){
+        let image = YYImage.init(named: "2.webp")
+        let imageView = YYAnimatedImageView()
+        imageView.image = image
+        
+//        let imageView = YYAnimatedImageView()
+//        let path = Bundle.main.path(forResource: "2.webp", ofType: "")
+//        imageView.yy_imageURL = URL.init(string: path!)
+
+        
+        
+        self.view.addSubview(imageView)
+        imageView.snp.makeConstraints { (maker) in
+            maker.edges.equalTo(self.view)
+        }
+//        UIImage *image = [YYImage imageNamed:@"2"];
+//        UIImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+//        [self.view addSubview:imageView];
     }
 }
 

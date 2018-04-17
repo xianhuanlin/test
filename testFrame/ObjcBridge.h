@@ -15,5 +15,7 @@
 - (void)zipFile;
 
 
+- (void)loadImage:(UIImageView*)view url:(NSString*)url;
+
 + (void)weexInit;
 @end
