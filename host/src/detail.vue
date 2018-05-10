@@ -544,15 +544,38 @@
                 if (item.stock_code){
                     reqParams.stock_code = item.stock_code
                 }
-
-                // modal.toast({message: util.formatObj(reqParams)})
-                // return
                 wtsEvent.fetch("get","group/settlement/get/v1",reqParams,function (rsp) {
                   if (rsp.code == 10000){
                       ret(true)
                   }else{
-                      ret(false)
-                      wtsEvent.toast(rsp.msg)
+
+                      if (rsp.code == 30014){
+                          var req2 = {activity_sn:ws.activityKey}
+                          req2.domain = 'http://10.66.48.158'
+                          wtsEvent.fetch("get","lighting/getpageid",req2,function (rsp2) {
+// `
+                                if (rsp2.code == 10000){
+
+                                    var pageid = rsp2.data.pageid;
+                                    wtsEvent.postEvent('onGroupShareNotify',{pageId:pageid})
+                                }
+                                else{
+                                    // var pageid = 1120;
+                                    // wtsEvent.postEvent('onGroupShareNotify',{pageId:pageid})
+
+                                    wtsEvent.toast('请稍后再试');
+                                }
+
+
+                          })
+                          ret(false)
+                      }
+                      else{
+                          ret(false)
+                          wtsEvent.toast(rsp.msg)
+                      }
+
+
                   }
                 })
 
