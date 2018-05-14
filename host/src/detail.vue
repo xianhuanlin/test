@@ -548,10 +548,17 @@
                   if (rsp.code == 10000){
                       ret(true)
                   }else{
+                      if (rsp.code == 30013){
+                          wtsEvent.postEvent('onMemberCardTips',{})
 
-                      if (rsp.code == 30014){
+                          // wtsEvent.toast('您还未绑定会员卡哦，请绑卡后再来参加吧');
+                          // var params = {};
+                          // wtsEvent.openNativePage('WTSECardListViewController',params)
+                      }
+
+                      else if (rsp.code == 30014){
                           var req2 = {activity_sn:ws.activityKey}
-                          req2.domain = 'http://10.66.48.158'
+                          req2.domain = 'https://act.watsons.com.cn/act'
                           wtsEvent.fetch("get","lighting/getpageid",req2,function (rsp2) {
 // `
                                 if (rsp2.code == 10000){

@@ -1,5 +1,5 @@
 <template>
-    <div style="position: absolute;" @consigneeChange="onConsigneechange" @couponChange="onCoupneChange">
+    <div style="position: absolute;" @consigneeChange="onConsigneechange" @couponChange="onCoupneChange" @nativeNotify="onNativeNotification">
         <scroller class="scroll" v-if="loadingOk" ref="scroll">
             <div class="addressHeader"></div>
             <div class="addressCell" v-if="addressInfo">
@@ -85,7 +85,7 @@
                     <div class="divRow" style="margin-bottom: 20px">
                         <text :style="priceDetailStyle(detail,0)">{{detail.title}}</text>
                         <div class="divRow">
-                            <text style="background-color: #f4f4f4;color: #4a4a4a;font-size: 22px;margin-top: 3px;margin-right: 10px" v-if="detail.tag">{{detail.tag}}</text>
+                            <text style="background-color: #f4f4f4;color: #4a4a4a;font-size: 22px;margin-right: 10px;padding-top: 5px" v-if="detail.tag">{{detail.tag}}</text>
                             <text :style="priceDetailStyle(detail,1)">{{detail.content}}</text>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                 <div style="flex-direction: row; justify-content: space-between">
                     <text class="titleText">发票</text>
                     <div style="flex-direction: row;">
-                        <text class="rightTextInfo">不开发票</text>
+                        <text class="rightTextInfo">{{invoiceText}}</text>
                         <image class="moreIcon diliverRightIcon" src="asset://order-arrow-right"></image>
                     </div>
                 </div>
@@ -363,6 +363,7 @@
 
                 //当前的地址信息
                 addressInfo:null,
+                invoiceObj:null,
 
                 couponInfo:null,
                 //当前的发票信息,
@@ -387,7 +388,20 @@
             isIphoneX(){
                 return util.isIPhoneX()
             },
+            invoiceText(){
+                if (!this.invoiceObj){
+                    return "不开发票";
+                }else{
+                    var type = this.invoiceObj.invoice_type == 1 ? '个人' : '单位'
 
+                    if (this.invoiceObj.invoice_type == 1 && this.addressInfo.consignee){
+                        return this.addressInfo.consignee + ' (' + type + ')'
+                    }else if (this.invoiceObj.invoice_type == 2 ){
+
+                    }
+                }
+
+            },
 
         },
 
@@ -446,7 +460,7 @@
                         return;
                     }
 
-                    ws.saveDataToNative()
+                    // ws.saveDataToNative()
                     //异步加载头部
                     setTimeout(function () {
                         wtsEvent.addTopupButton(100)
@@ -552,7 +566,10 @@
                 this.addressInfo = params;
                 this.reloadPage()
             },
+            gotoPay:function (params) {
 
+
+            },
             //积分抵扣改变
             onVipPointDikouChange:function (params) {
 
@@ -563,13 +580,17 @@
             },
             //修改发票
             onInvoceChange:function (params) {
-
+                this.invoiceObj = params;
             },
 
             //native来的通知
             onNativeNotification:function (nativeInfo) {
                 var eventName = nativeInfo.eventName;
-                var router = ['']
+                console.log(eventName)
+                var router = {'orderInvoice':this.onInvoceChange}
+                if (router[eventName]){
+                    router[eventName](nativeInfo)
+                }
             },
 
             postEventToNative:function (name,params) {
@@ -577,7 +598,7 @@
                 wtsEvent.postEvent('onPageNotify',userInfo)
             },
             onInvoiceClick:function (e) {
-                this.postEventToNative(WTSNewOrderEventInvoice,null)
+                this.postEventToNative(WTSNewOrderEventInvoice,this.invoiceObj)
 
             },
             safePrice:function (price) {
