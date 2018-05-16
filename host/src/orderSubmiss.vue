@@ -27,26 +27,9 @@
                 </div>
 
             </div>
+            <listCell :itemListModel="listModel">
 
-            <div class="itemsCell" v-if="orderSettleModel">
-                <div v-for="item in orderSettleModel.item_list">
-
-                    <div class="itemContent">
-                        <image class="rowImage" resize="cover" :src="item.icon_url"></image>
-                        <div style="position: absolute;left: 175px;top:35px">
-                            <text class="rowTitle">{{item.item_name}}</text>
-                            <text class="rowInfo">{{item.sku_snapshot[0].values}}</text>
-                        </div>
-                        <div style="margin-top: 6px">
-                            <text class="rowPrice">￥{{parseFloat(item.unit_price)/100}}</text>
-                            <text class="rowNum">X{{item.number}}</text>
-                        </div>
-                    </div>
-
-                    <div style="margin-left: 30px;width:690px;height: 1px;background-color:#dad8d8"></div>
-                </div>
-            </div>
-
+            </listCell>
             <div class="deliverCell" style="margin-top: 20px">
                 <div style="flex-direction: row; justify-content: space-between">
                     <text class="titleText">配送方式</text>
@@ -54,6 +37,9 @@
                         <text class="rightTextInfo">普通快递</text>
                         <image class="moreIcon diliverRightIcon" src="asset://order-arrow-right"></image>
                     </div>
+                </div>
+                <div v-if="1">
+
                 </div>
             </div>
             <div class="divLine"></div>
@@ -211,47 +197,7 @@
         height: 88px;
         background-color: white;
     }
-    .itemContent{
-        padding-left: 30px;
-        padding-right: 30px;
-        padding-top: 30px;
-        padding-bottom:30px ;
-        flex-direction: row;
 
-        justify-content: space-between;
-        background-color: white;
-        border-bottom-width: 1px;
-        border-bottom-color: #dadad8;
-    }
-    .rowInfo{
-        font-size: 24px;
-        color:#919191;
-        margin-top: 51px;
-    }
-    .rowTitle{
-        font-size: 26px;
-        color: #222222;
-    }
-    .rowImage{
-        width: 120px;
-        height: 120px;
-    }
-    .rowNum{
-        margin-top: 10px;
-        font-size: 26px;
-        color: #919090;
-        text-align:right;
-    }
-    .rowPrice{
-        font-size: 30px;
-        color: #4a4a4a;
-        text-align:right;
-
-    }
-    .itemsCell {
-        margin-top: 20px;
-
-    }
     .addresstips{
         color: #4CD7C0;
         font-size: 26px;
@@ -337,6 +283,10 @@
 </style>
 
 <script>
+    import itemlistCell from './orderSubmissCells/orderItemCell.vue'
+    // import {listCell} from './vueTypes'
+    // import {listCell,detail} from './vueTypes'
+
     const wtsEvent = weex.requireModule('WTSEvent')
     const animation = weex.requireModule('animation')
     const modal = weex.requireModule('modal')
@@ -356,7 +306,7 @@
 
     import util from './util.js'
     export default {
-        components: {},
+        components: {'listCell':itemlistCell},
         data() {
             return {
                 orderSettleModel:null,
@@ -382,9 +332,6 @@
 
         },
         computed: {
-            bottomStyle(){
-                return {height:'128px',width:'750px','flex-direction':'row'}
-            },
             isIphoneX(){
                 return util.isIPhoneX()
             },
@@ -402,10 +349,26 @@
                 }
 
             },
+            listModel(){
+                if (this.orderSettleModel){
+                    return this.orderSettleModel.item_list;
+                }
+                else{
+                    return null;
+                }
+            },
+
+
+            deliverType(){
+                return
+            },
 
         },
 
         methods: {
+            tagStyle:function(tagInfo){
+                return {'background-color':tagInfo['bg_color'],'border-radius':'4px'}
+            },
             calcPrice:function(e){
                 var pricef = parseFloat(e)/100;
                 return pricef.toString()
@@ -587,7 +550,7 @@
             onNativeNotification:function (nativeInfo) {
                 var eventName = nativeInfo.eventName;
                 console.log(eventName)
-                var router = {'orderInvoice':this.onInvoceChange}
+                var router = {WTSNewOrderEventInvoice:this.onInvoceChange}
                 if (router[eventName]){
                     router[eventName](nativeInfo)
                 }
