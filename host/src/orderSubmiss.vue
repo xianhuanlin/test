@@ -27,10 +27,10 @@
                 </div>
 
             </div>
-            <listCell :itemListModel="listModel">
+            <listCell :itemListModel="listModel" :packListModel="packModel">
 
             </listCell>
-            <div class="deliverCell" style="margin-top: 20px">
+            <div class="orderCommonCell" style="margin-top: 20px">
                 <div style="flex-direction: row; justify-content: space-between">
                     <text class="titleText">配送方式</text>
                     <div style="flex-direction: row;">
@@ -44,7 +44,7 @@
             </div>
             <div class="divLine"></div>
 
-            <div class="deliverCell">
+            <div class="orderCommonCell">
                 <div style="flex-direction: row; justify-content: space-between">
                     <text class="titleText">优惠券</text>
                     <div style="flex-direction: row;">
@@ -56,7 +56,7 @@
             </div>
             <div class="divLine"></div>
 
-            <div class="deliverCell">
+            <div class="orderCommonCell">
                 <div style="flex-direction: row; justify-content: space-between">
                     <text class="titleText">积分抵扣</text>
                     <div style="flex-direction: row;">
@@ -85,7 +85,7 @@
 
             </div>
 
-            <div class="deliverCell" style="margin-top: 20px">
+            <div class="orderCommonCell" style="margin-top: 20px">
                 <div style="flex-direction: row; justify-content: space-between">
                     <text class="titleText">会员卡积分</text>
                     <div style="flex-direction: row;">
@@ -96,7 +96,7 @@
 
             </div>
 
-            <div class="deliverCell" style="margin-top: 20px" @click="onInvoiceClick">
+            <div class="orderCommonCell" style="margin-top: 20px" @click="onInvoiceClick">
                 <div style="flex-direction: row; justify-content: space-between">
                     <text class="titleText">发票</text>
                     <div style="flex-direction: row;">
@@ -191,7 +191,7 @@
         margin-right: 30px;
 
     }
-    .deliverCell{
+    .orderCommonCell{
         padding-left: 30px;
         padding-top: 22px;
         height: 88px;
@@ -357,10 +357,17 @@
                     return null;
                 }
             },
-
+            packModel(){
+                if (this.orderSettleModel){
+                    return this.orderSettleModel.package_list;
+                }
+                else{
+                    return null;
+                }
+            },
 
             deliverType(){
-                return
+
             },
 
         },
