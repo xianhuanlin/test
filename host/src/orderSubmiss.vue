@@ -16,7 +16,7 @@
                             <text class="addressInfoSubInfo">123</text>
                             <text class="addressInfoSubTip">456</text>
                         </div>
-                        <text class="addresstips">(收货不方便时，可选择门店自提)</text>
+                        <text class="addresstips" v-if="orderSettleModel.flash_delivery">{{orderSettleModel.flash_delivery.pick_up_recommend_text}}</text>
 
                     </div>
                     <div class="divRight">
@@ -108,6 +108,9 @@
 
             <div class="iphonXDiv" v-if="isIphoneX"></div>
         </scroller>
+        <!--<div class="bottomCell" style="background-color: red">-->
+            <!--<text>hello</text>-->
+        <!--</div>-->
         <div v-if="loadingOk" class="bottomCell">
             <div class="divPay">
                 <text class="titleText">应付金额:</text>
@@ -323,6 +326,7 @@
                 errorInfo:{show:false,info:'系统错误'},
                 reqParams:{offset:0,count:1},
                 showSubAddress:true,
+                pickStoreData:null,
             }
         },
         mounted () {
@@ -415,6 +419,17 @@
                         ws.loadingOk = true;
                         ws.errorInfo.show = false;
                         // wtsEvent.toast("fetch 10000");
+
+                        if (ws.orderSettleModel.invalid_settlement_info
+                            && ws.orderSettleModel.invalid_settlement_info.err_msg) {
+                            wtsEvent.toast(ws.orderSettleModel.invalid_settlement_info.err_msg)
+
+                        }
+                        else if (ws.orderSettleModel.flash_invalid_item) {
+                            ws.postEventToNative('showInvalidItem',ws.orderSettleModel.flash_invalid_item)
+                        }
+
+
                     } else {
                         if (rsp.msg){
                             wtsEvent.toast(rsp.msg);
@@ -455,27 +470,51 @@
                 }
                 return addr
             },
+            postConsigneeChange:function (consigneeData) {
+                var consigneeObj = consigneeData
+                var info = {}
+                info.detailInfo = this.addressFromJson(consigneeObj)
+                info.consignee = consigneeObj.consignee
+                info.mobile = consigneeObj.mobile
+                info.consignee_uid = consigneeObj.consignee_uid
 
+                this.onConsigneechange(info)
+            },
             requestAddressInfo:function (cb) {
                 //闪电购流程比较特殊
-
+                var ws = this;
                 if (this.order_item_list[0].trade_type == 3 && this.appStockCode.length > 0){
+                    wtsEvent.fetch('get','user/consignee/get/storeId',{'store_id':this.appStockCode},function (rsp) {
 
+                        if (rsp.code == 10000 && rsp.data && rsp.data.consignee) {
+                            wtsEvent.showLoading('0')
+                            ws.postConsigneeChange(rsp.data.consignee)
+                            cb(true,null)
+                        }
+                        else{
+
+                            wtsEvent.fetch('get','user/consignee/list',{},function (rsp2) {
+
+                                wtsEvent.showLoading('0')
+
+                                if (rsp2.code == 10000) {
+                                    ws.postConsigneeChange(rsp2.data.consignee_list[0])
+                                    // cb(true,null)
+                                }else{
+                                    cb(false,null)
+                                }
+                            })
+                        }
+
+                    });
                 }else{
-                    var ws = this;
                     wtsEvent.showLoading('1')
                     wtsEvent.fetch('get','user/consignee/list',{},function (rsp) {
                         if (rsp.code == 10000){
                             wtsEvent.showLoading('0')
                             if (rsp.data.consignee_list.length > 0){
-                                var consigneeObj = rsp.data.consignee_list[0]
-                                var info = {}
-                                info.detailInfo = ws.addressFromJson(consigneeObj)
-                                info.consignee = consigneeObj.consignee
-                                info.mobile = consigneeObj.mobile
-                                info.consignee_uid = consigneeObj.consignee_uid
-
-                                ws.onConsigneechange(info)
+                                ws.postConsigneeChange(rsp.data.consignee_list[0])
+                                // cb(true,null)
                             }
                             else{
                                 cb(true,null)
