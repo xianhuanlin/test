@@ -41,6 +41,19 @@
                 <text class="sunbianTitle">拼团玩法</text>
                 <image class="ruleImage" src="asset://icon-groupDetail2-rule" style="width: 696px; height: 79px; margin-top: 34px"></image>
             </div>
+            <div class="rulecell" v-if="activityModel.group_type == 2" style="width: 750px;height: 214px;margin-top: 20px;padding: 30px;background-color: white">
+                <div style="justify-content: space-between;flex-direction: row">
+                    <text class="sunbianTitle">抽奖团逻辑</text>
+                    <div style="flex-direction: row" @click="ruleClick">
+                        <text style="font-size: 26px;color: #919090;">活动规则</text>
+                        <!--<text style="font-size: 26px;color: #919090;"></text>-->
+                        <image style="margin-left: 10px;margin-top:9px;width: 10px;height: 18px;" src="asset://icon-detail-coupon-more" ></image>
+                    </div>
+                </div>
+
+                <image class="ruleImage" src="asset://icon-group-detail-rule3" style="width: 750px; height: 98px;margin-left: -30px; margin-top: 34px"></image>
+            </div>
+
             <div class="sunbianCell">
                 <text class="sunbianTitle">笋编说</text>
                 <text class="sunbianInfo">{{brief}}</text>
@@ -89,6 +102,20 @@
             </div>
 
         </div>
+        <div v-if="showTips" ref="ruleDiv" style="position: fixed;top: 0px;bottom: 0;left: 0;right: 0; width: 750px;">
+            <div style="width: 750px;background-color: rgba(0,0,0,0.5);flex: 1" @click="ruleClose"></div>
+            <div style="height:665px;background-color: white;bottom: 0px">
+                <!--<div>-->
+                <div style="flex-direction: row;justify-content: space-between; padding: 30px;border-bottom-color: #d8d8d8;border-bottom-width: 1px;">
+                    <text style="font-size: 30px;color: #4a4a4a;">活动规则</text>
+                    <image style="width: 26px;height: 26px;margin-top: 4px" src="asset://icon-popup-close"  @click="ruleClose"></image>
+                </div>
+                <scroller style="padding: 30px">
+                    <text style="font-size: 26px;color: #4a4a4a;">{{activityModel.rule_rich_text}}</text>
+                </scroller>
+                <!--</div>-->
+            </div>
+        </div>
         <div class="iphonXDiv" v-if="isiPhonX"></div>
         <div v-if="errorInfo.show" style="align-items:center;margin-top: 300px;">
             <image src="asset://icon-all-net" style="width: 220px;height: 220px"></image>
@@ -97,6 +124,7 @@
                 <text style="color: white;font-size: 32px;">重新加载</text>
             </div>
         </div>
+
     </div>
 
 </template>
@@ -358,6 +386,7 @@
                 errorInfo:{show:false,info:''},
 
                 isiPhonX:false,
+                showTips:false,
             }
         },
         mounted () {
@@ -474,6 +503,30 @@
                     // wtsEvent.toast(title)
                     // wtsEvent.toast(price)
                 })
+            },
+            switchTips:function (isShow) {
+                var testEl = this.$refs.ruleDiv;
+                //var
+                animation.transition(testEl, {
+                    styles: {
+                        opacity: isShow,
+                    },
+                    duration: 600, //ms
+                    timingFunction: 'ease',
+                    delay: 0 //ms
+                }, function () {
+                    // testEl.style.opacity = 1
+                    // modal.toast({ message: 'animation finished.' })
+                })
+            },
+            ruleClose:function (e) {
+                 this.showTips = false
+                // this.switchTips(0)
+            },
+            ruleClick:function (e) {
+
+                this.showTips = true
+                // this.switchTips(1)
             },
             mainImageClick:function (e) {
                 wtsEvent.showFullImage([this.imageSet[0].image_url],0)
