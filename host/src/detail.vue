@@ -35,11 +35,11 @@
 
             <div class="rulecell" v-if="activityModel.group_type == 1" style="width: 750px;height: 214px;margin-top: 20px;padding: 30px;background-color: white">
                 <text class="sunbianTitle">自提团流程</text>
-                <image class="ruleImage" src="asset://icon-groupdetail-rule" style="width: 696px; height: 79px; margin-top: 34px"></image>
+                <image class="ruleImage" src="asset://icon-groupdetail-rule" style="width: 750px; height: 98px;margin-left: -30px; margin-top: 34px"></image>
             </div>
             <div class="rulecell" v-if="activityModel.group_type == 0" style="width: 750px;height: 214px;margin-top: 20px;padding: 30px;background-color: white">
                 <text class="sunbianTitle">拼团玩法</text>
-                <image class="ruleImage" src="asset://icon-groupDetail2-rule" style="width: 696px; height: 79px; margin-top: 34px"></image>
+                <image class="ruleImage" src="asset://icon-groupDetail2-rule" style="width: 750px; height: 98px;margin-left: -30px; margin-top: 34px"></image>
             </div>
             <div class="rulecell" v-if="activityModel.group_type == 2" style="width: 750px;height: 214px;margin-top: 20px;padding: 30px;background-color: white">
                 <div style="justify-content: space-between;flex-direction: row">
