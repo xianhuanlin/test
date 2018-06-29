@@ -176,7 +176,7 @@
                 return pricef.toString()
             },
             safePrice:function (price) {
-                if (price == undefined){
+                if (typeof(price) == undefined){
                     return ' '
                 }
                 else if (price == 0){
